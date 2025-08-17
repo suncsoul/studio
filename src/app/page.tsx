@@ -1,4 +1,5 @@
 
+'use client';
 
 import { Header } from "@/components/header";
 import { MatchCard } from "@/components/match-card";
@@ -12,6 +13,14 @@ import {
   Bot
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+// ToDo: Replace with actual auth state
+const useAuth = () => ({
+  isLoggedIn: false
+});
+
 
 const matches = [
   { name: "Seraphina", age: 28, location: "Venice, Italy", imageUrl: "https://placehold.co/400x600/F5E0C3/2C2C2C.png", mbti: "INFJ", loveLanguage: "Quality Time", humorStyle: "Witty", isVerified: true, bio: "A lover of ancient stories, hidden alleyways, and the scent of old books. Seeking a partner for moonlit gondola rides and philosophical debates over espresso. I believe every person is a story waiting to be told." },
@@ -59,6 +68,27 @@ const hireCompanions = [
 ];
 
 export default function Home() {
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    // If user is not logged in, redirect them to the login page.
+    // This is a placeholder for real authentication logic.
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+  }, [isLoggedIn, router]);
+
+  // If not logged in, we can show a loading state or nothing, 
+  // as the redirect will happen shortly.
+  if (!isLoggedIn) {
+    return (
+      <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Header />
@@ -113,5 +143,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
