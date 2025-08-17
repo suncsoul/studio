@@ -8,25 +8,25 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* Ivory White */
-    --foreground: 0 0% 17.3%; /* Charcoal Black */
-    --card: 36 68% 86.3%; /* Warm Beige */
-    --card-foreground: 0 0% 17.3%; /* Charcoal Black */
-    --popover: 0 0% 98%; /* Ivory White */
-    --popover-foreground: 0 0% 17.3%; /* Charcoal Black */
-    --primary: 45 100% 52%; /* Sunrise Gold */
-    --primary-foreground: 0 0% 17.3%; /* Charcoal Black */
-    --secondary: 36 68% 90%; /* Lighter Warm Beige */
-    --secondary-foreground: 0 0% 17.3%; /* Charcoal Black */
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 5 100% 69%; /* Blush Coral */
-    --accent-foreground: 0 0% 98%; /* Ivory White */
+    --background: 240 100% 97%; /* Glow White */
+    --foreground: 0 0% 4%; /* Void Black */
+    --card: 240 100% 97%; /* Glow White */
+    --card-foreground: 0 0% 4%; /* Void Black */
+    --popover: 240 100% 97%; /* Glow White */
+    --popover-foreground: 0 0% 4%; /* Void Black */
+    --primary: 56 100% 50%; /* Cyber Yellow */
+    --primary-foreground: 0 0% 4%; /* Void Black */
+    --secondary: 240 10% 90%; 
+    --secondary-foreground: 0 0% 4%; 
+    --muted: 240 5% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 342 100% 58%; /* Laser Pink */
+    --accent-foreground: 0 0% 98%; 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 45 100% 52%; /* Sunrise Gold */
+    --border: 240 5% 85%;
+    --input: 240 5% 90%;
+    --ring: 56 100% 50%; /* Cyber Yellow */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -43,25 +43,25 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 10%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 45 100% 52%; /* Sunrise Gold */
-    --primary-foreground: 0 0% 17.3%; /* Charcoal Black */
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
+    --background: 0 0% 4%; /* Void Black */
+    --foreground: 240 100% 97%; /* Glow White */
+    --card: 0 0% 8%; 
+    --card-foreground: 240 100% 97%; 
+    --popover: 0 0% 4%; 
+    --popover-foreground: 240 100% 97%;
+    --primary: 56 100% 50%; /* Cyber Yellow */
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 240 100% 97%;
+    --muted: 0 0% 12%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 5 100% 69%; /* Blush Coral */
-    --accent-foreground: 0 0% 98%; /* Ivory White */
+    --accent: 342 100% 58%; /* Laser Pink */
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 45 100% 52%; /* Sunrise Gold */
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 56 100% 50%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

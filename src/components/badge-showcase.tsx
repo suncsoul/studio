@@ -31,21 +31,21 @@ const allBadges = [
         unlocked: false,
         description: "Match with 3+ premium users to prove you're in the inner circle.",
         progress: { current: 2, max: 3, text: "2/3 VIP matches" },
-        color: "text-violet-500",
+        color: "text-[#9D00FF]", // Holographic Purple
     },
     {
         name: "Top 10% Trendsetter",
         icon: Crown,
         unlocked: true,
         description: "Be in the top 10% of most-liked profiles this month. Resets weekly!",
-        color: "text-amber-500",
+        color: "text-[#FFEE00]", // Cyber Yellow
     },
     {
         name: "Golden Hour Rush",
         icon: Sunset,
         unlocked: true,
         description: "Uploaded a photo and sent 5 messages during the 5-6 PM golden hour.",
-        color: "text-orange-500",
+        color: "text-[#FF7E00]", // Orange Fusion
     },
     {
         name: "Last Chance Match",
@@ -53,7 +53,7 @@ const allBadges = [
         unlocked: false,
         description: "Message a high-compatibility (>85%) match within 1 hour of matching.",
         progress: { current: 0, max: 1, text: "Message a new match quickly!" },
-        color: "text-sky-500",
+        color: "text-[#FF2A6D]", // Laser Pink
     },
     {
         name: "Streak Dominator",
@@ -61,7 +61,7 @@ const allBadges = [
         unlocked: false,
         description: "Maintain a 30-day login and message streak. Don't break the chain!",
         progress: { current: 7, max: 30, text: "7-day streak!" },
-        color: "text-red-500",
+        color: "text-[#00FF87]", // Toxic Green
     },
     {
         name: "Seasonal Soul",
@@ -83,7 +83,7 @@ const allBadges = [
         unlocked: false,
         description: "Win 3 profile 'duels' by getting more votes than your opponent.",
         progress: { current: 1, max: 3, text: "1/3 Duels Won" },
-        color: "text-slate-500",
+        color: "text-[#00FF87]", // Toxic Green
     },
     {
         name: "Authentic Soul",
@@ -98,7 +98,7 @@ const allBadges = [
         unlocked: false,
         description: "Send 50+ icebreaker messages with an 80%+ reply rate.",
         progress: { current: 35, max: 50, text: "35/50 Messages Sent" },
-        color: "text-pink-500",
+        color: "text-[#00F0FF]", // Electric Blue
     },
     {
         name: "Weekend Explorer",
