@@ -1,8 +1,11 @@
 
+"use client";
+
 import React from "react";
 import { GoodluckLogo } from "./icons";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { Button } from "./ui/button";
 
 
 interface AuthLayoutProps {
@@ -39,9 +42,3 @@ export function AuthLayout({ children, footerText }: AuthLayoutProps) {
     </div>
   );
 }
-
-// Dummy Button component for structure, assuming it exists in ui/button
-const Button = ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean; variant?: string }) => {
-    const Comp = props.asChild ? "div" : "button";
-    return <Comp {...props}>{children}</Comp>;
-};
