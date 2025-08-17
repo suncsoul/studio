@@ -15,7 +15,14 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Progress } from "./ui/progress";
 import { cn } from "@/lib/utils";
 
@@ -112,36 +119,44 @@ export function BadgeShowcase() {
         <CardDescription>Flex your achievements. Pin your top 3 to show them off!</CardDescription>
       </CardHeader>
       <CardContent>
-        <TooltipProvider>
-            <div className="grid grid-cols-4 md:grid-cols-5 gap-4">
-                {allBadges.map((badge) => (
-                    <Tooltip key={badge.name}>
-                    <TooltipTrigger asChild>
-                        <div className={cn(
-                            "flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center space-y-2 transition-all duration-300 aspect-square",
-                            badge.unlocked 
-                            ? 'border-primary/50 bg-primary/10 shadow-lg' 
-                            : 'bg-muted/50 border-dashed opacity-70'
-                        )}>
-                            <badge.icon className={cn("h-10 w-10", badge.unlocked ? badge.color : "text-muted-foreground")} />
-                        </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-[250px]">
-                        <p className="font-bold mb-1">{badge.name}</p>
-                        <p className="text-sm text-muted-foreground mb-2">{badge.description}</p>
+          <div className="grid grid-cols-4 md:grid-cols-5 gap-4">
+              {allBadges.map((badge) => (
+                  <Dialog key={badge.name}>
+                    <DialogTrigger asChild>
+                      <button className={cn(
+                          "flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center space-y-2 transition-all duration-300 aspect-square focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                          badge.unlocked 
+                          ? 'border-primary/50 bg-primary/10 shadow-lg' 
+                          : 'bg-muted/50 border-dashed opacity-70'
+                      )}>
+                          <badge.icon className={cn("h-10 w-10", badge.unlocked ? badge.color : "text-muted-foreground")} />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-sm">
+                      <DialogHeader className="items-center text-center">
+                        <badge.icon className={cn("h-16 w-16 mb-2", badge.unlocked ? badge.color : "text-muted-foreground")} />
+                        <DialogTitle className="text-2xl">{badge.name}</DialogTitle>
+                        <DialogDescription className="text-base">{badge.description}</DialogDescription>
+                      </DialogHeader>
+                      <div className="mt-4">
                         {badge.progress && !badge.unlocked && (
-                            <>
-                                <Progress value={(badge.progress.current / badge.progress.max) * 100} className="h-2 my-2"/>
-                                <div className="text-xs font-semibold text-primary">
+                            <div className="text-center">
+                                <Progress value={(badge.progress.current / badge.progress.max) * 100} className="h-3 my-2"/>
+                                <div className="text-sm font-semibold text-primary mt-2">
                                     Progress: {badge.progress.text}
                                 </div>
-                            </>
+                            </div>
                         )}
-                    </TooltipContent>
-                    </Tooltip>
-                ))}
-            </div>
-        </TooltipProvider>
+                        {badge.unlocked && (
+                           <div className="text-center font-semibold text-green-500">
+                                Unlocked!
+                           </div>
+                        )}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+              ))}
+          </div>
       </CardContent>
     </Card>
   );
