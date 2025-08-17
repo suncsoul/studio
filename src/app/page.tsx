@@ -1,17 +1,16 @@
+
 import { Header } from "@/components/header";
 import { MatchCard } from "@/components/match-card";
 import { WhosDownCard } from "@/components/whos-down-card";
-import { DatePlanner } from "@/components/date-planner";
-import { SafetyModeration } from "@/components/safety-moderation";
-import { EmpathyMirror } from "@/components/empathy-mirror";
+import { HireCompanionCard } from "@/components/hire-companion-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Heart,
   Users,
-  Bot,
   Briefcase,
+  Bot
 } from "lucide-react";
-import { HireCompanionCard } from "@/components/hire-companion-card";
+import Link from "next/link";
 
 const matches = [
   { name: "Seraphina", age: 28, location: "Venice, Italy", imageUrl: "https://placehold.co/400x600/F5E0C3/2C2C2C.png", mbti: "INFJ", loveLanguage: "Quality Time", humorStyle: "Witty", isVerified: true },
@@ -40,10 +39,13 @@ export default function Home() {
         <div className="container mx-auto px-4 py-8">
           <Tabs defaultValue="matches" className="w-full">
             <div className="flex justify-center">
-              <TabsList className="grid w-full grid-cols-3 md:w-[600px]">
+              <TabsList className="grid w-full grid-cols-4 md:w-[800px]">
                 <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
                 <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Companion Mode</TabsTrigger>
                 <TabsTrigger value="hire-companion"><Briefcase className="mr-2 h-4 w-4" />Hire a Companion</TabsTrigger>
+                <TabsTrigger value="ai-features" asChild>
+                    <Link href="/ai-features"><Bot className="mr-2 h-4 w-4"/>AI Features</Link>
+                </TabsTrigger>
               </TabsList>
             </div>
             
