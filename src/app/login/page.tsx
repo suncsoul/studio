@@ -45,17 +45,6 @@ export default function LoginPage() {
     });
 
     function onSubmit(values: z.infer<typeof loginSchema>) {
-        if (values.email === "Admin" && values.password === "Admin") {
-            login(); // This is now a mock function, sign-in is handled by firebase
-            toast({
-                title: "Logged In as Admin",
-                description: "Redirecting you to the main app...",
-            });
-            // A mock-like manual redirect, real one will be in useAuth hook
-             router.push('/');
-             return;
-        }
-
         signInWithEmailAndPassword(auth, values.email, values.password)
             .then((userCredential) => {
                 // Signed in 
