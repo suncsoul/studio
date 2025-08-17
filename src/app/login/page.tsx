@@ -19,15 +19,20 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { AuthLayout } from "@/components/auth-layout";
 import { SocialButtons } from "@/components/social-buttons";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
 
 
 const loginSchema = z.object({
-    email: z.string().email("Please enter a valid email address."),
-    password: z.string().min(8, "Password must be at least 8 characters."),
+    email: z.string().min(1, "Please enter a valid email address."),
+    password: z.string().min(1, "Password must be at least 8 characters."),
 });
 
 export default function LoginPage() {
     const { toast } = useToast();
+    const { login } = useAuth();
+    const router = useRouter();
+
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -38,31 +43,20 @@ export default function LoginPage() {
     });
 
     function onSubmit(values: z.infer<typeof loginSchema>) {
-        console.log(values);
-        // ToDo: Implement Firebase signInWithEmailAndPassword
-        /*
-        import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, values.email, values.password)
-        .then((userCredential) => {
-            // Redirect to main app
-        })
-        .catch((error) => {
-            let description = "An unexpected error occurred. Please try again.";
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                description = "Invalid credentials. Please check your email and password.";
-            }
+        if (values.email === "Admin" && values.password === "Admin") {
+            login();
+            toast({
+                title: "Logged In as Admin",
+                description: "Redirecting you to the main app...",
+            });
+            router.push('/');
+        } else {
             toast({
                 variant: "destructive",
                 title: "Login Failed",
-                description,
+                description: "Invalid credentials. Please check your email and password.",
             });
-        });
-        */
-        toast({
-            title: "Logged In (Simulated)",
-            description: "Redirecting you to the main app...",
-        });
+        }
     }
 
   return (
@@ -97,7 +91,7 @@ export default function LoginPage() {
                             <FormItem>
                                 <Label>Email</Label>
                                 <FormControl>
-                                    <Input type="email" placeholder="your.email@example.com" {...field} />
+                                    <Input type="text" placeholder="your.email@example.com" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

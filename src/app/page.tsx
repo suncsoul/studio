@@ -15,11 +15,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
-// ToDo: Replace with actual auth state
-const useAuth = () => ({
-  isLoggedIn: false
-});
+import { useAuth } from "@/contexts/auth-context";
 
 
 const matches = [
@@ -73,7 +69,6 @@ export default function Home() {
 
   useEffect(() => {
     // If user is not logged in, redirect them to the login page.
-    // This is a placeholder for real authentication logic.
     if (!isLoggedIn) {
       router.push('/login');
     }

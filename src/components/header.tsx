@@ -19,6 +19,9 @@ import { Switch } from "./ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Edit2, EyeOff, LogIn, LogOut, Settings, User } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
+
 
 const statuses = [
     "Ready to Connect! 💬",
@@ -29,15 +32,16 @@ const statuses = [
     "Let’s Skip Small Talk 🎯"
 ];
 
-// ToDo: Replace with actual auth state
-const useAuth = () => ({
-    isLoggedIn: false
-});
-
 export function Header() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const [status, setStatus] = React.useState(statuses[0]);
   const [incognito, setIncognito] = React.useState(false);
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -84,7 +88,7 @@ export function Header() {
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                         <Avatar className="h-8 w-8">
                         <AvatarImage src="https://placehold.co/100x100.png" alt="@user" data-ai-hint="profile picture" />
-                        <AvatarFallback>U</AvatarFallback>
+                        <AvatarFallback>A</AvatarFallback>
                         </Avatar>
                     </Button>
                     </DropdownMenuTrigger>
@@ -115,7 +119,7 @@ export function Header() {
                         </DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Log out</span>
                     </DropdownMenuItem>
