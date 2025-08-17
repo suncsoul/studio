@@ -9,7 +9,9 @@ import {
   Heart,
   Users,
   Bot,
+  Briefcase,
 } from "lucide-react";
+import { HireCompanionCard } from "@/components/hire-companion-card";
 
 const matches = [
   { name: "Seraphina", age: 28, location: "Venice, Italy", imageUrl: "https://placehold.co/400x600/F5E0C3/2C2C2C.png", mbti: "INFJ", loveLanguage: "Quality Time", humorStyle: "Witty", isVerified: true },
@@ -19,10 +21,16 @@ const matches = [
 ];
 
 const whosDownItems = [
-  { userName: "Marco", userAvatarUrl: "https://placehold.co/100x100/9D00FF/FAFAFA.png", activity: "Coffee in 30 mins?", time: "2m ago", bondType: "activity" as const },
-  { userName: "Anya", userAvatarUrl: "https://placehold.co/100x100/00F0FF/2C2C2C.png", activity: "Indie concert tonight, need a +1!", time: "1h ago", bondType: "event" as const },
-  { userName: "Kenji", userAvatarUrl: "https://placehold.co/100x100/FFEE00/2C2C2C.png", activity: "Weekend trip to the coast, anyone?", time: "5h ago", bondType: "travel" as const },
+  { userName: "Marco", userAvatarUrl: "https://placehold.co/100x100/9D00FF/FAFAFA.png", activity: "Coffee in 30 mins?", time: "2m ago", bondType: "activity" as const, vibe: "Casual Chat", distance: "0.5 miles away" },
+  { userName: "Anya", userAvatarUrl: "https://placehold.co/100x100/00F0FF/2C2C2C.png", activity: "Indie concert tonight, need a +1!", time: "1h ago", bondType: "event" as const, vibe: "Adventure Buddy", distance: "2 miles away" },
+  { userName: "Kenji", userAvatarUrl: "https://placehold.co/100x100/FFEE00/2C2C2C.png", activity: "Weekend trip to the coast, anyone?", time: "5h ago", bondType: "travel" as const, vibe: "Explorer", distance: "25 miles away" },
 ];
+
+const hireCompanions = [
+    { providerName: "Isabelle", providerAvatarUrl: "https://placehold.co/100x100/FF2A6D/FFFFFF.png", service: "Active Listener & Virtual Chat", rate: 35, isVerified: true, isBackgroundChecked: true, rating: 4.9 },
+    { providerName: "David", providerAvatarUrl: "https://placehold.co/100x100/00FF87/2C2C2C.png", service: "Fitness Buddy & Motivator", rate: 50, isVerified: true, isBackgroundChecked: true, rating: 4.8 },
+    { providerName: "Sophia", providerAvatarUrl: "https://placehold.co/100x100/00F0FF/2C2C2C.png", service: "Event +1 & Social Navigator", rate: 60, isVerified: true, isBackgroundChecked: false, rating: 4.95 },
+]
 
 export default function Home() {
   return (
@@ -32,10 +40,10 @@ export default function Home() {
         <div className="container mx-auto px-4 py-8">
           <Tabs defaultValue="matches" className="w-full">
             <div className="flex justify-center">
-              <TabsList className="grid w-full grid-cols-3 md:w-[400px]">
+              <TabsList className="grid w-full grid-cols-3 md:w-[600px]">
                 <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
                 <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Companion Mode</TabsTrigger>
-                <TabsTrigger value="ai-tools"><Bot className="mr-2 h-4 w-4" />AI Tools</TabsTrigger>
+                <TabsTrigger value="hire-companion"><Briefcase className="mr-2 h-4 w-4" />Hire a Companion</TabsTrigger>
               </TabsList>
             </div>
             
@@ -55,16 +63,12 @@ export default function Home() {
                 </div>
             </TabsContent>
 
-            <TabsContent value="ai-tools" className="mt-6">
-              <div className="grid gap-8 lg:grid-cols-2">
-                <div className="space-y-8">
-                  <DatePlanner />
-                  <SafetyModeration />
+            <TabsContent value="hire-companion" className="mt-6">
+                 <div className="max-w-3xl mx-auto space-y-4">
+                    {hireCompanions.map((item, index) => (
+                        <HireCompanionCard key={index} {...item} />
+                    ))}
                 </div>
-                <div>
-                   <EmpathyMirror />
-                </div>
-              </div>
             </TabsContent>
 
           </Tabs>

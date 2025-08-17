@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { MapPin, Users, Calendar } from "lucide-react";
+import { MapPin, Users, Calendar, Sparkles } from "lucide-react";
 
 interface WhosDownCardProps {
   userName: string;
@@ -10,6 +10,8 @@ interface WhosDownCardProps {
   activity: string;
   time: string;
   bondType: "event" | "travel" | "activity";
+  vibe: string;
+  distance: string;
 }
 
 export function WhosDownCard({
@@ -18,6 +20,8 @@ export function WhosDownCard({
   activity,
   time,
   bondType,
+  vibe,
+  distance,
 }: WhosDownCardProps) {
   
   const BondInfo = {
@@ -50,17 +54,25 @@ export function WhosDownCard({
           </Avatar>
           <div className="flex-1">
             <p className="font-semibold text-card-foreground text-base leading-tight">{activity}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              by {userName} &bull; {time}
-            </p>
+            <div className="text-sm text-muted-foreground mt-1 flex items-center flex-wrap gap-x-2">
+                <span>by {userName}</span>
+                <span className="text-muted-foreground/50">&bull;</span>
+                <span>{time}</span>
+                 <span className="text-muted-foreground/50">&bull;</span>
+                <span>{distance}</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto justify-end sm:justify-start">
+           <Badge variant="outline" className="capitalize gap-1.5 bg-background">
+                <Sparkles className="h-3.5 w-3.5 text-orange-fusion"/>
+                {vibe}
+            </Badge>
           <Badge variant="outline" className={`capitalize gap-1.5 ${color}`}>
             <Icon className="h-3.5 w-3.5" />
             {text}
           </Badge>
-          <Button variant="outline">View Details</Button>
+          <Button>Send Request</Button>
         </div>
       </CardContent>
     </Card>
