@@ -49,29 +49,38 @@ export default function ProfilePage() {
   const photos = form.watch("photos");
   
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== form.getValues("username")) {
+    const originalUsername = form.getValues("username");
+    if (e.target.value !== originalUsername) {
         if (usernameChangeCount >= 2) {
              toast({
                 variant: "destructive",
                 title: "Cannot change username",
                 description: "You have already changed your username twice.",
             });
-            e.target.value = form.getValues("username");
+            form.setValue("username", originalUsername);
+            return;
         }
     }
-    form.setValue("username", e.target.value);
+    form.setValue("username", e.target.value, { shouldDirty: true });
   }
 
   function onSubmit(values: z.infer<typeof profileSchema>) {
     console.log(values);
-    if(form.formState.dirtyFields.username){
+    
+    // Create a new copy of dirty fields before reset
+    const dirtyFields = { ...form.formState.dirtyFields };
+
+    // Reset the form with the new values, which will clear the dirty state
+    form.reset(values);
+
+    if (dirtyFields.username) {
         setUsernameChangeCount(prev => prev + 1);
     }
+    
     toast({
       title: "Profile Updated",
       description: "Your profile has been successfully updated.",
     });
-    form.reset(values);
   }
   
   const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -243,5 +252,3 @@ export default function ProfilePage() {
     </div>
   );
 }
-
-    
