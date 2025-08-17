@@ -89,7 +89,7 @@ export function Header() {
                   <span>Profile</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem className="flex items-center justify-between">
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="flex items-center justify-between">
                 <Label htmlFor="incognito-mode" className="flex items-center gap-2 cursor-pointer">
                   <EyeOff className="h-4 w-4" />
                   <span>Incognito Mode</span>
