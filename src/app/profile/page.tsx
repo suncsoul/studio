@@ -12,9 +12,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { AlertCircle, Camera, Trash2, User } from "lucide-react";
+import { Camera, Trash2 } from "lucide-react";
 import { Header } from "@/components/header";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badges } from "@/components/badges";
 
 const profileSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters."),
@@ -93,119 +93,126 @@ export default function ProfilePage() {
         <Header />
         <main className="flex-1 bg-muted/20">
             <div className="container mx-auto px-4 py-8">
-            <Card className="max-w-4xl mx-auto">
-                <CardHeader>
-                    <CardTitle>Profile Management</CardTitle>
-                    <CardDescription>Manage your public profile and personal information.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                            
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-medium">Profile Photos</h3>
-                                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                    {photos.map((photo, index) => (
-                                        <div key={index} className="relative group aspect-square">
-                                            <Image src={photo} alt={`Profile photo ${index + 1}`} fill className="rounded-md object-cover" data-ai-hint="person photo" />
-                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
-                                                <Button type="button" variant="destructive" size="icon" onClick={() => removePhoto(index)}>
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
+                <div className="grid gap-8 lg:grid-cols-3">
+                    <div className="lg:col-span-2">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Profile Management</CardTitle>
+                                <CardDescription>Manage your public profile and personal information.</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Form {...form}>
+                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                        
+                                        <div className="space-y-4">
+                                            <h3 className="text-lg font-medium">Profile Photos</h3>
+                                            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                                {photos.map((photo, index) => (
+                                                    <div key={index} className="relative group aspect-square">
+                                                        <Image src={photo} alt={`Profile photo ${index + 1}`} fill className="rounded-md object-cover" data-ai-hint="person photo" />
+                                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
+                                                            <Button type="button" variant="destructive" size="icon" onClick={() => removePhoto(index)}>
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                                <button type="button" onClick={addPhoto} className="flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-md hover:bg-muted transition-colors">
+                                                    <Camera className="h-8 w-8 text-muted-foreground" />
+                                                    <span className="text-sm text-muted-foreground mt-2">Add Photo</span>
+                                                </button>
                                             </div>
                                         </div>
-                                    ))}
-                                    <button type="button" onClick={addPhoto} className="flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-md hover:bg-muted transition-colors">
-                                        <Camera className="h-8 w-8 text-muted-foreground" />
-                                        <span className="text-sm text-muted-foreground mt-2">Add Photo</span>
-                                    </button>
-                                </div>
-                            </div>
 
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label>Name</Label>
-                                    <Input value="Julian K." disabled />
-                                    <p className="text-xs text-muted-foreground">Your name cannot be changed.</p>
-                                </div>
-                                <FormField
-                                    control={form.control}
-                                    name="username"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Username</FormLabel>
-                                            <FormControl>
-                                                <Input 
-                                                    placeholder="e.g., cool_user_99" 
-                                                    {...field}
-                                                    onChange={handleUsernameChange}
-                                                    disabled={usernameChangeCount >= 2}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                             <p className="text-xs text-muted-foreground">Changes remaining: {2 - usernameChangeCount}</p>
-                                        </FormItem>
-                                    )}
-                                />
-                                <div className="space-y-2">
-                                    <Label>Date of Birth</Label>
-                                    <Input value="October 23, 1992" disabled />
-                                    <p className="text-xs text-muted-foreground">Your date of birth cannot be changed.</p>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Gender</Label>
-                                    <Input value="Male" disabled />
-                                    <p className="text-xs text-muted-foreground">Your gender cannot be changed.</p>
-                                </div>
-                                 <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input type="email" placeholder="your.email@example.com" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="phoneNumber"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Phone Number</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Enter your phone number" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <Label>Name</Label>
+                                                <Input value="Julian K." disabled />
+                                                <p className="text-xs text-muted-foreground">Your name cannot be changed.</p>
+                                            </div>
+                                            <FormField
+                                                control={form.control}
+                                                name="username"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Username</FormLabel>
+                                                        <FormControl>
+                                                            <Input 
+                                                                placeholder="e.g., cool_user_99" 
+                                                                {...field}
+                                                                onChange={handleUsernameChange}
+                                                                disabled={usernameChangeCount >= 2}
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                         <p className="text-xs text-muted-foreground">Changes remaining: {2 - usernameChangeCount}</p>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <div className="space-y-2">
+                                                <Label>Date of Birth</Label>
+                                                <Input value="October 23, 1992" disabled />
+                                                <p className="text-xs text-muted-foreground">Your date of birth cannot be changed.</p>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Gender</Label>
+                                                <Input value="Male" disabled />
+                                                <p className="text-xs text-muted-foreground">Your gender cannot be changed.</p>
+                                            </div>
+                                             <FormField
+                                                control={form.control}
+                                                name="email"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Email</FormLabel>
+                                                        <FormControl>
+                                                            <Input type="email" placeholder="your.email@example.com" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="phoneNumber"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Phone Number</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Enter your phone number" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
 
-                             <FormField
-                                control={form.control}
-                                name="profileText"
-                                render={({ field }) => (
-                                    <FormItem>
-                                    <FormLabel>Your Profile Bio</FormLabel>
-                                    <FormControl>
-                                        <textarea className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" placeholder="Tell us about yourself..." {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    </FormItem>
-                                )}
-                                />
+                                         <FormField
+                                            control={form.control}
+                                            name="profileText"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                <FormLabel>Your Profile Bio</FormLabel>
+                                                <FormControl>
+                                                    <textarea className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" placeholder="Tell us about yourself..." {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                                </FormItem>
+                                            )}
+                                            />
 
-                            <div className="flex justify-end">
-                                <Button type="submit" disabled={!form.formState.isDirty}>Save Changes</Button>
-                            </div>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
+                                        <div className="flex justify-end">
+                                            <Button type="submit" disabled={!form.formState.isDirty}>Save Changes</Button>
+                                        </div>
+                                    </form>
+                                </Form>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div className="space-y-8">
+                        <Badges />
+                    </div>
+                </div>
             </div>
         </main>
     </div>
