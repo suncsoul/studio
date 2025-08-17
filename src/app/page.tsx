@@ -19,9 +19,9 @@ const matches = [
 ];
 
 const whosDownItems = [
-  { userName: "Marco", userAvatarUrl: "https://placehold.co/100x100/673AB7/FAFAFA.png", activity: "Coffee in 30 mins?", time: "2m ago", bondType: "activity" as const },
-  { userName: "Anya", userAvatarUrl: "https://placehold.co/100x100/42A5F5/FAFAFA.png", activity: "Indie concert tonight, need a +1!", time: "1h ago", bondType: "event" as const },
-  { userName: "Kenji", userAvatarUrl: "https://placehold.co/100x100/FFC107/2C2C2C.png", activity: "Weekend trip to the coast, anyone?", time: "5h ago", bondType: "travel" as const },
+  { userName: "Marco", userAvatarUrl: "https://placehold.co/100x100/9D00FF/FAFAFA.png", activity: "Coffee in 30 mins?", time: "2m ago", bondType: "activity" as const },
+  { userName: "Anya", userAvatarUrl: "https://placehold.co/100x100/00F0FF/2C2C2C.png", activity: "Indie concert tonight, need a +1!", time: "1h ago", bondType: "event" as const },
+  { userName: "Kenji", userAvatarUrl: "https://placehold.co/100x100/FFEE00/2C2C2C.png", activity: "Weekend trip to the coast, anyone?", time: "5h ago", bondType: "travel" as const },
 ];
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
             <div className="flex justify-center">
               <TabsList className="grid w-full grid-cols-3 md:w-[400px]">
                 <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
-                <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Who's Down?</TabsTrigger>
+                <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Companion Mode</TabsTrigger>
                 <TabsTrigger value="ai-tools"><Bot className="mr-2 h-4 w-4" />AI Tools</TabsTrigger>
               </TabsList>
             </div>
