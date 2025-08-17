@@ -128,7 +128,7 @@ export function BadgeShowcase() {
                           ? 'border-primary/50 bg-primary/10 shadow-md' 
                           : 'bg-muted/50 border-dashed opacity-70'
                       )}>
-                          <badge.icon className={cn("h-10 w-10", badge.unlocked ? badge.color : "text-muted-foreground")} />
+                          <badge.icon className={cn("h-full w-full", badge.unlocked ? badge.color : "text-muted-foreground")} />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-sm" side="bottom">
