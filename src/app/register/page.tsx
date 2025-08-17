@@ -157,7 +157,7 @@ export default function RegisterPage() {
 
             {step === 2 && (
                 <div className="text-center space-y-4">
-                    <h3 className="text-xl font-semibold">Welcome to GoodLuck!</h3>
+                    <h3 className="text-xl font-semibold">Welcome to googluck!</h3>
                     <p className="text-muted-foreground">Your account has been created. What's next?</p>
                     <Button asChild className="w-full">
                         <Link href="/profile">Complete Your Profile</Link>
@@ -179,4 +179,3 @@ export default function RegisterPage() {
     </AuthLayout>
   );
 }
-

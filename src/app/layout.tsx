@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 
 export const metadata: Metadata = {
-  title: 'GoodLuck - Human Connection, Not Just Swiping',
+  title: 'googluck - Human Connection, Not Just Swiping',
   description: 'A next-gen social connection platform for meaningful interactions.',
 };
 

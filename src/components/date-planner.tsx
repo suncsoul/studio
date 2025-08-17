@@ -55,7 +55,7 @@ export function DatePlanner() {
       <CardHeader>
         <CardTitle>AI Date Planner</CardTitle>
         <CardDescription>
-          Let our GoodLuck Concierge plan the perfect date based on your mutual interests.
+          Let our googluck Concierge plan the perfect date based on your mutual interests.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
