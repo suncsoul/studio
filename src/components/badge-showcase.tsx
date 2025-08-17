@@ -141,7 +141,7 @@ export function BadgeShowcase() {
           {badges.map((tier) => (
             <div key={tier.tier} className="mb-6 last:mb-0">
                 <h3 className="font-semibold text-lg mb-3">{tier.tier}</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {tier.items.map((badge) => (
                         <Tooltip key={badge.name}>
                         <TooltipTrigger asChild>
