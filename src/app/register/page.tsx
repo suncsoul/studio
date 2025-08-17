@@ -21,6 +21,10 @@ import { SocialButtons } from "@/components/social-buttons";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
+
 
 const registerSchema = z.object({
     email: z.string().email("Please enter a valid email address."),
@@ -46,12 +50,6 @@ export default function RegisterPage() {
     });
 
     function onSubmit(values: z.infer<typeof registerSchema>) {
-        console.log(values);
-         // ToDo: Implement Firebase createUserWithEmailAndPassword
-        /*
-        import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-        import { doc, setDoc } from "firebase/firestore"; 
-        const auth = getAuth();
         createUserWithEmailAndPassword(auth, values.email, values.password)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -61,7 +59,11 @@ export default function RegisterPage() {
                 onboardingStage: 1,
                 createdAt: new Date(),
             });
-            // Redirect to next step of onboarding
+            toast({
+                title: "Account Created",
+                description: "Please check your email for verification.",
+            });
+            setStep(2); // Move to a simulated next step
         })
         .catch((error) => {
             let description = "An unexpected error occurred. Please try again.";
@@ -74,12 +76,6 @@ export default function RegisterPage() {
                 description,
             });
         });
-        */
-        toast({
-            title: "Account Created (Simulated)",
-            description: "Please check your email for verification.",
-        });
-        setStep(2); // Move to a simulated next step
     }
 
   return (

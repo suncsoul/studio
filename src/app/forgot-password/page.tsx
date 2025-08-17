@@ -20,6 +20,7 @@ import { AuthLayout } from "@/components/auth-layout";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle } from "lucide-react";
 import { useState } from "react";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
@@ -38,11 +39,7 @@ export default function ForgotPasswordPage() {
     });
 
     function onSubmit(values: z.infer<typeof forgotPasswordSchema>) {
-        console.log(values);
         setEmail(values.email);
-        // ToDo: Implement Firebase sendPasswordResetEmail
-        /*
-        import { getAuth, sendPasswordResetEmail } from "firebase/auth";
         const auth = getAuth();
         sendPasswordResetEmail(auth, values.email)
         .then(() => {
@@ -55,8 +52,6 @@ export default function ForgotPasswordPage() {
                 description: "Could not send reset link. Please check your email and try again.",
             });
         });
-        */
-        setSubmitted(true);
     }
 
   return (
@@ -66,7 +61,7 @@ export default function ForgotPasswordPage() {
         {submitted ? (
              <Card className="mx-auto max-w-sm w-full text-center">
                 <CardHeader>
-                     <CheckCircle className="mx-auto h-12 w-12 text-toxic-green" />
+                     <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
                     <CardTitle className="text-2xl">Magic Link Sent!</CardTitle>
                     <CardDescription>
                         Check your inbox at <strong>{email}</strong> for a link to reset your password.

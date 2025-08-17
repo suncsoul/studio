@@ -2,6 +2,9 @@
 "use client";
 
 import { Button } from "./ui/button";
+import { auth } from "@/lib/firebase";
+import { GoogleAuthProvider, signInWithPopup, OAuthProvider } from "firebase/auth";
+
 
 const GoogleIcon = () => (
   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -21,17 +24,18 @@ const AppleIcon = () => (
 
 export function SocialButtons() {
     
-    // ToDo: Implement Firebase social auth providers
     const handleGoogleLogin = () => {
-        console.log("Login with Google");
-        // const provider = new GoogleAuthProvider();
-        // signInWithPopup(auth, provider)...
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider).catch((error) => {
+            console.error("Google login error", error);
+        });
     }
 
     const handleAppleLogin = () => {
-        console.log("Login with Apple");
-        // const provider = new OAuthProvider('apple.com');
-        // signInWithPopup(auth, provider)...
+        const provider = new OAuthProvider('apple.com');
+        signInWithPopup(auth, provider).catch((error) => {
+            console.error("Apple login error", error);
+        });
     }
 
   return (

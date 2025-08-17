@@ -1,24 +1,44 @@
 
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { auth } from '@/lib/firebase';
+import type { User } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: () => void;
-  logout: () => void;
+  user: User | null;
+  login: () => void; // This will be handled by Firebase onAuthStateChanged
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
 
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+    return () => unsubscribe();
+  }, []);
+
+  const login = () => {
+    // Login is now handled by onAuthStateChanged, 
+    // but we can keep this for any explicit login logic if needed later.
+  };
+
+  const logout = async () => {
+    await auth.signOut();
+  };
+  
+  const isLoggedIn = !!user;
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

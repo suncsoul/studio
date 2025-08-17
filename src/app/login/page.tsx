@@ -21,6 +21,8 @@ import { SocialButtons } from "@/components/social-buttons";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 
 const loginSchema = z.object({
@@ -44,19 +46,37 @@ export default function LoginPage() {
 
     function onSubmit(values: z.infer<typeof loginSchema>) {
         if (values.email === "Admin" && values.password === "Admin") {
-            login();
+            login(); // This is now a mock function, sign-in is handled by firebase
             toast({
                 title: "Logged In as Admin",
                 description: "Redirecting you to the main app...",
             });
-            router.push('/');
-        } else {
-            toast({
-                variant: "destructive",
-                title: "Login Failed",
-                description: "Invalid credentials. Please check your email and password.",
-            });
+            // A mock-like manual redirect, real one will be in useAuth hook
+             router.push('/');
+             return;
         }
+
+        signInWithEmailAndPassword(auth, values.email, values.password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                toast({
+                    title: "Login Successful",
+                    description: "Welcome back!",
+                });
+                router.push('/');
+            })
+            .catch((error) => {
+                let description = "An unexpected error occurred.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    description = "Invalid credentials. Please check your email and password.";
+                }
+                toast({
+                    variant: "destructive",
+                    title: "Login Failed",
+                    description: description,
+                });
+            });
     }
 
   return (
