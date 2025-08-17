@@ -9,6 +9,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 interface AuthContextType {
   isLoggedIn: boolean;
   user: User | null;
+  loading: boolean;
   login: () => void; // This will be handled by Firebase onAuthStateChanged
   logout: () => Promise<void>;
 }
@@ -17,10 +18,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -38,7 +41,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const isLoggedIn = !!user;
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

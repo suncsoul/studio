@@ -64,19 +64,16 @@ const hireCompanions = [
 ];
 
 export default function Home() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    // If user is not logged in, redirect them to the login page.
-    if (!isLoggedIn) {
+    if (!loading && !isLoggedIn) {
       router.push('/login');
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, loading, router]);
 
-  // If not logged in, we can show a loading state or nothing, 
-  // as the redirect will happen shortly.
-  if (!isLoggedIn) {
+  if (loading || !isLoggedIn) {
     return (
       <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background">
         <p>Loading...</p>
