@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   MessageSquareHeart,
   CalendarCheck,
+  UserCheck,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import {
@@ -26,31 +27,33 @@ import { cn } from "@/lib/utils";
 
 const allBadges = [
     {
+        name: "Profile Verified",
+        icon: UserCheck,
+        description: "Completed your profile with all required information and a profile photo.",
+        color: "text-green-500",
+    },
+    {
         name: "Exclusive Circle",
         icon: Gem,
-        unlocked: false,
         description: "Match with 3+ premium users to prove you're in the inner circle.",
-        progress: { current: 2, max: 3, text: "2/3 VIP matches" },
+        progress: { current: 0, max: 3, text: "0/3 VIP matches" },
         color: "text-holographic-purple",
     },
     {
         name: "Top 10% Trendsetter",
         icon: Crown,
-        unlocked: true,
         description: "Be in the top 10% of most-liked profiles this month. Resets weekly!",
         color: "text-cyber-yellow",
     },
     {
         name: "Golden Hour Rush",
         icon: Sunset,
-        unlocked: true,
         description: "Uploaded a photo and sent 5 messages during the 5-6 PM golden hour.",
         color: "text-orange-fusion",
     },
     {
         name: "Last Chance Match",
         icon: Hourglass,
-        unlocked: false,
         description: "Message a high-compatibility (>85%) match within 1 hour of matching.",
         progress: { current: 0, max: 1, text: "Message a new match quickly!" },
         color: "text-laser-pink",
@@ -58,58 +61,55 @@ const allBadges = [
     {
         name: "Streak Dominator",
         icon: Flame,
-        unlocked: false,
         description: "Maintain a 30-day login and message streak. Don't break the chain!",
-        progress: { current: 7, max: 30, text: "7-day streak!" },
+        progress: { current: 0, max: 30, text: "0-day streak!" },
         color: "text-toxic-green",
     },
     {
         name: "Seasonal Soul",
         icon: Leaf,
-        unlocked: true,
         description: "Completed all 5 Fall '24 challenges.",
         color: "text-lime-600",
     },
     {
         name: "Matchmaker Royale",
         icon: Medal,
-        unlocked: true,
         description: "Referred the most matches in your friend group last month.",
         color: "text-yellow-500",
     },
     {
         name: "Profile Clash Victor",
         icon: Swords,
-        unlocked: false,
         description: "Win 3 profile 'duels' by getting more votes than your opponent.",
-        progress: { current: 1, max: 3, text: "1/3 Duels Won" },
+        progress: { current: 0, max: 3, text: "0/3 Duels Won" },
         color: "text-toxic-green",
     },
     {
         name: "Authentic Soul",
         icon: ShieldCheck,
-        unlocked: true,
         description: "Passed ID and live selfie verification.",
         color: "text-teal-500",
     },
     {
         name: "Conversation Starter",
         icon: MessageSquareHeart,
-        unlocked: false,
         description: "Send 50+ icebreaker messages with an 80%+ reply rate.",
-        progress: { current: 35, max: 50, text: "35/50 Messages Sent" },
+        progress: { current: 0, max: 50, text: "0/50 Messages Sent" },
         color: "text-electric-blue",
     },
     {
         name: "Weekend Explorer",
         icon: CalendarCheck,
-        unlocked: true,
         description: "Attended 3+ in-person meetups. This badge is stealable and resets monthly!",
         color: "text-indigo-500",
     },
 ];
 
-export function BadgeShowcase() {
+interface BadgeShowcaseProps {
+    unlockedBadges?: string[];
+}
+
+export function BadgeShowcase({ unlockedBadges = [] }: BadgeShowcaseProps) {
   return (
     <Card>
       <CardHeader>
@@ -119,16 +119,18 @@ export function BadgeShowcase() {
       <CardContent>
         <TooltipProvider>
           <div className="grid grid-cols-4 sm:grid-cols-5 gap-4">
-              {allBadges.map((badge) => (
+              {allBadges.map((badge) => {
+                  const isUnlocked = unlockedBadges.includes(badge.name);
+                  return (
                   <Tooltip key={badge.name}>
                     <TooltipTrigger asChild>
                       <button className={cn(
                           "flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center space-y-2 transition-all duration-300 aspect-square focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:scale-110 hover:shadow-lg focus:scale-110 focus:shadow-lg",
-                          badge.unlocked 
+                          isUnlocked 
                           ? 'border-primary/50 bg-primary/10 shadow-md' 
                           : 'bg-muted/50 border-dashed opacity-70'
                       )}>
-                          <badge.icon className={cn("h-full w-full", badge.unlocked ? badge.color : "text-muted-foreground")} />
+                          <badge.icon className={cn("h-full w-full", isUnlocked ? badge.color : "text-muted-foreground")} />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs" side="bottom">
@@ -136,15 +138,15 @@ export function BadgeShowcase() {
                         <h3 className={cn("text-base font-bold", badge.color)}>{badge.name}</h3>
                         <p className="text-sm text-muted-foreground">{badge.description}</p>
                         
-                        {badge.progress && !badge.unlocked && (
+                        {(badge as any).progress && !isUnlocked && (
                             <div className="space-y-1 pt-2">
-                                <Progress value={(badge.progress.current / badge.progress.max) * 100} className="h-2"/>
+                                <Progress value={((badge as any).progress.current / (badge as any).progress.max) * 100} className="h-2"/>
                                 <div className="text-xs font-semibold text-primary">
-                                    {badge.progress.text}
+                                    {(badge as any).progress.text}
                                 </div>
                             </div>
                         )}
-                        {badge.unlocked && (
+                        {isUnlocked && (
                            <div className="text-sm font-bold text-green-500 mt-2">
                                 Unlocked!
                            </div>
@@ -152,7 +154,7 @@ export function BadgeShowcase() {
                       </div>
                     </TooltipContent>
                   </Tooltip>
-              ))}
+              )})}
           </div>
         </TooltipProvider>
       </CardContent>

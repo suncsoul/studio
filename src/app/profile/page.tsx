@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,104 +15,184 @@ import Image from "next/image";
 import { Camera, Trash2 } from "lucide-react";
 import { Header } from "@/components/header";
 import { BadgeShowcase } from "@/components/badge-showcase";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useAuth } from "@/contexts/auth-context";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const profileSchema = z.object({
+  firstName: z.string().min(1, "First name is required."),
+  middleName: z.string().optional(),
+  lastName: z.string().min(1, "Last name is required."),
   username: z.string().min(3, "Username must be at least 3 characters."),
   phoneNumber: z.string().min(10, "Please enter a valid phone number."),
   email: z.string().email("Please enter a valid email address."),
   profileText: z.string().min(20, "Bio must be at least 20 characters."),
-  photos: z.array(z.string()).min(3, "You must have at least 3 photos."),
+  photos: z.array(z.string()).min(1, "You must have at least 1 photo to complete your profile."),
+  dob: z.string().min(1, "Date of birth is required."),
+  gender: z.string().min(1, "Please select a gender."),
 });
 
-const initialPhotos = [
-  "https://placehold.co/400x400.png",
-  "https://placehold.co/400x400.png",
-  "https://placehold.co/400x400.png",
-];
+const initialPhotos: string[] = [];
 
 export default function ProfilePage() {
-  const { toast } = useToast();
-  const [usernameChangeCount, setUsernameChangeCount] = useState(0);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+    const { toast } = useToast();
+    const { user } = useAuth();
+    const [usernameChangeCount, setUsernameChangeCount] = useState(0);
+    const [dobChangeCount, setDobChangeCount] = useState(0);
+    const [genderChangeCount, setGenderChangeCount] = useState(0);
+    const [isProfileVerified, setIsProfileVerified] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const form = useForm<z.infer<typeof profileSchema>>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      username: "julian_k",
-      phoneNumber: "123-456-7890",
-      email: "julian.k@example.com",
-      profileText: "Just a guy who loves hiking, exploring new coffee shops, and debating about whether a hot dog is a sandwich. My humor is a bit dry, but my love for dogs is anything but. Looking for someone who doesn't take themselves too seriously.",
-      photos: initialPhotos,
-    },
-  });
+    const form = useForm<z.infer<typeof profileSchema>>({
+        resolver: zodResolver(profileSchema),
+        defaultValues: {
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            username: "goodluck",
+            phoneNumber: "",
+            email: "",
+            profileText: "",
+            photos: initialPhotos,
+            dob: "",
+            gender: "",
+        },
+    });
 
-  const photos = form.watch("photos");
-  
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const originalUsername = form.getValues("username");
-    if (e.target.value !== originalUsername) {
+    useEffect(() => {
+        if (user) {
+            const fetchProfile = async () => {
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    form.reset({
+                        firstName: data.firstName || "",
+                        middleName: data.middleName || "",
+                        lastName: data.lastName || "",
+                        username: data.username || "goodluck",
+                        phoneNumber: data.phoneNumber || "",
+                        email: data.email || user.email || "",
+                        profileText: data.profileText || "",
+                        photos: data.photos || [],
+                        dob: data.dob || "",
+                        gender: data.gender || "",
+                    });
+                    setUsernameChangeCount(data.usernameChangeCount || 0);
+                    setDobChangeCount(data.dobChangeCount || 0);
+                    setGenderChangeCount(data.genderChangeCount || 0);
+                    setIsProfileVerified(data.isProfileVerified || false);
+                } else {
+                     form.reset({
+                        ...form.getValues(),
+                        email: user.email || "",
+                     });
+                }
+            };
+            fetchProfile();
+        }
+    }, [user, form]);
+    
+
+    const photos = form.watch("photos");
+
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (usernameChangeCount >= 2) {
              toast({
                 variant: "destructive",
                 title: "Cannot change username",
                 description: "You have already changed your username twice.",
             });
-            form.setValue("username", originalUsername);
             return;
         }
+        form.setValue("username", e.target.value, { shouldDirty: true });
     }
-    form.setValue("username", e.target.value, { shouldDirty: true });
-  }
 
-  function onSubmit(values: z.infer<typeof profileSchema>) {
-    console.log(values);
-    
-    // Create a new copy of dirty fields before reset
-    const dirtyFields = { ...form.formState.dirtyFields };
+    async function onSubmit(values: z.infer<typeof profileSchema>) {
+        if (!user) {
+            toast({ variant: "destructive", title: "Error", description: "You must be logged in." });
+            return;
+        }
+        
+        let newUsernameCount = usernameChangeCount;
+        let newDobCount = dobChangeCount;
+        let newGenderCount = genderChangeCount;
 
-    // Reset the form with the new values, which will clear the dirty state
-    form.reset(values);
+        if (form.formState.dirtyFields.username) {
+            newUsernameCount++;
+        }
+        if (form.formState.dirtyFields.dob) {
+            newDobCount++;
+        }
+        if (form.formState.dirtyFields.gender) {
+            newGenderCount++;
+        }
+        
+        // Profile completion check
+        const profileCompleted = !!(
+            values.firstName &&
+            values.lastName &&
+            values.dob &&
+            values.gender &&
+            values.profileText &&
+            values.photos.length > 0
+        );
 
-    if (dirtyFields.username) {
-        setUsernameChangeCount(prev => prev + 1);
+        const profileData = {
+            ...values,
+            usernameChangeCount: newUsernameCount,
+            dobChangeCount: newDobCount,
+            genderChangeCount: newGenderCount,
+            updatedAt: new Date(),
+            isProfileVerified: isProfileVerified || profileCompleted,
+        };
+
+        try {
+            await setDoc(doc(db, "users", user.uid), profileData, { merge: true });
+
+            form.reset(values);
+            setUsernameChangeCount(newUsernameCount);
+            setDobChangeCount(newDobCount);
+            setGenderChangeCount(newGenderCount);
+            if (profileCompleted) {
+                setIsProfileVerified(true);
+            }
+            
+            toast({
+                title: "Profile Updated",
+                description: "Your profile has been successfully updated.",
+            });
+        } catch (error) {
+             toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Could not update profile.",
+            });
+        }
     }
-    
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been successfully updated.",
-    });
-  }
   
-  const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const newPhotos = [...form.getValues("photos"), reader.result as string];
-        form.setValue("photos", newPhotos, { shouldDirty: true });
-      };
-      reader.readAsDataURL(file);
+    const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const newPhotos = [...form.getValues("photos"), reader.result as string];
+            form.setValue("photos", newPhotos, { shouldDirty: true, shouldValidate: true });
+        };
+        reader.readAsDataURL(file);
+        }
+    };
+
+    const triggerFileUpload = () => {
+        fileInputRef.current?.click();
     }
-  };
 
-  const triggerFileUpload = () => {
-    fileInputRef.current?.click();
-  }
-
-  const removePhoto = (index: number) => {
-    if (form.getValues("photos").length > 3) {
-      const currentPhotos = form.getValues("photos");
-      const newPhotos = currentPhotos.filter((_, i) => i !== index);
-      form.setValue("photos", newPhotos, { shouldDirty: true });
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Minimum Photos Required",
-        description: "You must have at least 3 photos.",
-      });
-    }
-  };
-
+    const removePhoto = (index: number) => {
+        const currentPhotos = form.getValues("photos");
+        const newPhotos = currentPhotos.filter((_, i) => i !== index);
+        form.setValue("photos", newPhotos, { shouldDirty: true, shouldValidate: true });
+    };
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -160,11 +240,39 @@ export default function ProfilePage() {
                                     </div>
 
                                     <div className="grid md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <Label>Name</Label>
-                                            <Input value="Julian K." disabled />
-                                            <p className="text-xs text-muted-foreground">Your name cannot be changed.</p>
-                                        </div>
+                                        <FormField
+                                            control={form.control}
+                                            name="firstName"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>First Name</FormLabel>
+                                                    <FormControl><Input placeholder="Your first name" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                         <FormField
+                                            control={form.control}
+                                            name="lastName"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Last Name</FormLabel>
+                                                    <FormControl><Input placeholder="Your last name" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="middleName"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Middle Name (Optional)</FormLabel>
+                                                    <FormControl><Input placeholder="Your middle name" {...field} /></FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                         <FormField
                                             control={form.control}
                                             name="username"
@@ -180,20 +288,47 @@ export default function ProfilePage() {
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
-                                                     <p className="text-xs text-muted-foreground">Changes remaining: {2 - usernameChangeCount}</p>
+                                                     <p className="text-xs text-muted-foreground">Changes remaining: {Math.max(0, 2 - usernameChangeCount)}</p>
                                                 </FormItem>
                                             )}
                                         />
-                                        <div className="space-y-2">
-                                            <Label>Date of Birth</Label>
-                                            <Input value="October 23, 1992" disabled />
-                                            <p className="text-xs text-muted-foreground">Your date of birth cannot be changed.</p>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label>Gender</Label>
-                                            <Input value="Male" disabled />
-                                            <p className="text-xs text-muted-foreground">Your gender cannot be changed.</p>
-                                        </div>
+                                        <FormField
+                                            control={form.control}
+                                            name="dob"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Date of Birth</FormLabel>
+                                                    <FormControl>
+                                                        <Input type="date" {...field} disabled={dobChangeCount >= 1} />
+                                                    </FormControl>
+                                                     <p className="text-xs text-muted-foreground">You can only set your date of birth once.</p>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                       <FormField
+                                            control={form.control}
+                                            name="gender"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Gender</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={genderChangeCount >= 1}>
+                                                        <FormControl>
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select a gender" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectItem value="male">Male</SelectItem>
+                                                            <SelectItem value="female">Female</SelectItem>
+                                                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                     <p className="text-xs text-muted-foreground">You can only set your gender once.</p>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                          <FormField
                                             control={form.control}
                                             name="email"
@@ -243,7 +378,7 @@ export default function ProfilePage() {
                             </Card>
                         </div>
                         <div className="space-y-8">
-                           <BadgeShowcase />
+                           <BadgeShowcase unlockedBadges={isProfileVerified ? ["Profile Verified"] : []}/>
                         </div>
                     </form>
                 </Form>

@@ -56,8 +56,14 @@ export default function RegisterPage() {
             // Initialize Firestore profile
             setDoc(doc(db, "users", user.uid), {
                 email: user.email,
+                username: "goodluck",
                 onboardingStage: 1,
                 createdAt: new Date(),
+                usernameChangeCount: 0,
+                dobChangeCount: 0,
+                genderChangeCount: 0,
+                isProfileVerified: false,
+                photos: [],
             });
             toast({
                 title: "Account Created",
