@@ -1,6 +1,8 @@
+
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { GoodLuckLogo } from "./icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -16,7 +18,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Edit2, EyeOff, LogOut, Moon, Settings, Sun } from "lucide-react";
+import { Edit2, EyeOff, LogOut, Settings, User } from "lucide-react";
 
 export function Header() {
   const [status, setStatus] = React.useState("Ready to connect!");
@@ -25,7 +27,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="container flex h-16 items-center justify-between">
-        <GoodLuckLogo />
+        <Link href="/">
+            <GoodLuckLogo />
+        </Link>
         <div className="flex items-center gap-4">
           <p className="hidden text-sm text-muted-foreground md:block">{status}</p>
           <Popover>
@@ -66,6 +70,12 @@ export function Header() {
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
+               <Link href="/profile" passHref>
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem className="flex items-center justify-between">
                 <Label htmlFor="incognito-mode" className="flex items-center gap-2 cursor-pointer">
                   <EyeOff className="h-4 w-4" />
