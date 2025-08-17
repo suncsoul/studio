@@ -131,21 +131,21 @@ export function BadgeShowcase() {
                           <badge.icon className={cn("h-full w-full", badge.unlocked ? badge.color : "text-muted-foreground")} />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-sm" side="bottom">
-                      <div className="p-2 text-center">
-                        <h3 className={cn("text-lg font-bold mb-1", badge.color)}>{badge.name}</h3>
+                    <TooltipContent className="max-w-xs" side="bottom">
+                      <div className="p-2 text-left">
+                        <h3 className={cn("text-base font-bold mb-1", badge.color)}>{badge.name}</h3>
                         <p className="text-sm text-muted-foreground mb-3">{badge.description}</p>
                         
                         {badge.progress && !badge.unlocked && (
-                            <div>
-                                <Progress value={(badge.progress.current / badge.progress.max) * 100} className="h-2 my-1"/>
-                                <div className="text-xs font-semibold text-primary mt-1">
+                            <div className="space-y-1">
+                                <Progress value={(badge.progress.current / badge.progress.max) * 100} className="h-2"/>
+                                <div className="text-xs font-semibold text-primary">
                                     {badge.progress.text}
                                 </div>
                             </div>
                         )}
                         {badge.unlocked && (
-                           <div className="text-sm font-semibold text-green-500">
+                           <div className="text-sm font-bold text-green-500 mt-2">
                                 Unlocked!
                            </div>
                         )}
