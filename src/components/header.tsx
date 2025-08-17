@@ -3,7 +3,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { GoodLuckLogo } from "./icons";
+import { GoodluckLogo } from "./icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -43,7 +43,7 @@ export function Header() {
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/">
-            <GoodLuckLogo />
+            <GoodluckLogo />
         </Link>
         
         {isLoggedIn ? (

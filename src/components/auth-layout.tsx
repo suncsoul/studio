@@ -1,6 +1,6 @@
 
 import React from "react";
-import { GoodLuckLogo } from "./icons";
+import { GoodluckLogo } from "./icons";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 
@@ -16,7 +16,7 @@ export function AuthLayout({ children, footerText }: AuthLayoutProps) {
         <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur-sm">
             <div className="container flex h-16 items-center justify-between">
                 <Link href="/">
-                    <GoodLuckLogo />
+                    <GoodluckLogo />
                 </Link>
                  <Button asChild variant="ghost">
                     <Link href="/">Back to Home</Link>

@@ -1,3 +1,4 @@
+
 import type {Metadata} from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -6,7 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 
 export const metadata: Metadata = {
-  title: 'googluck - Human Connection, Not Just Swiping',
+  title: 'goodluck - Human Connection, Not Just Swiping',
   description: 'A next-gen social connection platform for meaningful interactions.',
 };
 

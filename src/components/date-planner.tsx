@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -55,7 +56,7 @@ export function DatePlanner() {
       <CardHeader>
         <CardTitle>AI Date Planner</CardTitle>
         <CardDescription>
-          Let our googluck Concierge plan the perfect date based on your mutual interests.
+          Let our goodluck Concierge plan the perfect date based on your mutual interests.
         </CardDescription>
       </CardHeader>
       <Form {...form}>

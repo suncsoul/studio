@@ -1,6 +1,7 @@
+
 'use server';
 /**
- * @fileOverview This file defines the AI-powered date planning flow for the googluck app.
+ * @fileOverview This file defines the AI-powered date planning flow for the goodluck app.
  *
  * - suggestDateIdeas - A function that suggests date ideas and locations based on user and match interests.
  * - SuggestDateIdeasInput - The input type for the suggestDateIdeas function.
@@ -43,7 +44,7 @@ const prompt = ai.definePrompt({
   name: 'suggestDateIdeasPrompt',
   input: {schema: SuggestDateIdeasInputSchema},
   output: {schema: SuggestDateIdeasOutputSchema},
-  prompt: `You are a date planning assistant for the googluck app. Given the user's interests,
+  prompt: `You are a date planning assistant for the goodluck app. Given the user's interests,
 and their match's interests, and the location, suggest a few date ideas and specific locations
 for those dates.  Be creative and specific.
 
