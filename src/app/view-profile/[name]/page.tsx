@@ -1,17 +1,15 @@
 
+"use client";
 
 import { Header } from "@/components/header";
-import { MatchCard } from "@/components/match-card";
-import { WhosDownCard } from "@/components/whos-down-card";
-import { HireCompanionCard } from "@/components/hire-companion-card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Heart,
-  Users,
-  Briefcase,
-  Bot
-} from "lucide-react";
-import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { BadgeShowcase } from "@/components/badge-showcase";
+import { BrainCircuit, Briefcase, Calendar, Heart, Laugh, MapPin, ShieldCheck, Sparkles, Star, Users } from "lucide-react";
+import { notFound, useParams } from "next/navigation";
+import Image from "next/image";
 
 const matches = [
   { name: "Seraphina", age: 28, location: "Venice, Italy", imageUrl: "https://placehold.co/400x600/F5E0C3/2C2C2C.png", mbti: "INFJ", loveLanguage: "Quality Time", humorStyle: "Witty", isVerified: true, bio: "A lover of ancient stories, hidden alleyways, and the scent of old books. Seeking a partner for moonlit gondola rides and philosophical debates over espresso. I believe every person is a story waiting to be told." },
@@ -58,60 +56,127 @@ const hireCompanions = [
     { providerName: "Benjamin", providerAvatarUrl: "https://placehold.co/100x100/483D8B/FFFFFF.png", service: "City Tour Guide", rate: 50, isVerified: true, isBackgroundChecked: true, rating: 4.89, bio: "Forget the tourist traps. As a lifelong local, I'll show you the real city—the hidden cafes, secret parks, and vibrant neighborhoods that make this place special. Let's go on an adventure." },
 ];
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen w-full flex-col">
-      <Header />
-      <main className="flex-1">
-        <div className="container mx-auto px-4 py-8">
-          <Tabs defaultValue="matches" className="w-full">
-            <div className="flex justify-center">
-              <TabsList className="grid w-full grid-cols-4 md:w-[800px]">
-                <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
-                <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Companion Mode</TabsTrigger>
-                <TabsTrigger value="hire-companion"><Briefcase className="mr-2 h-4 w-4" />Hire a Companion</TabsTrigger>
-                <TabsTrigger value="ai-features" asChild>
-                    <Link href="/ai-features"><Bot className="mr-2 h-4 w-4"/>AI Features</Link>
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <TabsContent value="matches" className="mt-6">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {matches.map((match, index) => (
-                        <MatchCard key={index} {...match} />
-                    ))}
-                </div>
-            </TabsContent>
-            
-            <TabsContent value="whos-down" className="mt-6">
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {whosDownItems.map((item, index) => (
-                        <WhosDownCard key={index} {...item} />
-                    ))}
-                </div>
-            </TabsContent>
+const allProfiles = [...matches, ...whosDownItems, ...hireCompanions];
 
-            <TabsContent value="hire-companion" className="mt-6">
-                 <div className="max-w-3xl mx-auto space-y-4">
-                    {hireCompanions.map((item, index) => (
-                        <HireCompanionCard key={index} {...item} />
-                    ))}
-                </div>
-            </TabsContent>
 
-          </Tabs>
+export default function ViewProfilePage() {
+    const params = useParams();
+    const name = decodeURIComponent(params.name as string);
+
+    const profile = allProfiles.find(p => (p as any).name?.toLowerCase() === name.toLowerCase() || (p as any).userName?.toLowerCase() === name.toLowerCase() || (p as any).providerName?.toLowerCase() === name.toLowerCase());
+
+    if (!profile) {
+        notFound();
+    }
+
+    const isMatch = 'mbti' in profile;
+    const isCompanion = 'activity' in profile;
+    const isHireable = 'rate' in profile;
+
+    const profileName = (profile as any).name || (profile as any).userName || (profile as any).providerName;
+    const avatarUrl = (profile as any).imageUrl || (profile as any).userAvatarUrl || (profile as any).providerAvatarUrl;
+    
+    return (
+        <div className="flex min-h-screen w-full flex-col">
+            <Header />
+            <main className="flex-1 bg-muted/20">
+                <div className="container mx-auto px-4 py-8">
+                    <div className="grid gap-8 lg:grid-cols-3">
+                        <div className="lg:col-span-1 space-y-8">
+                            <Card className="overflow-hidden">
+                                <div className="relative h-96 w-full">
+                                    <Image src={avatarUrl} alt={profileName} fill className="object-cover" data-ai-hint="person photo" />
+                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                      <div className="absolute bottom-0 left-0 p-4">
+                                        <h1 className="text-3xl font-bold text-white">{profileName}</h1>
+                                        {isMatch && <p className="text-lg text-white/90">{(profile as any).age}, {(profile as any).location}</p>}
+                                        {isCompanion && <p className="text-lg text-white/90">{(profile as any).distance}</p>}
+                                        {isHireable && <p className="text-lg text-white/90">{(profile as any).service}</p>}
+                                    </div>
+                                    {(profile as any).isVerified && (
+                                        <Badge variant="default" className="absolute right-4 top-4 bg-teal-500 text-white gap-1"><ShieldCheck className="h-4 w-4" />Verified</Badge>
+                                    )}
+                                </div>
+                                <CardContent className="p-6 space-y-4">
+                                    <p className="text-muted-foreground">{(profile as any).bio}</p>
+                                    <div className="flex justify-center gap-4 pt-4">
+                                        {isMatch && <Button className="w-full group-hover:animate-biorhythm-pulse" size="lg">Connect</Button>}
+                                        {isCompanion && <Button className="w-full" size="lg">Send Request</Button>}
+                                        {isHireable && <Button variant="default" className="w-full bg-holographic-purple hover:bg-holographic-purple/90 text-white" size="lg"><Briefcase className="mr-2 h-4 w-4"/>Book Session</Button>}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                        <div className="lg:col-span-2 space-y-8">
+                            {isMatch && (
+                                 <Card>
+                                    <CardHeader>
+                                        <CardTitle>Personality Grid</CardTitle>
+                                        <CardDescription>A glimpse into what makes them tick.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                                            <div className="flex flex-col items-center gap-2 rounded-lg bg-muted p-4">
+                                                <BrainCircuit className="h-8 w-8 text-primary" />
+                                                <span className="text-lg font-bold text-card-foreground">{(profile as any).mbti}</span>
+                                                <span className="text-muted-foreground">MBTI</span>
+                                            </div>
+                                            <div className="flex flex-col items-center gap-2 rounded-lg bg-muted p-4">
+                                                <Heart className="h-8 w-8 text-accent" />
+                                                <span className="text-lg font-bold text-card-foreground">{(profile as any).loveLanguage}</span>
+                                                <span className="text-muted-foreground">Love Language</span>
+                                            </div>
+                                            <div className="flex flex-col items-center gap-2 rounded-lg bg-muted p-4">
+                                                <Laugh className="h-8 w-8 text-sky-500" />
+                                                <span className="text-lg font-bold text-card-foreground">{(profile as any).humorStyle}</span>
+                                                <span className="text-muted-foreground">Humor Style</span>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
+
+                             {isCompanion && (
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Companion Details</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="flex items-center gap-4"><MapPin className="h-6 w-6 text-primary"/> <p className="font-semibold text-lg">Activity: {(profile as any).activity}</p></div>
+                                        <div className="flex items-center gap-4"><Sparkles className="h-6 w-6 text-orange-fusion"/> <p className="font-semibold text-lg">Vibe: {(profile as any).vibe}</p></div>
+                                        <div className="flex items-center gap-4">
+                                            <Badge variant="outline" className={`capitalize gap-1.5 text-lg p-2 ${(profile as any).bondType === 'event' ? "bg-holographic-purple/20 text-holographic-purple border-holographic-purple/40" : (profile as any).bondType === 'travel' ? "bg-electric-blue/20 text-electric-blue border-electric-blue/40" : "bg-toxic-green/20 text-toxic-green border-toxic-green/40"}`}>
+                                                {(profile as any).bondType === 'event' ? <Calendar className="h-5 w-5" /> : (profile as any).bondType === 'travel' ? <Users className="h-5 w-5" /> : <MapPin className="h-5 w-5" />}
+                                                {(profile as any).bondType}
+                                            </Badge>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
+
+                            {isHireable && (
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Professional Companion Details</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="flex items-center gap-4"><Briefcase className="h-6 w-6 text-holographic-purple"/> <p className="font-semibold text-lg">Service: {(profile as any).service}</p></div>
+                                        <div className="flex items-center gap-4"><Star className="h-6 w-6 text-cyber-yellow fill-cyber-yellow"/> <p className="font-semibold text-lg">Rating: {(profile as any).rating} / 5</p></div>
+                                        <div className="flex items-center gap-4"><p className="text-3xl font-bold text-toxic-green">${(profile as any).rate}/hr</p></div>
+                                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                                            {(profile as any).isVerified && <Badge variant="outline" className="gap-1.5 border-teal-500/40 bg-teal-500/10 text-teal-500"><ShieldCheck className="h-3.5 w-3.5"/>ID Verified</Badge>}
+                                            {(profile as any).isBackgroundChecked && <Badge variant="outline" className="gap-1.5 border-electric-blue/40 bg-electric-blue/10 text-electric-blue"><ShieldCheck className="h-3.5 w-3.5"/>Background Checked</Badge>}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
+                            <BadgeShowcase />
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-      </main>
-      <footer className="py-6 md:px-8 md:py-0 border-t">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                Built for human connection. © {new Date().getFullYear()} GoodLuck Inc.
-            </p>
-        </div>
-      </footer>
-    </div>
-  );
+    );
 }
 
     

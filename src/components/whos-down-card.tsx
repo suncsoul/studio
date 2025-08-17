@@ -1,8 +1,10 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { MapPin, Users, Calendar, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 interface WhosDownCardProps {
   userName: string;
@@ -47,7 +49,7 @@ export function WhosDownCard({
   return (
     <Card className="transition-all hover:shadow-lg hover:border-primary/50">
       <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4 w-full sm:w-auto">
+        <Link href={`/view-profile/${encodeURIComponent(userName)}`} className="flex items-center gap-4 w-full sm:w-auto flex-1">
           <Avatar className="h-12 w-12">
             <AvatarImage src={userAvatarUrl} alt={userName} data-ai-hint="person avatar" />
             <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
@@ -62,7 +64,7 @@ export function WhosDownCard({
                 <span>{distance}</span>
             </div>
           </div>
-        </div>
+        </Link>
         <div className="flex items-center gap-3 w-full sm:w-auto justify-end sm:justify-start">
            <Badge variant="outline" className="capitalize gap-1.5 bg-background">
                 <Sparkles className="h-3.5 w-3.5 text-orange-fusion"/>
@@ -78,3 +80,5 @@ export function WhosDownCard({
     </Card>
   );
 }
+
+    

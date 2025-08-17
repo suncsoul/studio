@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ShieldCheck, Star, Briefcase } from "lucide-react";
+import Link from "next/link";
 
 interface HireCompanionCardProps {
     providerName: string;
@@ -27,7 +28,7 @@ export function HireCompanionCard({
   return (
     <Card className="transition-all hover:shadow-lg hover:border-holographic-purple/50">
       <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4 w-full sm:w-auto">
+        <Link href={`/view-profile/${encodeURIComponent(providerName)}`} className="flex items-center gap-4 w-full sm:w-auto flex-1">
           <Avatar className="h-16 w-16 border-2 border-holographic-purple/50">
             <AvatarImage src={providerAvatarUrl} alt={providerName} data-ai-hint="person avatar" />
             <AvatarFallback>{providerName.charAt(0)}</AvatarFallback>
@@ -40,7 +41,7 @@ export function HireCompanionCard({
                 {isBackgroundChecked && <Badge variant="outline" className="gap-1.5 border-electric-blue/40 bg-electric-blue/10 text-electric-blue"><ShieldCheck className="h-3.5 w-3.5"/>Background Checked</Badge>}
             </div>
           </div>
-        </div>
+        </Link>
         <div className="flex flex-col items-end gap-2 w-full sm:w-auto">
             <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 text-cyber-yellow fill-cyber-yellow" />
@@ -56,3 +57,5 @@ export function HireCompanionCard({
     </Card>
   );
 }
+
+    
