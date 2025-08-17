@@ -14,14 +14,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Edit2, EyeOff, LogOut, Settings, User } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+
+const statuses = [
+    "Ready to Connect! 💬",
+    "Seeking Deep Conversations 🌌",
+    "Adventure Buddy Wanted! 🗺️",
+    "Open to Slow Burn ❤️🔥",
+    "Flirty & Fun Tonight 😉",
+    "Let’s Skip Small Talk 🎯"
+];
 
 export function Header() {
-  const [status, setStatus] = React.useState("Ready to connect!");
+  const [status, setStatus] = React.useState(statuses[0]);
   const [incognito, setIncognito] = React.useState(false);
 
   return (
@@ -47,12 +56,16 @@ export function Header() {
                   </p>
                 </div>
                 <div className="grid gap-2">
-                  <Input
-                    id="status"
-                    defaultValue={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    placeholder='e.g. "Looking for deep convos"'
-                  />
+                    <Select onValueChange={setStatus} defaultValue={status}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {statuses.map((s) => (
+                                <SelectItem key={s} value={s}>{s}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
               </div>
             </PopoverContent>
