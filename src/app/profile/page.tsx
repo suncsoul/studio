@@ -106,7 +106,7 @@ export default function ProfilePage() {
                                         
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-medium">Profile Photos</h3>
-                                            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
                                                 {photos.map((photo, index) => (
                                                     <div key={index} className="relative group aspect-square">
                                                         <Image src={photo} alt={`Profile photo ${index + 1}`} fill className="rounded-md object-cover" data-ai-hint="person photo" />
@@ -119,7 +119,7 @@ export default function ProfilePage() {
                                                 ))}
                                                 <button type="button" onClick={addPhoto} className="flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-md hover:bg-muted transition-colors">
                                                     <Camera className="h-8 w-8 text-muted-foreground" />
-                                                    <span className="text-sm text-muted-foreground mt-2">Add Photo</span>
+                                                    <span className="text-sm text-muted-foreground mt-2 text-center">Add Photo</span>
                                                 </button>
                                             </div>
                                         </div>

@@ -31,11 +31,13 @@ export default function Home() {
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8">
           <Tabs defaultValue="matches" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 md:w-[400px]">
-              <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
-              <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Who's Down?</TabsTrigger>
-              <TabsTrigger value="ai-tools"><Bot className="mr-2 h-4 w-4" />AI Tools</TabsTrigger>
-            </TabsList>
+            <div className="flex justify-center">
+              <TabsList className="grid w-full grid-cols-3 md:w-[400px]">
+                <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
+                <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Who's Down?</TabsTrigger>
+                <TabsTrigger value="ai-tools"><Bot className="mr-2 h-4 w-4" />AI Tools</TabsTrigger>
+              </TabsList>
+            </div>
             
             <TabsContent value="matches" className="mt-6">
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

@@ -32,23 +32,25 @@ export function WhosDownCard({
   };
 
   return (
-    <Card className="flex items-center justify-between p-4 transition-all hover:shadow-md">
-      <div className="flex items-center gap-4">
-        <Avatar>
-          <AvatarImage src={userAvatarUrl} alt={userName} data-ai-hint="person avatar" />
-          <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className="font-semibold text-card-foreground">{activity}</p>
-          <p className="text-sm text-muted-foreground">
-            Posted by {userName} &bull; {time}
-          </p>
+    <Card className="transition-all hover:shadow-md">
+      <CardContent className="p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-4 w-full sm:w-auto">
+          <Avatar>
+            <AvatarImage src={userAvatarUrl} alt={userName} data-ai-hint="person avatar" />
+            <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div className="flex-1">
+            <p className="font-semibold text-card-foreground">{activity}</p>
+            <p className="text-sm text-muted-foreground">
+              Posted by {userName} &bull; {time}
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-3">
-        <Badge className={`${getBadgeColor()} text-white capitalize`}>{bondType} Bond</Badge>
-        <Button>Join</Button>
-      </div>
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-end sm:justify-start">
+          <Badge className={`${getBadgeColor()} text-white capitalize`}>{bondType} Bond</Badge>
+          <Button>Join</Button>
+        </div>
+      </CardContent>
     </Card>
   );
 }
