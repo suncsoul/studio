@@ -113,35 +113,29 @@ export function BadgeShowcase() {
       </CardHeader>
       <CardContent>
         <TooltipProvider>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-4 md:grid-cols-5 gap-4">
                 {allBadges.map((badge) => (
                     <Tooltip key={badge.name}>
                     <TooltipTrigger asChild>
                         <div className={cn(
-                            "flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center space-y-2 transition-all duration-300",
+                            "flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center space-y-2 transition-all duration-300 aspect-square",
                             badge.unlocked 
                             ? 'border-primary/50 bg-primary/10 shadow-lg' 
                             : 'bg-muted/50 border-dashed opacity-70'
                         )}>
                             <badge.icon className={cn("h-10 w-10", badge.unlocked ? badge.color : "text-muted-foreground")} />
-                            <span className={cn(
-                                "font-semibold text-sm",
-                                badge.unlocked ? "text-foreground" : "text-muted-foreground"
-                            )}>{badge.name}</span>
-                            {badge.progress && !badge.unlocked && (
-                                <div className="w-full pt-1">
-                                    <Progress value={(badge.progress.current / badge.progress.max) * 100} className="h-1"/>
-                                </div>
-                            )}
                         </div>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-[250px]">
                         <p className="font-bold mb-1">{badge.name}</p>
                         <p className="text-sm text-muted-foreground mb-2">{badge.description}</p>
                         {badge.progress && !badge.unlocked && (
-                            <div className="text-xs font-semibold text-primary">
-                                Progress: {badge.progress.text}
-                            </div>
+                            <>
+                                <Progress value={(badge.progress.current / badge.progress.max) * 100} className="h-2 my-2"/>
+                                <div className="text-xs font-semibold text-primary">
+                                    Progress: {badge.progress.text}
+                                </div>
+                            </>
                         )}
                     </TooltipContent>
                     </Tooltip>
