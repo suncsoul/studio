@@ -14,7 +14,6 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { Camera, Trash2 } from "lucide-react";
 import { Header } from "@/components/header";
-import { Badges } from "@/components/badges";
 
 const profileSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters."),
@@ -210,7 +209,7 @@ export default function ProfilePage() {
                         </Card>
                     </div>
                     <div className="space-y-8">
-                        <Badges />
+                       
                     </div>
                 </div>
             </div>
