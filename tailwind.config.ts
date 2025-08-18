@@ -1,4 +1,3 @@
-
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -73,14 +72,9 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
-         'cyber-yellow': '#FFEE00',
-        'laser-pink': '#FF2A6D',
-        'holographic-purple': '#9D00FF',
-        'toxic-green': '#00FF87',
-        'electric-blue': '#00F0FF',
-        'orange-fusion': '#FF7E00',
-        'void-black': '#0A0A0A',
-        'glow-white': '#F0F0FF',
+        'sunrise-gold': '#FFC107',
+        'blush-coral': '#FF6F61',
+        'ivory-white': '#FAFAFA',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -105,8 +99,8 @@ export default {
           },
         },
         'biorhythm-pulse': {
-          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(255, 193, 7, 0.4)' },
-          '50%': { transform: 'scale(1.02)', boxShadow: '0 0 10px 5px rgba(255, 193, 7, 0)' },
+          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 hsl(var(--primary) / 0.7)' },
+          '50%': { transform: 'scale(1.02)', boxShadow: '0 0 10px 5px hsl(var(--primary) / 0)' },
         }
       },
       animation: {
