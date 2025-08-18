@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { Avatar as AvatarType } from "@/lib/avatars";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 const matches: (Parameters<typeof MatchCard>[0] & { selectedAvatar: AvatarType })[] = [
@@ -84,6 +85,15 @@ export default function Home() {
     );
   }
 
+  const tabs = [
+    { value: "matches", icon: Heart, label: "Matches", color: "hover:text-rose-500 data-[state=active]:text-rose-500" },
+    { value: "whos-down", icon: Handshake, label: "Who's Down", color: "hover:text-green-500 data-[state=active]:text-green-500" },
+    { value: "hire-companion", icon: Star, label: "Hire Companion", color: "hover:text-amber-500 data-[state=active]:text-amber-500" },
+    { value: "messages", icon: MessageSquare, label: "Messages", color: "hover:text-blue-500 data-[state=active]:text-blue-500" },
+    { value: "likes", icon: Bell, label: "Likes", color: "hover:text-pink-500 data-[state=active]:text-pink-500" },
+    { value: "ai-features", icon: Sparkles, label: "AI Features", color: "hover:text-yellow-400 data-[state=active]:text-yellow-400", href: "/ai-features" },
+  ];
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Header />
@@ -91,16 +101,28 @@ export default function Home() {
         <div className="container mx-auto px-4 py-8">
           <Tabs defaultValue="matches" className="w-full">
             <div className="flex justify-center">
-              <TabsList className="grid w-full grid-cols-6 md:w-[800px]">
-                <TabsTrigger value="matches"><Heart className="h-5 w-5"/></TabsTrigger>
-                <TabsTrigger value="whos-down"><Handshake className="h-5 w-5" /></TabsTrigger>
-                <TabsTrigger value="hire-companion"><Star className="h-5 w-5" /></TabsTrigger>
-                <TabsTrigger value="messages"><MessageSquare className="h-5 w-5" /></TabsTrigger>
-                <TabsTrigger value="likes"><Bell className="h-5 w-5" /></TabsTrigger>
-                <TabsTrigger value="ai-features" asChild>
-                    <Link href="/ai-features"><Sparkles className="h-5 w-5"/></Link>
-                </TabsTrigger>
-              </TabsList>
+              <TooltipProvider>
+                <TabsList className="grid w-full grid-cols-6 md:w-[800px]">
+                  {tabs.map((tab) => (
+                    <Tooltip key={tab.value}>
+                      <TooltipTrigger asChild>
+                        <TabsTrigger value={tab.value} asChild={!!tab.href}>
+                          {tab.href ? (
+                            <Link href={tab.href}>
+                              <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                            </Link>
+                          ) : (
+                            <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                          )}
+                        </TabsTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{tab.label}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </TabsList>
+              </TooltipProvider>
             </div>
             
             <TabsContent value="matches" className="mt-6">
