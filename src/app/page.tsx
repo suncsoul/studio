@@ -16,23 +16,27 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { Avatar as AvatarType } from "@/lib/avatars";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { db } from "@/lib/firebase";
+import { collection, query, where, getDocs, doc, getDoc, DocumentData } from "firebase/firestore";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
-
-const matches: (Parameters<typeof MatchCard>[0] & { selectedAvatar: AvatarType })[] = [
-  { name: "Seraphina", age: 28, location: "Venice, Italy", imageUrl: "https://placehold.co/400x600/F5E0C3/2C2C2C.png", mbti: "INFJ", loveLanguage: "Quality Time", humorStyle: "Witty", isVerified: true, bio: "A lover of ancient stories, hidden alleyways, and the scent of old books. Seeking a partner for moonlit gondola rides and philosophical debates over espresso. I believe every person is a story waiting to be told.", selectedAvatar: { type: 'romantic', emoji: '🌹', title: 'The Romantic', description: 'Seeks long-term love' } },
-  { name: "Julian", age: 31, location: "Kyoto, Japan", imageUrl: "https://placehold.co/400x600/2C2C2C/FAFAFA.png", mbti: "ENTP", loveLanguage: "Physical Touch", humorStyle: "Sarcastic", isVerified: true, bio: "Wandering through timeless temples by day, debating in neon-lit izakayas by night. My mind moves as fast as a Shinkansen. Challenge me to a game of Go, or join me in finding the best ramen in town.", selectedAvatar: { type: 'wildcard', emoji: '🎭', title: 'The Wildcard', description: 'Unpredictable fun' } },
-  { name: "Chloe", age: 26, location: "Austin, Texas", imageUrl: "https://placehold.co/400x600/FF6F61/FAFAFA.png", mbti: "ESFP", loveLanguage: "Words of Affirmation", humorStyle: "Goofy", isVerified: false, bio: "Fueled by live music, tacos, and sunshine. You can find me two-stepping at The Continental Club or paddleboarding on Lady Bird Lake. Looking for a spontaneous soul who can keep up with my energy.", selectedAvatar: { type: 'adventurer', emoji: '🗺️', title: 'Weekend Adventurer', description: 'Active & outgoing' } },
-  { name: "Leo", age: 29, location: "Berlin, Germany", imageUrl: "https://placehold.co/400x600/009688/FAFAFA.png", mbti: "ISTP", loveLanguage: "Acts of Service", humorStyle: "Dry", isVerified: true, bio: "Engineer by trade, artist by heart. I find beauty in brutalist architecture and techno beats. My ideal date is exploring an abandoned factory, followed by a quiet beer at a kiez bar. I fix things, including bad days.", selectedAvatar: { type: 'guru', emoji: '🧠', title: 'The Guru', description: 'Advice-seeker' } },
-  { name: "Elena", age: 24, location: "Barcelona, Spain", imageUrl: "https://placehold.co/400x600/BDBDBD/2C2C2C.png", mbti: "ENFP", loveLanguage: "Gifts", humorStyle: "Playful", isVerified: true, bio: "A whirlwind of creativity and passion, inspired by Gaudí's mosaics and the rhythm of flamenco. Let's get lost in the Gothic Quarter, share tapas until we're full, and dream up our next big adventure.", selectedAvatar: { type: 'spark_chaser', emoji: '⚡', title: 'The Spark Chaser', description: 'Wants passionate flings' } },
-  { name: "Marcus", age: 33, location: "New York, USA", imageUrl: "https://placehold.co/400x600/795548/FAFAFA.png", mbti: "ESTJ", loveLanguage: "Quality Time", humorStyle: "Observational", isVerified: false, bio: "Ambitious, driven, and always on the move. I thrive on the energy of this city, from Wall Street deals to Broadway shows. Looking for an equally ambitious partner who knows what they want and isn't afraid to go for it.", selectedAvatar: { type: 'guru', emoji: '🧠', title: 'The Guru', description: 'Advice-seeker' } },
-  { name: "Aisha", age: 27, location: "Dubai, UAE", imageUrl: "https://placehold.co/400x600/FFC107/2C2C2C.png", mbti: "ISFJ", loveLanguage: "Acts of Service", humorStyle: "Kind", isVerified: true, bio: "A blend of modern luxury and ancient traditions. I enjoy serene desert safaris, high tea at the Burj Al Arab, and volunteering at the local souk. My loyalty is as strong as my karak chai.", selectedAvatar: { type: 'listener', emoji: '👂', title: 'The Listener', description: 'Empathetic energy' } },
-  { name: "Liam", age: 30, location: "Sydney, Australia", imageUrl: "https://placehold.co/400x600/4CAF50/FAFAFA.png", mbti: "INFP", loveLanguage: "Words of Affirmation", humorStyle: "Quirky", isVerified: true, bio: "Dreamer, surfer, and storyteller. I'm more at home in the ocean than on land. Let's watch the sunrise at Bondi Beach, have a deep conversation about the universe, and maybe write a song about it.", selectedAvatar: { type: 'slow_burner', emoji: '🕯️', title: 'The Slow Burner', description: 'Prefers gradual connections' } },
-  { name: "Mei", age: 25, location: "Shanghai, China", imageUrl: "https://placehold.co/400x600/E91E63/FAFAFA.png", mbti: "INTJ", loveLanguage: "Physical Touch", humorStyle: "Intellectual", isVerified: false, bio: "A strategist in the world of finance and in life. I appreciate efficiency, intelligence, and a well-executed plan. Let's discuss futurism over xiaolongbao or explore the contemporary art scene in M50.", selectedAvatar: { type: 'conversationalist', emoji: '💭', title: 'Deep Conversationalist', description: 'Philosophical chats' } },
-  { name: "Javier", age: 32, location: "Mexico City, Mexico", imageUrl: "https://placehold.co/400x600/3F51B5/FAFAFA.png", mbti: "ESFJ", loveLanguage: "Gifts", humorStyle: "Charismatic", isVerified: true, bio: "My heart beats to the rhythm of mariachi music and the vibrant colors of Frida Kahlo's art. I'm a fantastic host who loves to share the rich culture and cuisine of my city. Let me show you the real CDMX.", selectedAvatar: { type: 'flirty_teaser', emoji: '😏', title: 'Flirty Teaser', description: 'Playful banter' } },
+const matchesData = [
+  { id: "user1", name: "Seraphina", age: 28, location: "Venice, Italy", imageUrl: "https://placehold.co/400x600/F5E0C3/2C2C2C.png", mbti: "INFJ", loveLanguage: "Quality Time", humorStyle: "Witty", isVerified: true, bio: "A lover of ancient stories, hidden alleyways, and the scent of old books. Seeking a partner for moonlit gondola rides and philosophical debates over espresso. I believe every person is a story waiting to be told.", selectedAvatar: { type: 'romantic', emoji: '🌹', title: 'The Romantic', description: 'Seeks long-term love' } },
+  { id: "user2", name: "Julian", age: 31, location: "Kyoto, Japan", imageUrl: "https://placehold.co/400x600/2C2C2C/FAFAFA.png", mbti: "ENTP", loveLanguage: "Physical Touch", humorStyle: "Sarcastic", isVerified: true, bio: "Wandering through timeless temples by day, debating in neon-lit izakayas by night. My mind moves as fast as a Shinkansen. Challenge me to a game of Go, or join me in finding the best ramen in town.", selectedAvatar: { type: 'wildcard', emoji: '🎭', title: 'The Wildcard', description: 'Unpredictable fun' } },
+  { id: "user3", name: "Chloe", age: 26, location: "Austin, Texas", imageUrl: "https://placehold.co/400x600/FF6F61/FAFAFA.png", mbti: "ESFP", loveLanguage: "Words of Affirmation", humorStyle: "Goofy", isVerified: false, bio: "Fueled by live music, tacos, and sunshine. You can find me two-stepping at The Continental Club or paddleboarding on Lady Bird Lake. Looking for a spontaneous soul who can keep up with my energy.", selectedAvatar: { type: 'adventurer', emoji: '🗺️', title: 'Weekend Adventurer', description: 'Active & outgoing' } },
+  { id: "user4", name: "Leo", age: 29, location: "Berlin, Germany", imageUrl: "https://placehold.co/400x600/009688/FAFAFA.png", mbti: "ISTP", loveLanguage: "Acts of Service", humorStyle: "Dry", isVerified: true, bio: "Engineer by trade, artist by heart. I find beauty in brutalist architecture and techno beats. My ideal date is exploring an abandoned factory, followed by a quiet beer at a kiez bar. I fix things, including bad days.", selectedAvatar: { type: 'guru', emoji: '🧠', title: 'The Guru', description: 'Advice-seeker' } },
+  { id: "user5", name: "Elena", age: 24, location: "Barcelona, Spain", imageUrl: "https://placehold.co/400x600/BDBDBD/2C2C2C.png", mbti: "ENFP", loveLanguage: "Gifts", humorStyle: "Playful", isVerified: true, bio: "A whirlwind of creativity and passion, inspired by Gaudí's mosaics and the rhythm of flamenco. Let's get lost in the Gothic Quarter, share tapas until we're full, and dream up our next big adventure.", selectedAvatar: { type: 'spark_chaser', emoji: '⚡', title: 'The Spark Chaser', description: 'Wants passionate flings' } },
+  { id: "user6", name: "Marcus", age: 33, location: "New York, USA", imageUrl: "https://placehold.co/400x600/795548/FAFAFA.png", mbti: "ESTJ", loveLanguage: "Quality Time", humorStyle: "Observational", isVerified: false, bio: "Ambitious, driven, and always on the move. I thrive on the energy of this city, from Wall Street deals to Broadway shows. Looking for an equally ambitious partner who knows what they want and isn't afraid to go for it.", selectedAvatar: { type: 'guru', emoji: '🧠', title: 'The Guru', description: 'Advice-seeker' } },
+  { id: "user7", name: "Aisha", age: 27, location: "Dubai, UAE", imageUrl: "https://placehold.co/400x600/FFC107/2C2C2C.png", mbti: "ISFJ", loveLanguage: "Acts of Service", humorStyle: "Kind", isVerified: true, bio: "A blend of modern luxury and ancient traditions. I enjoy serene desert safaris, high tea at the Burj Al Arab, and volunteering at the local souk. My loyalty is as strong as my karak chai.", selectedAvatar: { type: 'listener', emoji: '👂', title: 'The Listener', description: 'Empathetic energy' } },
+  { id: "user8", name: "Liam", age: 30, location: "Sydney, Australia", imageUrl: "https://placehold.co/400x600/4CAF50/FAFAFA.png", mbti: "INFP", loveLanguage: "Words of Affirmation", humorStyle: "Quirky", isVerified: true, bio: "Dreamer, surfer, and storyteller. I'm more at home in the ocean than on land. Let's watch the sunrise at Bondi Beach, have a deep conversation about the universe, and maybe write a song about it.", selectedAvatar: { type: 'slow_burner', emoji: '🕯️', title: 'The Slow Burner', description: 'Prefers gradual connections' } },
+  { id: "user9", name: "Mei", age: 25, location: "Shanghai, China", imageUrl: "https://placehold.co/400x600/E91E63/FAFAFA.png", mbti: "INTJ", loveLanguage: "Physical Touch", humorStyle: "Intellectual", isVerified: false, bio: "A strategist in the world of finance and in life. I appreciate efficiency, intelligence, and a well-executed plan. Let's discuss futurism over xiaolongbao or explore the contemporary art scene in M50.", selectedAvatar: { type: 'conversationalist', emoji: '💭', title: 'Deep Conversationalist', description: 'Philosophical chats' } },
+  { id: "user10", name: "Javier", age: 32, location: "Mexico City, Mexico", imageUrl: "https://placehold.co/400x600/3F51B5/FAFAFA.png", mbti: "ESFJ", loveLanguage: "Gifts", humorStyle: "Charismatic", isVerified: true, bio: "My heart beats to the rhythm of mariachi music and the vibrant colors of Frida Kahlo's art. I'm a fantastic host who loves to share the rich culture and cuisine of my city. Let me show you the real CDMX.", selectedAvatar: { type: 'flirty_teaser', emoji: '😏', title: 'Flirty Teaser', description: 'Playful banter' } },
 ];
 
 const whosDownItems = [
@@ -68,14 +72,40 @@ const hireCompanions = [
 ];
 
 export default function Home() {
-  const { isLoggedIn, loading } = useAuth();
+  const { isLoggedIn, loading, user } = useAuth();
   const router = useRouter();
+  const [likes, setLikes] = useState<DocumentData[]>([]);
+  const [isLikesLoading, setIsLikesLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
       router.push('/login');
     }
   }, [isLoggedIn, loading, router]);
+  
+  useEffect(() => {
+    if (user) {
+      const fetchLikes = async () => {
+        setIsLikesLoading(true);
+        const likesQuery = query(collection(db, 'likes'), where('likedId', '==', user.uid));
+        const likesSnapshot = await getDocs(likesQuery);
+        
+        const likersPromises = likesSnapshot.docs.map(likeDoc => {
+            const likerId = likeDoc.data().likerId;
+            // For now, we'll just find them in our static data.
+            // In a real app, you would fetch this from a `users` collection.
+            const likerProfile = matchesData.find(m => m.id === likerId);
+            return likerProfile ? { ...likerProfile, likeId: likeDoc.id } : null;
+        });
+
+        const likers = (await Promise.all(likersPromises)).filter(Boolean);
+        setLikes(likers as DocumentData[]);
+        setIsLikesLoading(false);
+      };
+      
+      fetchLikes();
+    }
+  }, [user]);
 
   if (loading || !isLoggedIn) {
     return (
@@ -127,8 +157,8 @@ export default function Home() {
             
             <TabsContent value="matches" className="mt-6">
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {matches.map((match, index) => (
-                        <MatchCard key={index} {...match} />
+                    {matchesData.map((match) => (
+                        <MatchCard key={match.id} {...match} />
                     ))}
                 </div>
             </TabsContent>
@@ -157,10 +187,35 @@ export default function Home() {
             </TabsContent>
 
             <TabsContent value="likes" className="mt-6">
-                 <div className="text-center py-16">
-                    <h2 className="text-2xl font-bold">Likes You</h2>
-                    <p className="text-muted-foreground">People who have liked you will show up here.</p>
+              {isLikesLoading ? (
+                <div className="text-center py-16">Loading likes...</div>
+              ) : likes.length === 0 ? (
+                <div className="text-center py-16">
+                  <h2 className="text-2xl font-bold">Likes You</h2>
+                  <p className="text-muted-foreground">People who have liked you will show up here.</p>
                 </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                  {likes.map((like) => (
+                    <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
+                       <CardHeader className="relative p-0">
+                         <div className="relative h-72 w-full bg-muted flex items-center justify-center">
+                           <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
+                              <span className="text-8xl">{like.selectedAvatar.emoji}</span>
+                              <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
+                           </div>
+                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                         </div>
+                       </CardHeader>
+                       <CardContent className="p-4 bg-card/80 flex-grow text-center">
+                         <h3 className="font-semibold text-lg">Someone's interested!</h3>
+                         <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
+                         <Button className="mt-4 w-full group-hover:animate-biorhythm-pulse">Connect Back</Button>
+                       </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </TabsContent>
 
           </Tabs>
