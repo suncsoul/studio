@@ -98,7 +98,7 @@ export default function ProfilePage() {
             };
             fetchProfile();
         }
-    }, [user, form]);
+    }, [user, form.formState.isSubmitSuccessful]);
     
 
     const photos = form.watch("photos");
@@ -157,13 +157,7 @@ export default function ProfilePage() {
         try {
             await setDoc(doc(db, "users", user.uid), profileData, { merge: true });
 
-            form.reset(values);
-            setUsernameChangeCount(newUsernameCount);
-            setDobChangeCount(newDobCount);
-            setGenderChangeCount(newGenderCount);
-            if (profileCompleted) {
-                setIsProfileVerified(true);
-            }
+            form.reset(values, { keepValues: true });
             
             toast({
                 title: "Profile Updated",
@@ -352,7 +346,7 @@ export default function ProfilePage() {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Gender</FormLabel>
-                                                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={genderChangeCount >= 1}>
+                                                    <Select onValueChange={field.onChange} value={field.value} disabled={genderChangeCount >= 1}>
                                                         <FormControl>
                                                             <SelectTrigger>
                                                                 <SelectValue placeholder="Select a gender" />
