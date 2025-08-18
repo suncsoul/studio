@@ -7,6 +7,8 @@ import { Badge } from "./ui/badge";
 import { BrainCircuit, Heart, Laugh, ShieldCheck } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { Avatar as AvatarType } from "@/lib/avatars";
+
 
 interface MatchCardProps {
   name: string;
@@ -17,6 +19,7 @@ interface MatchCardProps {
   loveLanguage: string;
   humorStyle: string;
   isVerified: boolean;
+  selectedAvatar?: AvatarType;
 }
 
 export function MatchCard({
@@ -28,19 +31,31 @@ export function MatchCard({
   loveLanguage,
   humorStyle,
   isVerified,
+  selectedAvatar
 }: MatchCardProps) {
+
+  const showAvatar = true; // This will be dynamic based on match status later
+
   return (
     <Link href={`/view-profile/${encodeURIComponent(name)}`} className="group w-full max-w-sm block">
       <Card className="w-full overflow-hidden transition-all duration-300 hover:shadow-2xl h-full flex flex-col">
         <CardHeader className="relative p-0">
-          <div className="relative h-72 w-full">
-            <Image
-              src={imageUrl}
-              alt={name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              data-ai-hint="person photo"
-            />
+          <div className="relative h-72 w-full bg-muted flex items-center justify-center">
+            {showAvatar && selectedAvatar ? (
+               <div className="flex flex-col items-center justify-center text-center p-4">
+                  <span className="text-8xl">{selectedAvatar.emoji}</span>
+                  <p className="mt-2 text-lg font-bold text-foreground">{selectedAvatar.title}</p>
+                  <p className="text-sm text-muted-foreground">{selectedAvatar.description}</p>
+              </div>
+            ) : (
+              <Image
+                src={imageUrl}
+                alt={name}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                data-ai-hint="person photo"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           </div>
           <div className="absolute bottom-0 left-0 p-4">
@@ -91,5 +106,3 @@ export function MatchCard({
     </Link>
   );
 }
-
-    

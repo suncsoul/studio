@@ -19,6 +19,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/contexts/auth-context";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { Avatar, Avatar as AvatarType } from "@/lib/avatars";
+import { allAvatars } from "@/lib/avatars";
+import { cn } from "@/lib/utils";
 
 const profileSchema = z.object({
   firstName: z.string().min(1, "First name is required."),
@@ -31,6 +34,7 @@ const profileSchema = z.object({
   photos: z.array(z.string()).min(1, "You must have at least 1 photo to complete your profile."),
   dob: z.string().min(1, "Date of birth is required."),
   gender: z.string().min(1, "Please select a gender."),
+  selectedAvatar: z.custom<AvatarType>(),
 });
 
 const initialPhotos: string[] = [];
@@ -57,6 +61,7 @@ export default function ProfilePage() {
             photos: initialPhotos,
             dob: "",
             gender: "",
+            selectedAvatar: allAvatars[0],
         },
     });
 
@@ -78,6 +83,7 @@ export default function ProfilePage() {
                         photos: data.photos || [],
                         dob: data.dob || "",
                         gender: data.gender || "",
+                        selectedAvatar: data.selectedAvatar || allAvatars[0],
                     });
                     setUsernameChangeCount(data.usernameChangeCount || 0);
                     setDobChangeCount(data.dobChangeCount || 0);
@@ -96,6 +102,7 @@ export default function ProfilePage() {
     
 
     const photos = form.watch("photos");
+    const selectedAvatar = form.watch("selectedAvatar");
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (usernameChangeCount >= 2) {
@@ -129,7 +136,6 @@ export default function ProfilePage() {
             newGenderCount++;
         }
         
-        // Profile completion check
         const profileCompleted = !!(
             values.firstName &&
             values.lastName &&
@@ -238,6 +244,40 @@ export default function ProfilePage() {
                                         </div>
                                          <FormMessage>{form.formState.errors.photos?.message}</FormMessage>
                                     </div>
+                                    
+                                    <FormField
+                                        control={form.control}
+                                        name="selectedAvatar"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="text-lg font-medium">Choose Your Avatar</FormLabel>
+                                                <CardDescription>This represents you before you match with someone. Can be changed once a week.</CardDescription>
+                                                <FormControl>
+                                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-4">
+                                                        {allAvatars.map((avatar) => (
+                                                            <button 
+                                                                type="button"
+                                                                key={avatar.type} 
+                                                                onClick={() => field.onChange(avatar)}
+                                                                className={cn(
+                                                                    "p-4 rounded-lg border-2 text-center transition-all space-y-2",
+                                                                    selectedAvatar?.type === avatar.type 
+                                                                        ? "border-primary bg-primary/10 shadow-lg scale-105"
+                                                                        : "border-border bg-card hover:border-primary/50"
+                                                                )}
+                                                            >
+                                                                <span className="text-4xl">{avatar.emoji}</span>
+                                                                <p className="font-semibold text-card-foreground">{avatar.title}</p>
+                                                                <p className="text-xs text-muted-foreground">{avatar.description}</p>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
 
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <FormField
