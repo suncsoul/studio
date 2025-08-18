@@ -10,7 +10,9 @@ import {
   Handshake,
   Heart,
   Sparkles,
-  Star
+  Star,
+  MessageSquare,
+  Bell
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -89,12 +91,14 @@ export default function Home() {
         <div className="container mx-auto px-4 py-8">
           <Tabs defaultValue="matches" className="w-full">
             <div className="flex justify-center">
-              <TabsList className="grid w-full grid-cols-4 md:w-[800px]">
-                <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
-                <TabsTrigger value="whos-down"><Handshake className="mr-2 h-4 w-4" />Companion Mode</TabsTrigger>
-                <TabsTrigger value="hire-companion"><Star className="mr-2 h-4 w-4" />Hire a Companion</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-6 md:w-[800px]">
+                <TabsTrigger value="matches"><Heart className="h-5 w-5"/></TabsTrigger>
+                <TabsTrigger value="whos-down"><Handshake className="h-5 w-5" /></TabsTrigger>
+                <TabsTrigger value="hire-companion"><Star className="h-5 w-5" /></TabsTrigger>
+                <TabsTrigger value="messages"><MessageSquare className="h-5 w-5" /></TabsTrigger>
+                <TabsTrigger value="likes"><Bell className="h-5 w-5" /></TabsTrigger>
                 <TabsTrigger value="ai-features" asChild>
-                    <Link href="/ai-features"><Sparkles className="mr-2 h-4 w-4"/>AI Features</Link>
+                    <Link href="/ai-features"><Sparkles className="h-5 w-5"/></Link>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -120,6 +124,20 @@ export default function Home() {
                     {hireCompanions.map((item, index) => (
                         <HireCompanionCard key={index} {...item} />
                     ))}
+                </div>
+            </TabsContent>
+
+            <TabsContent value="messages" className="mt-6">
+                 <div className="text-center py-16">
+                    <h2 className="text-2xl font-bold">Your Messages</h2>
+                    <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
+                </div>
+            </TabsContent>
+
+            <TabsContent value="likes" className="mt-6">
+                 <div className="text-center py-16">
+                    <h2 className="text-2xl font-bold">Likes You</h2>
+                    <p className="text-muted-foreground">People who have liked you will show up here.</p>
                 </div>
             </TabsContent>
 
