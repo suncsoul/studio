@@ -87,20 +87,23 @@ export default function Home() {
     if (user) {
       const fetchLikes = async () => {
         setIsLikesLoading(true);
-        const likesQuery = query(collection(db, 'likes'), where('likedId', '==', user.uid));
-        const likesSnapshot = await getDocs(likesQuery);
-        
-        const likersPromises = likesSnapshot.docs.map(likeDoc => {
-            const likerId = likeDoc.data().likerId;
-            // For now, we'll just find them in our static data.
-            // In a real app, you would fetch this from a `users` collection.
-            const likerProfile = matchesData.find(m => m.id === likerId);
-            return likerProfile ? { ...likerProfile, likeId: likeDoc.id } : null;
-        });
-
-        const likers = (await Promise.all(likersPromises)).filter(Boolean);
-        setLikes(likers as DocumentData[]);
-        setIsLikesLoading(false);
+        try {
+          const likesQuery = query(collection(db, 'likes'), where('likedId', '==', user.uid));
+          const likesSnapshot = await getDocs(likesQuery);
+          
+          const likersPromises = likesSnapshot.docs.map(likeDoc => {
+              const likerId = likeDoc.data().likerId;
+              const likerProfile = matchesData.find(m => m.id === likerId);
+              return likerProfile ? { ...likerProfile, likeId: likeDoc.id } : null;
+          });
+  
+          const likers = (await Promise.all(likersPromises)).filter(Boolean);
+          setLikes(likers as DocumentData[]);
+        } catch (error) {
+          console.error("Error fetching likes:", error);
+        } finally {
+          setIsLikesLoading(false);
+        }
       };
       
       fetchLikes();
@@ -200,10 +203,16 @@ export default function Home() {
                     <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
                        <CardHeader className="relative p-0">
                          <div className="relative h-72 w-full bg-muted flex items-center justify-center">
-                           <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
-                              <span className="text-8xl">{like.selectedAvatar.emoji}</span>
-                              <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
-                           </div>
+                           {like.selectedAvatar ? (
+                             <div className="flex flex-col items-center justify-center text-center p-4">
+                               <span className="text-8xl">{like.selectedAvatar.emoji}</span>
+                               <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
+                            </div>
+                           ) : (
+                             <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
+                               <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
+                             </div>
+                           )}
                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                          </div>
                        </CardHeader>
