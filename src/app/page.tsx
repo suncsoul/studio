@@ -7,10 +7,10 @@ import { WhosDownCard } from "@/components/whos-down-card";
 import { HireCompanionCard } from "@/components/hire-companion-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Handshake,
   Heart,
-  Users,
-  Briefcase,
-  Bot
+  Sparkles,
+  Star
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -91,10 +91,10 @@ export default function Home() {
             <div className="flex justify-center">
               <TabsList className="grid w-full grid-cols-4 md:w-[800px]">
                 <TabsTrigger value="matches"><Heart className="mr-2 h-4 w-4"/>Find Matches</TabsTrigger>
-                <TabsTrigger value="whos-down"><Users className="mr-2 h-4 w-4" />Companion Mode</TabsTrigger>
-                <TabsTrigger value="hire-companion"><Briefcase className="mr-2 h-4 w-4" />Hire a Companion</TabsTrigger>
+                <TabsTrigger value="whos-down"><Handshake className="mr-2 h-4 w-4" />Companion Mode</TabsTrigger>
+                <TabsTrigger value="hire-companion"><Star className="mr-2 h-4 w-4" />Hire a Companion</TabsTrigger>
                 <TabsTrigger value="ai-features" asChild>
-                    <Link href="/ai-features"><Bot className="mr-2 h-4 w-4"/>AI Features</Link>
+                    <Link href="/ai-features"><Sparkles className="mr-2 h-4 w-4"/>AI Features</Link>
                 </TabsTrigger>
               </TabsList>
             </div>
