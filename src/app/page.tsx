@@ -76,6 +76,30 @@ export default function Home() {
   const router = useRouter();
   const [likes, setLikes] = useState<DocumentData[]>([]);
   const [isLikesLoading, setIsLikesLoading] = useState(true);
+  const [visibleMatches, setVisibleMatches] = useState(matchesData);
+
+  const handleInteraction = (profileId: string) => {
+    const interactions = JSON.parse(localStorage.getItem('goodluck-interactions') || '{}');
+    interactions[profileId] = new Date().getTime();
+    localStorage.setItem('goodluck-interactions', JSON.stringify(interactions));
+    filterVisibleMatches();
+  };
+
+  const filterVisibleMatches = () => {
+    const interactions = JSON.parse(localStorage.getItem('goodluck-interactions') || '{}');
+    const twentyOneDaysInMillis = 21 * 24 * 60 * 60 * 1000;
+    const now = new Date().getTime();
+
+    const filtered = matchesData.filter(match => {
+        const interactionTime = interactions[match.id];
+        if (!interactionTime) {
+            return true; // No interaction recorded
+        }
+        const timeSinceInteraction = now - interactionTime;
+        return timeSinceInteraction > twentyOneDaysInMillis; // Show if interaction is older than 21 days
+    });
+    setVisibleMatches(filtered);
+  };
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -84,6 +108,7 @@ export default function Home() {
   }, [isLoggedIn, loading, router]);
   
   useEffect(() => {
+    filterVisibleMatches();
     if (user) {
       const fetchLikes = async () => {
         setIsLikesLoading(true);
@@ -160,8 +185,8 @@ export default function Home() {
             
             <TabsContent value="matches" className="mt-6">
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {matchesData.map((match) => (
-                        <MatchCard key={match.id} {...match} />
+                    {visibleMatches.map((match) => (
+                        <MatchCard key={match.id} {...match} onInteraction={handleInteraction} />
                     ))}
                 </div>
             </TabsContent>

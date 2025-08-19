@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect, useState } from "react";
 
 
 interface MatchCardProps {
@@ -25,6 +26,7 @@ interface MatchCardProps {
   humorStyle: string;
   isVerified: boolean;
   selectedAvatar?: AvatarType;
+  onInteraction: (profileId: string) => void;
 }
 
 export function MatchCard({
@@ -37,7 +39,8 @@ export function MatchCard({
   loveLanguage,
   humorStyle,
   isVerified,
-  selectedAvatar
+  selectedAvatar,
+  onInteraction,
 }: MatchCardProps) {
 
   const { user } = useAuth();
@@ -67,6 +70,7 @@ export function MatchCard({
         createdAt: serverTimestamp(),
       });
 
+      onInteraction(id);
       toast({
         title: "Interest Sent!",
         description: `You've shown interest in ${name}. We'll let you know if it's a match!`,
@@ -79,8 +83,8 @@ export function MatchCard({
   };
   
   const handlePass = () => {
-     // In a real app, you might want to record this pass to not show the user again.
-     toast({ title: "Passed", description: `You've passed on ${name}.` });
+     onInteraction(id);
+     toast({ title: "Passed", description: `You've passed on ${name}. You won't see their profile for a while.` });
   }
 
   return (
