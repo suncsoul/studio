@@ -98,7 +98,7 @@ export default function ProfilePage() {
             };
             fetchProfile();
         }
-    }, [user, form.formState.isSubmitSuccessful]);
+    }, [user, form.formState.isSubmitSuccessful, form]);
     
 
     const photos = form.watch("photos");
@@ -156,8 +156,6 @@ export default function ProfilePage() {
 
         try {
             await setDoc(doc(db, "users", user.uid), profileData, { merge: true });
-
-            form.reset(values, { keepValues: true });
             
             toast({
                 title: "Profile Updated",

@@ -234,7 +234,7 @@ export default function Home() {
           <Tabs defaultValue="matches" className="w-full">
             <div className="flex justify-center">
               <TooltipProvider>
-                <TabsList className="grid w-full grid-cols-6 md:w-[800px]">
+                <TabsList className="grid w-full max-w-lg grid-cols-6">
                   {tabs.map((tab) => (
                     <Tooltip key={tab.value}>
                       <TooltipTrigger asChild>
@@ -360,5 +360,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
