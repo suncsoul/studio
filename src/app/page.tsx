@@ -12,7 +12,9 @@ import {
   Sparkles,
   Star,
   MessageSquare,
-  Bell
+  Bell,
+  X,
+  HeartPulse
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,10 +23,12 @@ import { useAuth } from "@/contexts/auth-context";
 import { Avatar as AvatarType } from "@/lib/avatars";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs, doc, getDoc, DocumentData } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc, DocumentData, addDoc, serverTimestamp } from "firebase/firestore";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { useToast } from "@/hooks/use-toast";
 
 const matchesData = [
   { id: "user1", name: "Seraphina", age: 28, location: "Venice, Italy", imageUrl: "https://placehold.co/400x600/F5E0C3/2C2C2C.png", mbti: "INFJ", loveLanguage: "Quality Time", humorStyle: "Witty", isVerified: true, bio: "A lover of ancient stories, hidden alleyways, and the scent of old books. Seeking a partner for moonlit gondola rides and philosophical debates over espresso. I believe every person is a story waiting to be told.", selectedAvatar: { type: 'romantic', emoji: '🌹', title: 'The Romantic', description: 'Seeks long-term love' } },
@@ -74,15 +78,60 @@ const hireCompanions = [
 export default function Home() {
   const { isLoggedIn, loading, user } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   const [likes, setLikes] = useState<DocumentData[]>([]);
   const [isLikesLoading, setIsLikesLoading] = useState(true);
   const [visibleMatches, setVisibleMatches] = useState(matchesData);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
-  const handleInteraction = (profileId: string) => {
+  const handleInteraction = (profileId: string, action: 'like' | 'pass') => {
+    if (!user) {
+      toast({ variant: "destructive", title: "You must be logged in to connect." });
+      return;
+    }
+    
+    // Store interaction locally to hide profile for 21 days
     const interactions = JSON.parse(localStorage.getItem('goodluck-interactions') || '{}');
     interactions[profileId] = new Date().getTime();
     localStorage.setItem('goodluck-interactions', JSON.stringify(interactions));
-    filterVisibleMatches();
+    
+    // If like, send to firestore
+    if (action === 'like') {
+        const sendLike = async () => {
+            try {
+                const likesRef = collection(db, "likes");
+                const q = query(likesRef, where("likerId", "==", user.uid), where("likedId", "==", profileId));
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    toast({ title: "Already Liked", description: `You've already shown interest in this person.` });
+                    return;
+                }
+                
+                await addDoc(likesRef, {
+                    likerId: user.uid,
+                    likedId: profileId,
+                    createdAt: serverTimestamp(),
+                });
+
+                toast({
+                    title: "Interest Sent!",
+                    description: `We'll let you know if it's a match!`,
+                });
+
+            } catch (error) {
+                console.error("Error sending like:", error);
+                toast({ variant: "destructive", title: "Error", description: "Could not send like. Please try again." });
+            }
+        };
+        sendLike();
+    } else {
+        toast({ title: "Passed", description: `You won't see this profile for a while.` });
+    }
+
+    // Move to next card
+    api?.scrollNext();
   };
 
   const filterVisibleMatches = () => {
@@ -135,6 +184,17 @@ export default function Home() {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+    setCurrent(api.selectedScrollSnap());
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+
   if (loading || !isLoggedIn) {
     return (
       <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background">
@@ -151,6 +211,20 @@ export default function Home() {
     { value: "likes", icon: Bell, label: "Likes", color: "hover:text-pink-500 data-[state=active]:text-pink-500" },
     { value: "ai-features", icon: Sparkles, label: "AI Features", color: "hover:text-yellow-400 data-[state=active]:text-yellow-400", href: "/ai-features" },
   ];
+
+  const handlePassClick = () => {
+    const currentMatch = visibleMatches[current];
+    if (currentMatch) {
+      handleInteraction(currentMatch.id, 'pass');
+    }
+  };
+
+  const handleConnectClick = () => {
+    const currentMatch = visibleMatches[current];
+    if (currentMatch) {
+      handleInteraction(currentMatch.id, 'like');
+    }
+  };
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -184,11 +258,32 @@ export default function Home() {
             </div>
             
             <TabsContent value="matches" className="mt-6">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {visibleMatches.map((match) => (
-                        <MatchCard key={match.id} {...match} onInteraction={handleInteraction} />
-                    ))}
-                </div>
+                {visibleMatches.length > 0 ? (
+                  <div className="flex flex-col items-center gap-4">
+                    <Carousel setApi={setApi} className="w-full max-w-sm">
+                      <CarouselContent>
+                        {visibleMatches.map((match) => (
+                          <CarouselItem key={match.id}>
+                            <MatchCard {...match} />
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
+                    <div className="flex items-center gap-4">
+                       <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
+                          <X className="h-8 w-8" />
+                       </Button>
+                       <Button variant="outline" size="icon" className="h-20 w-20 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600 animate-biorhythm-pulse" onClick={handleConnectClick}>
+                          <Heart className="h-10 w-10 fill-current" />
+                       </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-16">
+                    <h2 className="text-2xl font-bold">No New Matches</h2>
+                    <p className="text-muted-foreground">You've seen everyone for now. Check back later!</p>
+                  </div>
+                )}
             </TabsContent>
             
             <TabsContent value="whos-down" className="mt-6">
@@ -265,3 +360,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

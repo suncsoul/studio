@@ -5,18 +5,11 @@ import Image from "next/image";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { BrainCircuit, Heart, Laugh, ShieldCheck } from "lucide-react";
-import { Button } from "./ui/button";
 import Link from "next/link";
 import { Avatar as AvatarType } from "@/lib/avatars";
-import { useAuth } from "@/contexts/auth-context";
-import { db } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
-import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
-
 
 interface MatchCardProps {
-  id: string; // The user ID of the person on the card
+  id: string;
   name: string;
   age: number;
   location: string;
@@ -26,7 +19,6 @@ interface MatchCardProps {
   humorStyle: string;
   isVerified: boolean;
   selectedAvatar?: AvatarType;
-  onInteraction: (profileId: string) => void;
 }
 
 export function MatchCard({
@@ -40,52 +32,8 @@ export function MatchCard({
   humorStyle,
   isVerified,
   selectedAvatar,
-  onInteraction,
 }: MatchCardProps) {
-
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const showAvatar = true; 
-
-  const handleConnect = async () => {
-    if (!user) {
-      toast({ variant: "destructive", title: "You must be logged in to connect." });
-      return;
-    }
-
-    try {
-      // Check if a like already exists
-      const likesRef = collection(db, "likes");
-      const q = query(likesRef, where("likerId", "==", user.uid), where("likedId", "==", id));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        toast({ title: "Already Liked", description: `You've already shown interest in ${name}.` });
-        return;
-      }
-      
-      await addDoc(likesRef, {
-        likerId: user.uid,
-        likedId: id,
-        createdAt: serverTimestamp(),
-      });
-
-      onInteraction(id);
-      toast({
-        title: "Interest Sent!",
-        description: `You've shown interest in ${name}. We'll let you know if it's a match!`,
-      });
-
-    } catch (error) {
-      console.error("Error sending like:", error);
-      toast({ variant: "destructive", title: "Error", description: "Could not send like. Please try again." });
-    }
-  };
-  
-  const handlePass = () => {
-     onInteraction(id);
-     toast({ title: "Passed", description: `You've passed on ${name}. You won't see their profile for a while.` });
-  }
+  const showAvatar = true;
 
   return (
     <div className="group w-full max-w-sm block">
@@ -151,11 +99,9 @@ export function MatchCard({
             </div>
           </CardContent>
         </Link>
-        <CardFooter className="bg-card/80 p-4 pt-0 flex gap-2 mt-auto">
-          <Button variant="outline" className="w-full" onClick={handlePass}>Pass</Button>
-          <Button className="w-full group-hover:animate-biorhythm-pulse" onClick={handleConnect}>Connect</Button>
-        </CardFooter>
       </Card>
     </div>
   );
 }
+
+    
