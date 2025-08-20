@@ -38,7 +38,7 @@ export function MatchCard({
   return (
     <div className="group w-full h-full block">
       <Card className="w-full h-full overflow-hidden transition-all duration-300 rounded-xl">
-        <div className="relative flex-1 w-full bg-muted">
+        <div className="relative h-full w-full bg-muted">
           <Image
             src={imageUrl}
             alt={name}
