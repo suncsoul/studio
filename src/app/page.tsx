@@ -326,8 +326,8 @@ export default function Home() {
               <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
                 <X className="h-8 w-8" />
               </Button>
-              <Button variant="outline" size="icon" className="h-20 w-20 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600 animate-biorhythm-pulse" onClick={handleConnectClick}>
-                <Heart className="h-10 w-10 fill-current" />
+              <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600 animate-biorhythm-pulse" onClick={handleConnectClick}>
+                <Heart className="h-8 w-8 fill-current" />
               </Button>
           </div>
           <div className="container mx-auto px-4 py-2">

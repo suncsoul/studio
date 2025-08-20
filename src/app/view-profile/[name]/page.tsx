@@ -113,7 +113,7 @@ export default function ViewProfilePage() {
                                         <CardTitle>Photo Gallery</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {photos.map((photo: string, index: number) => (
                                                 <div key={index} className="relative aspect-video w-full overflow-hidden rounded-lg">
                                                     <Image src={photo} alt={`${profileName}'s photo ${index + 1}`} fill className="object-cover transition-transform hover:scale-105" data-ai-hint="lifestyle photo" />

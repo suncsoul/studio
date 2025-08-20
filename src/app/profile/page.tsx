@@ -220,9 +220,9 @@ export default function ProfilePage() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            <button type="button" onClick={triggerFileUpload} className="flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-md hover:bg-muted transition-colors">
+                                            <button type="button" onClick={triggerFileUpload} className="flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-md hover:bg-muted transition-colors p-2">
                                                 <Camera className="h-8 w-8 text-muted-foreground" />
-                                                <span className="text-sm text-muted-foreground mt-2 text-center">Add Photo</span>
+                                                <span className="text-xs text-muted-foreground mt-2 text-center">Add Photo</span>
                                             </button>
                                             <FormControl>
                                                 <Input 
