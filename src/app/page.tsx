@@ -14,7 +14,6 @@ import {
   MessageSquare,
   Bell,
   X,
-  HeartPulse
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -229,87 +228,68 @@ export default function Home() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Header />
-      <main className="flex-1">
-        <div className="container mx-auto px-4 py-8">
-          <Tabs defaultValue="matches" className="w-full">
-            <div className="flex justify-center">
-              <TooltipProvider>
-                <TabsList className="grid w-full max-w-lg grid-cols-6">
-                  {tabs.map((tab) => (
-                    <Tooltip key={tab.value}>
-                      <TooltipTrigger asChild>
-                        <TabsTrigger value={tab.value} asChild={!!tab.href}>
-                          {tab.href ? (
-                            <Link href={tab.href}>
-                              <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                            </Link>
-                          ) : (
-                            <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                          )}
-                        </TabsTrigger>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{tab.label}</p>
-                      </TooltipContent>
-                    </Tooltip>
+      <Tabs defaultValue="matches" className="flex flex-col flex-1 w-full">
+        <main className="flex-1 overflow-y-auto">
+          <TabsContent value="matches" className="mt-0 h-full">
+              {visibleMatches.length > 0 ? (
+                <div className="flex flex-col items-center h-full">
+                  <Carousel setApi={setApi} className="w-full h-full flex-1">
+                    <CarouselContent className="h-full">
+                      {visibleMatches.map((match) => (
+                        <CarouselItem key={match.id} className="h-full">
+                          <MatchCard {...match} />
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                  </Carousel>
+                  <div className="flex items-center gap-4 py-4">
+                      <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
+                        <X className="h-8 w-8" />
+                      </Button>
+                      <Button variant="outline" size="icon" className="h-20 w-20 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600 animate-biorhythm-pulse" onClick={handleConnectClick}>
+                        <Heart className="h-10 w-10 fill-current" />
+                      </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-16">
+                  <h2 className="text-2xl font-bold">No New Matches</h2>
+                  <p className="text-muted-foreground">You've seen everyone for now. Check back later!</p>
+                </div>
+              )}
+          </TabsContent>
+          
+          <TabsContent value="whos-down" className="mt-6">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto space-y-4">
+                  {whosDownItems.map((item, index) => (
+                      <WhosDownCard key={index} {...item} />
                   ))}
-                </TabsList>
-              </TooltipProvider>
+              </div>
             </div>
-            
-            <TabsContent value="matches" className="mt-6">
-                {visibleMatches.length > 0 ? (
-                  <div className="flex flex-col items-center gap-4">
-                    <Carousel setApi={setApi} className="w-full max-w-sm">
-                      <CarouselContent>
-                        {visibleMatches.map((match) => (
-                          <CarouselItem key={match.id}>
-                            <MatchCard {...match} />
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                    </Carousel>
-                    <div className="flex items-center gap-4">
-                       <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
-                          <X className="h-8 w-8" />
-                       </Button>
-                       <Button variant="outline" size="icon" className="h-20 w-20 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600 animate-biorhythm-pulse" onClick={handleConnectClick}>
-                          <Heart className="h-10 w-10 fill-current" />
-                       </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-16">
-                    <h2 className="text-2xl font-bold">No New Matches</h2>
-                    <p className="text-muted-foreground">You've seen everyone for now. Check back later!</p>
-                  </div>
-                )}
-            </TabsContent>
-            
-            <TabsContent value="whos-down" className="mt-6">
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {whosDownItems.map((item, index) => (
-                        <WhosDownCard key={index} {...item} />
-                    ))}
-                </div>
-            </TabsContent>
+          </TabsContent>
 
-            <TabsContent value="hire-companion" className="mt-6">
-                 <div className="max-w-3xl mx-auto space-y-4">
-                    {hireCompanions.map((item, index) => (
-                        <HireCompanionCard key={index} {...item} />
-                    ))}
-                </div>
-            </TabsContent>
+          <TabsContent value="hire-companion" className="mt-6">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto space-y-4">
+                  {hireCompanions.map((item, index) => (
+                      <HireCompanionCard key={index} {...item} />
+                  ))}
+              </div>
+            </div>
+          </TabsContent>
 
-            <TabsContent value="messages" className="mt-6">
-                 <div className="text-center py-16">
-                    <h2 className="text-2xl font-bold">Your Messages</h2>
-                    <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
-                </div>
-            </TabsContent>
+          <TabsContent value="messages" className="mt-6">
+            <div className="container mx-auto px-4">
+              <div className="text-center py-16">
+                  <h2 className="text-2xl font-bold">Your Messages</h2>
+                  <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
+              </div>
+            </div>
+          </TabsContent>
 
-            <TabsContent value="likes" className="mt-6">
+          <TabsContent value="likes" className="mt-6">
+            <div className="container mx-auto px-4">
               {isLikesLoading ? (
                 <div className="text-center py-16">Loading likes...</div>
               ) : likes.length === 0 ? (
@@ -321,42 +301,61 @@ export default function Home() {
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                   {likes.map((like) => (
                     <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
-                       <CardHeader className="relative p-0">
-                         <div className="relative h-72 w-full bg-muted flex items-center justify-center">
-                           {like.selectedAvatar ? (
-                             <div className="flex flex-col items-center justify-center text-center p-4">
-                               <span className="text-8xl">{like.selectedAvatar.emoji}</span>
-                               <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
+                        <CardHeader className="relative p-0">
+                          <div className="relative h-72 w-full bg-muted flex items-center justify-center">
+                            {like.selectedAvatar ? (
+                              <div className="flex flex-col items-center justify-center text-center p-4">
+                                <span className="text-8xl">{like.selectedAvatar.emoji}</span>
+                                <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
                             </div>
-                           ) : (
-                             <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
-                               <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
-                             </div>
-                           )}
-                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                         </div>
-                       </CardHeader>
-                       <CardContent className="p-4 bg-card/80 flex-grow text-center">
-                         <h3 className="font-semibold text-lg">Someone's interested!</h3>
-                         <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
-                         <Button className="mt-4 w-full group-hover:animate-biorhythm-pulse">Connect Back</Button>
-                       </CardContent>
+                            ) : (
+                              <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
+                                <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
+                              </div>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          </div>
+                        </CardHeader>
+                        <CardContent className="p-4 bg-card/80 flex-grow text-center">
+                          <h3 className="font-semibold text-lg">Someone's interested!</h3>
+                          <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
+                          <Button className="mt-4 w-full group-hover:animate-biorhythm-pulse">Connect Back</Button>
+                        </CardContent>
                     </Card>
                   ))}
                 </div>
               )}
-            </TabsContent>
-
-          </Tabs>
-        </div>
-      </main>
-      <footer className="py-6 md:px-8 md:py-0 border-t">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-                Built for human connection. © {new Date().getFullYear()} goodluck Inc.
-            </p>
-        </div>
-      </footer>
+            </div>
+          </TabsContent>
+        </main>
+        
+        <footer className="sticky bottom-0 w-full bg-background border-t">
+          <div className="container mx-auto px-4 py-2">
+            <TooltipProvider>
+              <TabsList className="grid w-full grid-cols-6">
+                {tabs.map((tab) => (
+                  <Tooltip key={tab.value}>
+                    <TooltipTrigger asChild>
+                      <TabsTrigger value={tab.value} asChild={!!tab.href}>
+                        {tab.href ? (
+                          <Link href={tab.href}>
+                            <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                          </Link>
+                        ) : (
+                          <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                        )}
+                      </TabsTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{tab.label}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </TabsList>
+            </TooltipProvider>
+          </div>
+        </footer>
+      </Tabs>
     </div>
   );
 }
