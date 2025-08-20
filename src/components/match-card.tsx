@@ -33,11 +33,10 @@ export function MatchCard({
   isVerified,
   selectedAvatar,
 }: MatchCardProps) {
-  const showAvatar = false;
 
   return (
     <div className="group w-full h-full block">
-      <Card className="w-full h-full overflow-hidden transition-all duration-300 rounded-xl">
+      <Card className="w-full h-full overflow-hidden transition-all duration-300 rounded-xl border-0">
         <div className="relative h-full w-full bg-muted">
           <Image
             src={imageUrl}
@@ -45,6 +44,7 @@ export function MatchCard({
             fill
             className="object-cover"
             data-ai-hint="person photo"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
           <div className="absolute bottom-0 left-0 p-6 text-white">
