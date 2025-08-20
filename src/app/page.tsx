@@ -229,8 +229,8 @@ export default function Home() {
     <div className="flex min-h-screen w-full flex-col">
       <Header />
       <Tabs defaultValue="matches" className="flex flex-col flex-1 w-full">
-        <main className="flex-1 overflow-y-auto">
-          <TabsContent value="matches" className="mt-0 h-full">
+        <main className="flex-1 overflow-y-auto data-[state=active]:h-full">
+          <TabsContent value="matches" className="mt-0 h-full data-[state=active]:h-full">
               {visibleMatches.length > 0 ? (
                 <div className="flex flex-col items-center h-full">
                   <Carousel setApi={setApi} className="w-full h-full flex-1">
@@ -311,7 +311,7 @@ export default function Home() {
                         <CardContent className="p-4 bg-card/80 flex-grow text-center">
                           <h3 className="font-semibold text-lg">Someone's interested!</h3>
                           <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
-                          <Button className="mt-4 w-full group-hover:animate-biorhythm-pulse">Connect Back</Button>
+                          <Button className="mt-4 w-full">Connect Back</Button>
                         </CardContent>
                     </Card>
                   ))}
@@ -326,7 +326,7 @@ export default function Home() {
               <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
                 <X className="h-8 w-8" />
               </Button>
-              <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600 animate-biorhythm-pulse" onClick={handleConnectClick}>
+              <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600" onClick={handleConnectClick}>
                 <Heart className="h-8 w-8 fill-current" />
               </Button>
           </div>
