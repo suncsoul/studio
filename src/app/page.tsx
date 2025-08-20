@@ -324,10 +324,10 @@ export default function Home() {
         <footer className="sticky bottom-0 w-full bg-background border-t">
           <div className="flex items-center justify-center gap-4 py-4">
               <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
-                <X className="h-8 w-8" />
+                <X className="h-12 w-12" />
               </Button>
               <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600" onClick={handleConnectClick}>
-                <Heart className="h-8 w-8 fill-current" />
+                <Heart className="h-12 w-12 fill-current" />
               </Button>
           </div>
           <div className="container mx-auto px-4 py-2">
