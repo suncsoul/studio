@@ -101,6 +101,9 @@ export function Header() {
                     </PopoverContent>
                 </Popover>
 
+                <Link href="/kids-bible" className="hidden md:inline-flex text-sm font-semibold rounded-full px-3 py-2 bg-amber-300/70 hover:bg-amber-300 text-amber-900 shadow">
+                  Kids Bible ✨
+                </Link>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
