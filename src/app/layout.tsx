@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/contexts/auth-context';
+import { RewardsProvider } from '@/contexts/rewards-context';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 
@@ -26,8 +27,10 @@ export default function RootLayout({
       </head>
       <body className={`font-body antialiased ${inter.variable} bg-background`}>
         <AuthProvider>
-          {children}
-          <Toaster />
+          <RewardsProvider>
+            {children}
+            <Toaster />
+          </RewardsProvider>
         </AuthProvider>
       </body>
     </html>
