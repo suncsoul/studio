@@ -230,19 +230,18 @@ export default function Home() {
       <Header />
       <Tabs defaultValue="matches" className="flex flex-col flex-grow w-full">
         <main className="flex-grow flex flex-col">
-          <TabsContent value="matches" className="flex-grow mt-0">
+           <TabsContent value="matches" className="flex-grow flex flex-col mt-0">
+             <div className="flex-1 relative">
               {visibleMatches.length > 0 ? (
-                <div className="relative flex-grow">
-                  <Carousel setApi={setApi} className="absolute inset-0 h-full w-full">
-                    <CarouselContent className="h-full">
-                      {visibleMatches.map((match) => (
-                        <CarouselItem key={match.id} className="h-full">
-                          <MatchCard {...match} />
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                  </Carousel>
-                </div>
+                <Carousel setApi={setApi} className="absolute inset-0 h-full w-full">
+                  <CarouselContent className="h-full">
+                    {visibleMatches.map((match) => (
+                      <CarouselItem key={match.id} className="h-full">
+                        <MatchCard {...match} />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
               ) : (
                 <div className="flex-grow flex items-center justify-center text-center">
                     <div>
@@ -251,6 +250,7 @@ export default function Home() {
                     </div>
                 </div>
               )}
+              </div>
           </TabsContent>
           
           <TabsContent value="whos-down" className="mt-6">
@@ -324,14 +324,14 @@ export default function Home() {
         </main>
         
         <footer className="sticky bottom-0 w-full bg-background border-t">
-          <div className="flex items-center justify-center gap-4 py-4">
+            <div className="flex items-center justify-center gap-4 py-4">
               <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
                 <X className="h-12 w-12" />
               </Button>
               <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600" onClick={handleConnectClick}>
                 <Heart className="h-12 w-12 fill-current" />
               </Button>
-          </div>
+            </div>
           <div className="container mx-auto px-4 py-2">
             <TooltipProvider>
               <TabsList className="grid w-full grid-cols-6">
@@ -360,5 +360,7 @@ export default function Home() {
       </Tabs>
     </div>
   );
+
+    
 
     
