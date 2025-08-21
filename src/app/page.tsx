@@ -228,12 +228,12 @@ export default function Home() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Header />
-      <Tabs defaultValue="matches" className="flex flex-col flex-1 w-full">
-        <main className="flex-1 overflow-y-auto data-[state=active]:h-full">
-          <TabsContent value="matches" className="mt-0 h-full data-[state=active]:h-full">
+      <Tabs defaultValue="matches" className="flex flex-col flex-grow w-full">
+        <main className="flex-grow flex flex-col">
+          <TabsContent value="matches" className="flex-grow mt-0">
               {visibleMatches.length > 0 ? (
-                <div className="flex flex-col items-center h-full">
-                  <Carousel setApi={setApi} className="w-full h-full flex-1">
+                <div className="relative flex-grow">
+                  <Carousel setApi={setApi} className="absolute inset-0 h-full w-full">
                     <CarouselContent className="h-full">
                       {visibleMatches.map((match) => (
                         <CarouselItem key={match.id} className="h-full">
@@ -244,9 +244,11 @@ export default function Home() {
                   </Carousel>
                 </div>
               ) : (
-                <div className="text-center py-16">
-                  <h2 className="text-2xl font-bold">No New Matches</h2>
-                  <p className="text-muted-foreground">You've seen everyone for now. Check back later!</p>
+                <div className="flex-grow flex items-center justify-center text-center">
+                    <div>
+                        <h2 className="text-2xl font-bold">No New Matches</h2>
+                        <p className="text-muted-foreground">You've seen everyone for now. Check back later!</p>
+                    </div>
                 </div>
               )}
           </TabsContent>
@@ -358,4 +360,5 @@ export default function Home() {
       </Tabs>
     </div>
   );
-}
+
+    
