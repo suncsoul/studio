@@ -17,7 +17,7 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Edit2, EyeOff, LogIn, LogOut, Settings, User } from "lucide-react";
+import { Edit2, EyeOff, LogIn, LogOut, User } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
@@ -135,12 +135,6 @@ export function Header() {
                         onCheckedChange={setIncognito}
                         />
                     </DropdownMenuItem>
-                    <Link href="/settings" passHref>
-                        <DropdownMenuItem>
-                            <Settings className="mr-2 h-4 w-4" />
-                            <span>Settings</span>
-                        </DropdownMenuItem>
-                    </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>
                         <LogOut className="mr-2 h-4 w-4" />

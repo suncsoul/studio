@@ -2,7 +2,6 @@
 'use client';
 
 import { Header } from "@/components/header";
-import { MatchCard } from "@/components/match-card";
 import { WhosDownCard } from "@/components/whos-down-card";
 import { HireCompanionCard } from "@/components/hire-companion-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,14 +18,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
-import { Avatar as AvatarType } from "@/lib/avatars";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs, doc, getDoc, DocumentData, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, query, where, getDocs, DocumentData, addDoc, serverTimestamp } from "firebase/firestore";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useToast } from "@/hooks/use-toast";
 
 const matchesData = [
@@ -80,75 +77,7 @@ export default function Home() {
   const { toast } = useToast();
   const [likes, setLikes] = useState<DocumentData[]>([]);
   const [isLikesLoading, setIsLikesLoading] = useState(true);
-  const [visibleMatches, setVisibleMatches] = useState(matchesData);
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [activeTab, setActiveTab] = useState("matches");
-
-  const handleInteraction = (profileId: string, action: 'like' | 'pass') => {
-    if (!user) {
-      toast({ variant: "destructive", title: "You must be logged in to connect." });
-      return;
-    }
-    
-    // Store interaction locally to hide profile for 21 days
-    const interactions = JSON.parse(localStorage.getItem('goodluck-interactions') || '{}');
-    interactions[profileId] = new Date().getTime();
-    localStorage.setItem('goodluck-interactions', JSON.stringify(interactions));
-    
-    // If like, send to firestore
-    if (action === 'like') {
-        const sendLike = async () => {
-            try {
-                const likesRef = collection(db, "likes");
-                const q = query(likesRef, where("likerId", "==", user.uid), where("likedId", "==", profileId));
-                const querySnapshot = await getDocs(q);
-
-                if (!querySnapshot.empty) {
-                    toast({ title: "Already Liked", description: `You've already shown interest in this person.` });
-                    return;
-                }
-                
-                await addDoc(likesRef, {
-                    likerId: user.uid,
-                    likedId: profileId,
-                    createdAt: serverTimestamp(),
-                });
-
-                toast({
-                    title: "Interest Sent!",
-                    description: `We'll let you know if it's a match!`,
-                });
-
-            } catch (error) {
-                console.error("Error sending like:", error);
-                toast({ variant: "destructive", title: "Error", description: "Could not send like. Please try again." });
-            }
-        };
-        sendLike();
-    } else {
-        toast({ title: "Passed", description: `You won't see this profile for a while.` });
-    }
-
-    // Move to next card
-    api?.scrollNext();
-  };
-
-  const filterVisibleMatches = () => {
-    const interactions = JSON.parse(localStorage.getItem('goodluck-interactions') || '{}');
-    const twentyOneDaysInMillis = 21 * 24 * 60 * 60 * 1000;
-    const now = new Date().getTime();
-
-    const filtered = matchesData.filter(match => {
-        const interactionTime = interactions[match.id];
-        if (!interactionTime) {
-            return true; // No interaction recorded
-        }
-        const timeSinceInteraction = now - interactionTime;
-        return timeSinceInteraction > twentyOneDaysInMillis; // Show if interaction is older than 21 days
-    });
-    setVisibleMatches(filtered);
-  };
+  const [activeTab, setActiveTab] = useState("whos-down");
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -157,7 +86,6 @@ export default function Home() {
   }, [isLoggedIn, loading, router]);
   
   useEffect(() => {
-    filterVisibleMatches();
     if (user) {
       const fetchLikes = async () => {
         setIsLikesLoading(true);
@@ -184,17 +112,6 @@ export default function Home() {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-    setCurrent(api.selectedScrollSnap());
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-  }, [api]);
-
-
   if (loading || !isLoggedIn) {
     return (
       <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background">
@@ -204,7 +121,6 @@ export default function Home() {
   }
 
   const tabs = [
-    { value: "matches", icon: Heart, label: "Matches", color: "hover:text-rose-500 data-[state=active]:text-rose-500" },
     { value: "whos-down", icon: Handshake, label: "Who's Down", color: "hover:text-green-500 data-[state=active]:text-green-500" },
     { value: "hire-companion", icon: Star, label: "Hire Companion", color: "hover:text-amber-500 data-[state=active]:text-amber-500" },
     { value: "messages", icon: MessageSquare, label: "Messages", color: "hover:text-blue-500 data-[state=active]:text-blue-500" },
@@ -212,157 +128,108 @@ export default function Home() {
     { value: "ai-features", icon: Sparkles, label: "AI Features", color: "hover:text-yellow-400 data-[state=active]:text-yellow-400", href: "/ai-features" },
   ];
 
-  const handlePassClick = () => {
-    const currentMatch = visibleMatches[current];
-    if (currentMatch) {
-      handleInteraction(currentMatch.id, 'pass');
-    }
-  };
-
-  const handleConnectClick = () => {
-    const currentMatch = visibleMatches[current];
-    if (currentMatch) {
-      handleInteraction(currentMatch.id, 'like');
-    }
-  };
-
   return (
     <div className="flex h-screen w-full flex-col">
       <Header />
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col bg-muted/20">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-grow flex flex-col">
-             <TabsContent value="matches" className="w-full flex-grow m-0 flex flex-col">
-                <div className="flex-1 relative">
-                    {visibleMatches.length > 0 ? (
-                        <Carousel setApi={setApi} className="h-full w-full">
-                            <CarouselContent className="h-full">
-                                {visibleMatches.map((match) => (
-                                <CarouselItem key={match.id} className="h-full">
-                                    <MatchCard {...match} />
-                                </CarouselItem>
-                                ))}
-                            </CarouselContent>
-                        </Carousel>
-                    ) : (
-                        <div className="flex h-full items-center justify-center text-center">
-                            <div>
-                                <h2 className="text-2xl font-bold">No New Matches</h2>
-                                <p className="text-muted-foreground">You've seen everyone for now. Check back later!</p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </TabsContent>
+          <TabsContent value="whos-down" className="mt-6 flex-grow">
+              <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto space-y-4">
+                  {whosDownItems.map((item, index) => (
+                      <WhosDownCard key={index} {...item} />
+                  ))}
+              </div>
+              </div>
+          </TabsContent>
+
+          <TabsContent value="hire-companion" className="mt-6">
+              <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto space-y-4">
+                  {hireCompanions.map((item, index) => (
+                      <HireCompanionCard key={index} {...item} />
+                  ))}
+              </div>
+              </div>
+          </TabsContent>
+
+          <TabsContent value="messages" className="mt-6">
+              <div className="container mx-auto px-4">
+              <div className="text-center py-16">
+                  <h2 className="text-2xl font-bold">Your Messages</h2>
+                  <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
+              </div>
+              </div>
+          </TabsContent>
+
+          <TabsContent value="likes" className="mt-6">
+              <div className="container mx-auto px-4">
+              {isLikesLoading ? (
+                  <div className="text-center py-16">Loading likes...</div>
+              ) : likes.length === 0 ? (
+                  <div className="text-center py-16">
+                  <h2 className="text-2xl font-bold">Likes You</h2>
+                  <p className="text-muted-foreground">People who have liked you will show up here.</p>
+                  </div>
+              ) : (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                  {likes.map((like) => (
+                      <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
+                          <CardHeader className="relative p-0">
+                          <div className="relative h-72 w-full bg-muted flex items-center justify-center">
+                              {like.selectedAvatar ? (
+                              <div className="flex flex-col items-center justify-center text-center p-4">
+                                  <span className="text-8xl">{like.selectedAvatar.emoji}</span>
+                                  <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
+                              </div>
+                              ) : (
+                              <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
+                                  <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
+                              </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          </div>
+                          </CardHeader>
+                          <CardContent className="p-4 bg-card/80 flex-grow text-center">
+                          <h3 className="font-semibold text-lg">Someone's interested!</h3>
+                          <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
+                          <Button className="mt-4 w-full">Connect Back</Button>
+                          </CardContent>
+                      </Card>
+                  ))}
+                  </div>
+              )}
+              </div>
+          </TabsContent>
             
-            <TabsContent value="whos-down" className="mt-6">
-                <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {whosDownItems.map((item, index) => (
-                        <WhosDownCard key={index} {...item} />
-                    ))}
-                </div>
-                </div>
-            </TabsContent>
-
-            <TabsContent value="hire-companion" className="mt-6">
-                <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {hireCompanions.map((item, index) => (
-                        <HireCompanionCard key={index} {...item} />
-                    ))}
-                </div>
-                </div>
-            </TabsContent>
-
-            <TabsContent value="messages" className="mt-6">
-                <div className="container mx-auto px-4">
-                <div className="text-center py-16">
-                    <h2 className="text-2xl font-bold">Your Messages</h2>
-                    <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
-                </div>
-                </div>
-            </TabsContent>
-
-            <TabsContent value="likes" className="mt-6">
-                <div className="container mx-auto px-4">
-                {isLikesLoading ? (
-                    <div className="text-center py-16">Loading likes...</div>
-                ) : likes.length === 0 ? (
-                    <div className="text-center py-16">
-                    <h2 className="text-2xl font-bold">Likes You</h2>
-                    <p className="text-muted-foreground">People who have liked you will show up here.</p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {likes.map((like) => (
-                        <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
-                            <CardHeader className="relative p-0">
-                            <div className="relative h-72 w-full bg-muted flex items-center justify-center">
-                                {like.selectedAvatar ? (
-                                <div className="flex flex-col items-center justify-center text-center p-4">
-                                    <span className="text-8xl">{like.selectedAvatar.emoji}</span>
-                                    <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
-                                </div>
-                                ) : (
-                                <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
-                                    <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
-                                </div>
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                            </div>
-                            </CardHeader>
-                            <CardContent className="p-4 bg-card/80 flex-grow text-center">
-                            <h3 className="font-semibold text-lg">Someone's interested!</h3>
-                            <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
-                            <Button className="mt-4 w-full">Connect Back</Button>
-                            </CardContent>
-                        </Card>
-                    ))}
-                    </div>
-                )}
-                </div>
-            </TabsContent>
-            
-            <footer className="sticky bottom-0 w-full bg-background/80 backdrop-blur-sm border-t">
-                {activeTab === 'matches' && (
-                <div className="flex items-center justify-center gap-4 py-4">
-                    <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
-                    <X className="h-12 w-12" />
-                    </Button>
-                    <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600" onClick={handleConnectClick}>
-                    <Heart className="h-12 w-12 fill-current" />
-                    </Button>
-                </div>
-                )}
-                <div className="container mx-auto px-4 py-2">
-                <TooltipProvider>
-                    <TabsList className="grid w-full grid-cols-6">
-                    {tabs.map((tab) => (
-                        <Tooltip key={tab.value}>
-                        <TooltipTrigger asChild>
-                            <TabsTrigger value={tab.value} asChild={!!tab.href} onClick={() => !tab.href && setActiveTab(tab.value)}>
-                            {tab.href ? (
-                                <Link href={tab.href}>
-                                <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                                </Link>
-                            ) : (
-                                <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                            )}
-                            </TabsTrigger>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>{tab.label}</p>
-                        </TooltipContent>
-                        </Tooltip>
-                    ))}
-                    </TabsList>
-                </TooltipProvider>
-                </div>
-            </footer>
+          <footer className="sticky bottom-0 w-full bg-background/80 backdrop-blur-sm border-t">
+              <div className="container mx-auto px-4 py-2">
+              <TooltipProvider>
+                  <TabsList className="grid w-full grid-cols-5">
+                  {tabs.map((tab) => (
+                      <Tooltip key={tab.value}>
+                      <TooltipTrigger asChild>
+                          <TabsTrigger value={tab.value} asChild={!!tab.href} onClick={() => !tab.href && setActiveTab(tab.value)}>
+                          {tab.href ? (
+                              <Link href={tab.href}>
+                              <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                              </Link>
+                          ) : (
+                              <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                          )}
+                          </TabsTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                          <p>{tab.label}</p>
+                      </TooltipContent>
+                      </Tooltip>
+                  ))}
+                  </TabsList>
+              </TooltipProvider>
+              </div>
+          </footer>
         </Tabs>
       </main>
     </div>
   );
 }
-
-    
