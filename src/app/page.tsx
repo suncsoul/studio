@@ -322,45 +322,47 @@ export default function Home() {
                 )}
                 </div>
             </TabsContent>
+            
+            <footer className="sticky bottom-0 w-full bg-background/80 backdrop-blur-sm border-t">
+                {activeTab === 'matches' && (
+                <div className="flex items-center justify-center gap-4 py-4">
+                    <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
+                    <X className="h-12 w-12" />
+                    </Button>
+                    <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600" onClick={handleConnectClick}>
+                    <Heart className="h-12 w-12 fill-current" />
+                    </Button>
+                </div>
+                )}
+                <div className="container mx-auto px-4 py-2">
+                <TooltipProvider>
+                    <TabsList className="grid w-full grid-cols-6">
+                    {tabs.map((tab) => (
+                        <Tooltip key={tab.value}>
+                        <TooltipTrigger asChild>
+                            <TabsTrigger value={tab.value} asChild={!!tab.href} onClick={() => !tab.href && setActiveTab(tab.value)}>
+                            {tab.href ? (
+                                <Link href={tab.href}>
+                                <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                                </Link>
+                            ) : (
+                                <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                            )}
+                            </TabsTrigger>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{tab.label}</p>
+                        </TooltipContent>
+                        </Tooltip>
+                    ))}
+                    </TabsList>
+                </TooltipProvider>
+                </div>
+            </footer>
         </Tabs>
       </main>
-      
-      <footer className="sticky bottom-0 w-full bg-background/80 backdrop-blur-sm border-t">
-        {activeTab === 'matches' && (
-          <div className="flex items-center justify-center gap-4 py-4">
-            <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-rose-500/50 text-rose-500 hover:bg-rose-500/10 hover:text-rose-600" onClick={handlePassClick}>
-              <X className="h-12 w-12" />
-            </Button>
-            <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-4 border-teal-500/50 text-teal-500 hover:bg-teal-500/10 hover:text-teal-600" onClick={handleConnectClick}>
-              <Heart className="h-12 w-12 fill-current" />
-            </Button>
-          </div>
-        )}
-        <div className="container mx-auto px-4 py-2">
-          <TooltipProvider>
-            <TabsList className="grid w-full grid-cols-6">
-              {tabs.map((tab) => (
-                <Tooltip key={tab.value}>
-                  <TooltipTrigger asChild>
-                    <TabsTrigger value={tab.value} asChild={!!tab.href} onClick={() => !tab.href && setActiveTab(tab.value)}>
-                      {tab.href ? (
-                        <Link href={tab.href}>
-                          <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                        </Link>
-                      ) : (
-                        <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                      )}
-                    </TabsTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{tab.label}</p>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </TabsList>
-          </TooltipProvider>
-        </div>
-      </footer>
     </div>
   );
 }
+
+    
