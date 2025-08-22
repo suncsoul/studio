@@ -83,6 +83,7 @@ export default function Home() {
   const [visibleMatches, setVisibleMatches] = useState(matchesData);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [activeTab, setActiveTab] = useState("matches");
 
   const handleInteraction = (profileId: string, action: 'like' | 'pass') => {
     if (!user) {
@@ -225,15 +226,13 @@ export default function Home() {
     }
   };
 
-  const [activeTab, setActiveTab] = useState("matches");
-
   return (
     <div className="flex h-screen w-full flex-col">
       <Header />
-      <main className="flex-1 relative">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full">
-            <TabsContent value="matches" className="w-full h-full m-0">
-                <div className="relative h-full w-full">
+      <main className="flex-1 flex flex-col">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-grow flex flex-col">
+             <TabsContent value="matches" className="w-full flex-grow m-0 flex flex-col">
+                <div className="flex-1 relative">
                     {visibleMatches.length > 0 ? (
                         <Carousel setApi={setApi} className="h-full w-full">
                             <CarouselContent className="h-full">
@@ -365,5 +364,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
