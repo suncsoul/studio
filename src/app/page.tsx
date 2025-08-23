@@ -147,7 +147,7 @@ export default function Home() {
             <div className="flex-1 relative">
                 <TabsContent value="matches" className="w-full h-full m-0">
                     {profiles.length > 0 ? (
-                        profiles.slice(0, 2).reverse().map((profile, index) => (
+                        profiles.slice(0, 2).map((profile, index) => (
                             <MatchCard
                                 key={profile.id}
                                 profile={profile}
