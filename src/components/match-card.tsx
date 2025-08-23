@@ -18,8 +18,8 @@ interface MatchCardProps {
 
 export function MatchCard({ profile, style }: MatchCardProps) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center p-4" style={style}>
-      <div className="relative h-full w-full max-w-xs mx-auto overflow-hidden rounded-2xl shadow-2xl">
+    <div className="absolute inset-0" style={style}>
+      <div className="relative h-full w-full overflow-hidden shadow-2xl">
         <Image
           src={profile.imageUrl}
           alt={profile.name}
