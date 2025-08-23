@@ -137,16 +137,11 @@ export default function Home() {
             <div className="flex-1 relative">
                 <TabsContent value="matches" className="w-full h-full m-0">
                     {profiles.length > 0 ? (
-                        profiles.slice(0, 2).map((profile, index) => (
+                        profiles.slice(0, 1).map((profile, index) => (
                             <MatchCard
                                 key={profile.id}
                                 profile={profile}
                                 onSwipe={handleSwipe}
-                                style={{ 
-                                    zIndex: profiles.length - index,
-                                    transform: `scale(${1 - (profiles.length - index - 1) * 0.05}) translateY(${(profiles.length - index - 1) * -10}px)`,
-                                    opacity: index === profiles.length - 1 ? 1 : 0.8,
-                                }}
                             />
                         ))
                     ) : (
