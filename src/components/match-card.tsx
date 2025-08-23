@@ -18,13 +18,13 @@ interface Profile {
 interface MatchCardProps {
     profile: Profile;
     onSwipe: (action: 'like' | 'dislike') => void;
-    style?: React.CSSProperties;
+    className?: string;
 }
 
-export function MatchCard({ profile, onSwipe, style }: MatchCardProps) {
+export function MatchCard({ profile, onSwipe, className }: MatchCardProps) {
   return (
-    <div style={style} className="absolute inset-0 flex items-center justify-center p-4">
-        <Card className="w-full h-full max-w-xs overflow-hidden rounded-2xl shadow-2xl">
+    <div className={`absolute inset-0 flex items-center justify-center p-4 ${className}`}>
+        <Card className="w-full h-full max-w-sm overflow-hidden rounded-2xl shadow-2xl">
             <div className="relative h-full w-full">
             <Image
                 src={profile.imageUrl}

@@ -86,3 +86,21 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+    @keyframes swipe-right {
+        from { transform: translateX(0) rotate(0); opacity: 1; }
+        to { transform: translateX(200px) rotate(20deg); opacity: 0; }
+    }
+    @keyframes swipe-left {
+        from { transform: translateX(0) rotate(0); opacity: 1; }
+        to { transform: translateX(-200px) rotate(-20deg); opacity: 0; }
+    }
+
+    .animate-swipe-right {
+        animation: swipe-right 0.5s forwards;
+    }
+    .animate-swipe-left {
+        animation: swipe-left 0.5s forwards;
+    }
+}

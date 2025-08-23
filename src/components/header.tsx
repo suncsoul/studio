@@ -16,9 +16,7 @@ import {
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Edit2, EyeOff, LogIn, LogOut, User } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { EyeOff, LogIn, LogOut, User } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -26,18 +24,8 @@ import { db } from "@/lib/firebase";
 import { Avatar as AvatarType } from "@/lib/avatars";
 
 
-const statuses = [
-    "Ready to Connect! 💬",
-    "Seeking Deep Conversations 🌌",
-    "Adventure Buddy Wanted! 🗺️",
-    "Open to Slow Burn ❤️🔥",
-    "Flirty & Fun Tonight 😉",
-    "Let’s Skip Small Talk 🎯"
-];
-
 export function Header() {
   const { user, isLoggedIn, logout } = useAuth();
-  const [status, setStatus] = React.useState(statuses[0]);
   const [incognito, setIncognito] = React.useState(false);
   const [profileAvatar, setProfileAvatar] = React.useState<AvatarType | null>(null);
   const [profilePhoto, setProfilePhoto] = React.useState<string | null>(null);
@@ -70,37 +58,6 @@ export function Header() {
         
         {isLoggedIn ? (
             <div className="flex items-center gap-4">
-                <p className="hidden text-sm text-muted-foreground md:block">{status}</p>
-                <Popover>
-                    <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" className="hidden md:inline-flex">
-                        <Edit2 className="h-4 w-4" />
-                    </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80">
-                    <div className="grid gap-4">
-                        <div className="space-y-2">
-                        <h4 className="font-medium leading-none">Temporal Status</h4>
-                        <p className="text-sm text-muted-foreground">
-                            Let others know your current vibe.
-                        </p>
-                        </div>
-                        <div className="grid gap-2">
-                            <Select onValueChange={setStatus} defaultValue={status}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select a status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {statuses.map((s) => (
-                                        <SelectItem key={s} value={s}>{s}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-                    </PopoverContent>
-                </Popover>
-
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">

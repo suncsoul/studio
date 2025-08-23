@@ -2,26 +2,14 @@
 'use client';
 
 import { Header } from "@/components/header";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Heart,
-  Sparkles,
-  MessageSquare,
-  Bell,
   X,
-  Users,
 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs, DocumentData, addDoc, serverTimestamp } from "firebase/firestore";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { useToast } from "@/hooks/use-toast";
 import { MatchCard } from "@/components/match-card";
 
 
@@ -50,14 +38,12 @@ const matchesData = [
 
 
 export default function Home() {
-  const { isLoggedIn, loading, user } = useAuth();
+  const { isLoggedIn, loading } = useAuth();
   const router = useRouter();
-  const { toast } = useToast();
   
   const [profiles, setProfiles] = useState(matchesData);
-  const [likes, setLikes] = useState<DocumentData[]>([]);
-  const [isLikesLoading, setIsLikesLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("matches");
+  const [swipeAction, setSwipeAction] = useState<'like' | 'dislike' | null>(null);
+  const [swipedProfileId, setSwipedProfileId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -65,47 +51,18 @@ export default function Home() {
     }
   }, [isLoggedIn, loading, router]);
   
-  useEffect(() => {
-    if (user) {
-      const fetchLikes = async () => {
-        setIsLikesLoading(true);
-        try {
-          const likesQuery = query(collection(db, 'likes'), where('likedId', '==', user.uid));
-          const likesSnapshot = await getDocs(likesQuery);
-          
-          const likersPromises = likesSnapshot.docs.map(likeDoc => {
-              const likerId = likeDoc.data().likerId;
-              const likerProfile = matchesData.find(m => m.id === likerId);
-              return likerProfile ? { ...likerProfile, likeId: likeDoc.id } : null;
-          });
-  
-          const likers = (await Promise.all(likersPromises)).filter(Boolean);
-          setLikes(likers as DocumentData[]);
-        } catch (error) {
-          console.error("Error fetching likes:", error);
-        } finally {
-          setIsLikesLoading(false);
-        }
-      };
-      
-      fetchLikes();
-    }
-  }, [user]);
-
   const handleSwipe = (action: 'like' | 'dislike') => {
+    if (profiles.length === 0) return;
+    
     const swipedProfile = profiles[0];
+    setSwipedProfileId(swipedProfile.id);
+    setSwipeAction(action);
     
-    // For "like", a comment is required. This would be handled in the MatchCard component
-    // which would call this function with the comment. For now, we'll simulate.
-    if (action === 'like') {
-        // In a real implementation, we wouldn't swipe yet.
-        // We'd show a comment modal. For now, we'll just swipe.
-    }
-    
-    console.log(`${action}d ${swipedProfile.name}`);
-
-    // Remove the profile from the stack.
-    setProfiles(prev => prev.slice(1));
+    setTimeout(() => {
+        setProfiles(prev => prev.slice(1));
+        setSwipeAction(null);
+        setSwipedProfileId(null);
+    }, 500); // Corresponds to animation duration
   };
 
 
@@ -117,123 +74,46 @@ export default function Home() {
     );
   }
 
-  const tabs = [
-    { value: "matches", icon: Users, label: "Matches", color: "hover:text-red-500 data-[state=active]:text-red-500" },
-    { value: "likes", icon: Bell, label: "Likes", color: "hover:text-pink-500 data-[state=active]:text-pink-500" },
-    { value: "messages", icon: MessageSquare, label: "Messages", color: "hover:text-blue-500 data-[state=active]:text-blue-500" },
-    { value: "ai-features", icon: Sparkles, label: "AI Features", color: "hover:text-yellow-400 data-[state=active]:text-yellow-400", href: "/ai-features" },
-  ];
-
   return (
     <div className="flex h-screen w-full flex-col bg-muted/20">
       <Header />
-       <main className="flex-1 flex flex-col">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-            <div className="flex-1 relative">
-                <TabsContent value="matches" className="w-full h-full m-0">
-                    {profiles.length > 0 ? (
-                        profiles.slice(0, 1).map((profile, index) => (
-                            <MatchCard
-                                key={profile.id}
-                                profile={profile}
-                                onSwipe={handleSwipe}
-                            />
-                        ))
-                    ) : (
-                        <div className="flex flex-col items-center justify-center h-full text-center">
-                            <p className="text-2xl font-bold">That's everyone!</p>
-                            <p className="text-muted-foreground">You've seen all the profiles for now. Check back later!</p>
-                        </div>
-                    )}
-                </TabsContent>
-                
-                <TabsContent value="likes" className="mt-6">
-                    <div className="container mx-auto px-4">
-                    {isLikesLoading ? (
-                        <div className="text-center py-16">Loading likes...</div>
-                    ) : likes.length === 0 ? (
-                        <div className="text-center py-16">
-                        <h2 className="text-2xl font-bold">Likes You</h2>
-                        <p className="text-muted-foreground">People who have liked you will show up here.</p>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                        {likes.map((like) => (
-                            <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
-                                <CardHeader className="relative p-0">
-                                <div className="relative h-72 w-full bg-muted flex items-center justify-center">
-                                    {like.selectedAvatar ? (
-                                    <div className="flex flex-col items-center justify-center text-center p-4">
-                                        <span className="text-8xl">{like.selectedAvatar.emoji}</span>
-                                        <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
-                                    </div>
-                                    ) : (
-                                    <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
-                                        <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
-                                    </div>
-                                    )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                </div>
-                                </CardHeader>
-                                <CardContent className="p-4 bg-card/80 flex-grow text-center">
-                                <h3 className="font-semibold text-lg">Someone's interested!</h3>
-                                <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
-                                <Button className="mt-4 w-full">Connect Back</Button>
-                                </CardContent>
-                            </Card>
-                        ))}
-                        </div>
-                    )}
+       <main className="flex-1 flex flex-col items-center justify-center relative">
+            <div className="relative w-full h-full max-w-sm flex items-center justify-center">
+                {profiles.length > 0 ? (
+                    profiles.map((profile, index) => (
+                        <MatchCard
+                            key={profile.id}
+                            profile={profile}
+                            onSwipe={handleSwipe}
+                            className={
+                                swipedProfileId === profile.id
+                                ? swipeAction === 'like' ? 'animate-swipe-right' : 'animate-swipe-left'
+                                : ''
+                            }
+                        />
+                    )).slice(0,1)
+                ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-center">
+                        <p className="text-2xl font-bold">That's everyone!</p>
+                        <p className="text-muted-foreground">You've seen all the profiles for now. Check back later!</p>
                     </div>
-                </TabsContent>
-
-                 <TabsContent value="messages" className="mt-6">
-                    <div className="container mx-auto px-4">
-                    <div className="text-center py-16">
-                        <h2 className="text-2xl font-bold">Your Messages</h2>
-                        <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
-                    </div>
-                    </div>
-                </TabsContent>
+                )}
             </div>
-            <footer className="sticky bottom-0 w-full bg-background/80 backdrop-blur-sm border-t">
-                <div className="container mx-auto px-4 py-2">
-                    {activeTab === 'matches' && profiles.length > 0 && (
-                        <div className="flex justify-center items-center gap-4 mb-2">
-                            <Button onClick={() => handleSwipe('dislike')} variant="outline" className="h-16 w-16 rounded-full border-4 border-destructive text-destructive hover:bg-destructive/10">
-                                <X className="h-12 w-12" />
-                            </Button>
-                            <Button onClick={() => handleSwipe('like')} variant="outline" className="h-16 w-16 rounded-full border-4 border-green-500 text-green-500 hover:bg-green-500/10">
-                                <Heart className="h-12 w-12" />
-                            </Button>
-                        </div>
-                    )}
-                     <TooltipProvider>
-                        <TabsList className="grid w-full grid-cols-4">
-                        {tabs.map((tab) => (
-                            <Tooltip key={tab.value}>
-                            <TooltipTrigger asChild>
-                                <TabsTrigger value={tab.value} asChild={!!tab.href} onClick={() => !tab.href && setActiveTab(tab.value)}>
-                                {tab.href ? (
-                                    <Link href={tab.href}>
-                                    <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                                    </Link>
-                                ) : (
-                                    <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                                )}
-                                </TabsTrigger>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>{tab.label}</p>
-                            </TooltipContent>
-                            </Tooltip>
-                        ))}
-                        </TabsList>
-                    </TooltipProvider>
-                </div>
-            </footer>
-          </Tabs>
       </main>
+        <footer className="sticky bottom-0 w-full bg-transparent py-4">
+            <div className="container mx-auto px-4">
+                {profiles.length > 0 && (
+                    <div className="flex justify-center items-center gap-8">
+                        <Button onClick={() => handleSwipe('dislike')} variant="outline" className="h-20 w-20 rounded-full border-4 border-destructive text-destructive hover:bg-destructive/10">
+                            <X className="h-12 w-12" />
+                        </Button>
+                        <Button onClick={() => handleSwipe('like')} variant="outline" className="h-20 w-20 rounded-full border-4 border-green-500 text-green-500 hover:bg-green-500/10">
+                            <Heart className="h-12 w-12" />
+                        </Button>
+                    </div>
+                )}
+            </div>
+        </footer>
     </div>
   );
 }
