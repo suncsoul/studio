@@ -103,4 +103,19 @@ body {
     .animate-swipe-left {
         animation: swipe-left 0.5s forwards;
     }
+    .action-btn {
+        @apply w-16 h-16 rounded-full flex justify-center items-center text-3xl cursor-pointer shadow-md transition-transform duration-200;
+    }
+    .action-btn:hover {
+        @apply scale-105 shadow-lg;
+    }
+    .dislike {
+        @apply bg-white text-destructive border-2 border-destructive;
+    }
+    .like {
+        @apply bg-white text-green-500 border-2 border-green-500;
+    }
+    .super-like {
+        @apply bg-white text-blue-500 border-2 border-blue-500;
+    }
 }

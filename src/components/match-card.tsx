@@ -23,8 +23,8 @@ interface MatchCardProps {
 
 export function MatchCard({ profile, onSwipe, className }: MatchCardProps) {
   return (
-    <div className={`absolute inset-0 flex items-center justify-center p-4 ${className}`}>
-        <Card className="w-full h-full max-w-sm overflow-hidden rounded-2xl shadow-2xl">
+    <div className={`absolute w-full h-full max-w-sm flex items-center justify-center ${className}`}>
+        <Card className="w-full h-full overflow-hidden rounded-2xl shadow-2xl">
             <div className="relative h-full w-full">
             <Image
                 src={profile.imageUrl}
