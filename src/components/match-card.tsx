@@ -20,7 +20,7 @@ interface MatchCardProps {
 export function MatchCard({ profile, onSwipe }: MatchCardProps) {
   return (
     <div className="absolute inset-0 flex items-center justify-center p-4">
-        <Card className="w-full h-full aspect-[16/9] max-w-full max-h-full overflow-hidden rounded-2xl shadow-2xl">
+        <Card className="w-full h-full aspect-[9/16] max-w-full max-h-full overflow-hidden rounded-2xl shadow-2xl">
             <div className="relative h-full w-full">
             <Image
                 src={profile.imageUrl}
