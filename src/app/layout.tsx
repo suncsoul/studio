@@ -8,8 +8,8 @@ import { AuthProvider } from '@/contexts/auth-context';
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 
 export const metadata: Metadata = {
-  title: 'goodluck - Human Connection, Not Just Swiping',
-  description: 'A next-gen social connection platform for meaningful interactions.',
+  title: 'Goodluck - Your world, connected.',
+  description: 'A social discovery app for romantic, platonic, and serendipitous connections.',
 };
 
 export default function RootLayout({
