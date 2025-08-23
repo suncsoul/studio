@@ -5,18 +5,12 @@ import { Header } from "@/components/header";
 import {
   Heart,
   X,
-  Users,
-  Briefcase,
   Star,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
-import { Button } from "@/components/ui/button";
 import { MatchCard } from "@/components/match-card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { WhosDownCard } from "@/components/whos-down-card";
-import { HireCompanionCard } from "@/components/hire-companion-card";
 
 
 const matchesData = [
@@ -32,18 +26,6 @@ const matchesData = [
     { id: 'user20', name: 'Matteo', age: 33, location: 'Rome, Italy', imageUrl: 'https://placehold.co/400x600/E84A5F/FFFFFF.png', prompts: [{question: "Let me...", answer: "Cook for you and we'll talk about art, history, and the meaning of la dolce vita."}], selectedAvatar: { type: 'romantic', emoji: '🌹', title: 'The Romantic', description: 'Seeks long-term love' } },
 ];
 
-const whosDownData = [
-  { userName: "Chloe", userAvatarUrl: "https://placehold.co/100x100.png", activity: "Live music at The Continental", time: "Tonight, 9 PM", bondType: "event", vibe: "Chill", distance: "3 miles away" },
-  { userName: "Julian", userAvatarUrl: "https://placehold.co/100x100.png", activity: "Weekend trip to Hakone", time: "This weekend", bondType: "travel", vibe: "Adventurous", distance: "Train ride away" },
-  { userName: "Aisha", userAvatarUrl: "https://placehold.co/100x100.png", activity: "High tea at Burj Al Arab", time: "Tomorrow, 3 PM", bondType: "activity", vibe: "Luxury", distance: "5 miles away" },
-];
-
-const hireCompanionData = [
-  { providerName: "Seraphina", providerAvatarUrl: "https://placehold.co/100x100.png", service: "Venice History Tour", rate: 75, isVerified: true, isBackgroundChecked: true, rating: 4.9 },
-  { providerName: "Leo", providerAvatarUrl: "https://placehold.co/100x100.png", service: "Berlin Art Scene Guide", rate: 60, isVerified: true, isBackgroundChecked: false, rating: 4.8 },
-  { providerName: "Javier", providerAvatarUrl: "https://placehold.co/100x100.png", service: "CDMX Street Food Expert", rate: 50, isVerified: true, isBackgroundChecked: true, rating: 5.0 },
-];
-
 
 export default function Home() {
   const { isLoggedIn, loading } = useAuth();
@@ -52,7 +34,6 @@ export default function Home() {
   const [profiles, setProfiles] = useState(matchesData);
   const [swipeAction, setSwipeAction] = useState<'like' | 'dislike' | null>(null);
   const [swipedProfileId, setSwipedProfileId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState("matching");
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
@@ -85,80 +66,46 @@ export default function Home() {
   return (
     <div className="flex h-screen w-full flex-col bg-muted/20">
       <Header />
-       <main className="flex-1 flex flex-col items-center pt-4">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-md mx-auto">
-            <TabsList className="grid w-full grid-cols-3 h-auto py-2">
-                <TabsTrigger value="matching" className="flex flex-col gap-1">
-                    <Heart className="h-5 w-5"/>
-                    <span>Matching</span>
-                </TabsTrigger>
-                <TabsTrigger value="whosdown" className="flex flex-col gap-1">
-                    <Users className="h-5 w-5"/>
-                    <span>Who's Down</span>
-                </TabsTrigger>
-                <TabsTrigger value="hire" className="flex flex-col gap-1">
-                    <Briefcase className="h-5 w-5"/>
-                    <span>Hire</span>
-                </TabsTrigger>
-            </TabsList>
-            <TabsContent value="matching" className="flex-grow">
-                 <div className="relative w-full h-[600px] flex items-center justify-center mt-4">
-                    {profiles.length > 0 ? (
-                        profiles.map((profile, index) => (
-                            <MatchCard
-                                key={profile.id}
-                                profile={profile}
-                                onSwipe={handleSwipe}
-                                className={
-                                    swipedProfileId === profile.id
-                                    ? swipeAction === 'like' ? 'animate-swipe-right' : 'animate-swipe-left'
-                                    : ''
-                                }
-                            />
-                        )).slice(0,1)
-                    ) : (
-                        <div className="flex flex-col items-center justify-center h-full text-center">
-                            <p className="text-2xl font-bold">That's everyone!</p>
-                            <p className="text-muted-foreground">You've seen all the profiles for now. Check back later!</p>
-                        </div>
-                    )}
+       <main className="flex-1 flex flex-col items-center justify-center pt-4">
+         <div className="relative w-full h-full max-w-xs flex items-center justify-center">
+            {profiles.length > 0 ? (
+                profiles.map((profile) => (
+                    <MatchCard
+                        key={profile.id}
+                        profile={profile}
+                        onSwipe={handleSwipe}
+                        className={
+                            swipedProfileId === profile.id
+                            ? swipeAction === 'like' ? 'animate-swipe-right' : 'animate-swipe-left'
+                            : ''
+                        }
+                    />
+                )).slice(0,1)
+            ) : (
+                <div className="flex flex-col items-center justify-center h-full text-center">
+                    <p className="text-2xl font-bold">That's everyone!</p>
+                    <p className="text-muted-foreground">You've seen all the profiles for now. Check back later!</p>
                 </div>
-            </TabsContent>
-            <TabsContent value="whosdown">
-                 <div className="space-y-4 py-4">
-                    {whosDownData.map((item, index) => (
-                        <WhosDownCard key={index} {...item} />
-                    ))}
-                </div>
-            </TabsContent>
-            <TabsContent value="hire">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
-                    {hireCompanionData.map((item, index) => (
-                        <HireCompanionCard key={index} {...item} />
-                    ))}
-                </div>
-            </TabsContent>
-        </Tabs>
+            )}
+        </div>
       </main>
-        {activeTab === 'matching' && (
-             <footer className="sticky bottom-0 w-full bg-transparent py-4">
-                <div className="container mx-auto px-4">
-                    {profiles.length > 0 && (
-                        <div className="flex justify-center items-center gap-8">
-                             <div className="action-btn dislike" onClick={() => handleSwipe('dislike')}>
-                                <X className="h-8 w-8"/>
-                            </div>
-                            <div className="action-btn super-like">
-                                <Star className="h-8 w-8" />
-                            </div>
-                            <div className="action-btn like" onClick={() => handleSwipe('like')}>
-                                <Heart className="h-8 w-8"/>
-                            </div>
-                        </div>
-                    )}
+      <footer className="sticky bottom-0 w-full bg-transparent py-4">
+        <div className="container mx-auto px-4">
+            {profiles.length > 0 && (
+                <div className="flex justify-center items-center gap-8">
+                      <div className="action-btn dislike" onClick={() => handleSwipe('dislike')}>
+                        <X className="h-8 w-8"/>
+                    </div>
+                    <div className="action-btn super-like">
+                        <Star className="h-8 w-8" />
+                    </div>
+                    <div className="action-btn like" onClick={() => handleSwipe('like')}>
+                        <Heart className="h-8 w-8"/>
+                    </div>
                 </div>
-            </footer>
-        )}
+            )}
+        </div>
+    </footer>
     </div>
   );
 }
