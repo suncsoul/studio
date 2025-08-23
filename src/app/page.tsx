@@ -87,10 +87,19 @@ export default function Home() {
       <Header />
        <main className="flex-1 flex flex-col items-center pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-md mx-auto">
-            <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="matching"><Heart className="mr-2 h-4 w-4"/>Matching</TabsTrigger>
-                <TabsTrigger value="whosdown"><Users className="mr-2 h-4 w-4"/>Who's Down</TabsTrigger>
-                <TabsTrigger value="hire"><Briefcase className="mr-2 h-4 w-4"/>Hire</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 h-auto py-2">
+                <TabsTrigger value="matching" className="flex flex-col gap-1">
+                    <Heart className="h-5 w-5"/>
+                    <span>Matching</span>
+                </TabsTrigger>
+                <TabsTrigger value="whosdown" className="flex flex-col gap-1">
+                    <Users className="h-5 w-5"/>
+                    <span>Who's Down</span>
+                </TabsTrigger>
+                <TabsTrigger value="hire" className="flex flex-col gap-1">
+                    <Briefcase className="h-5 w-5"/>
+                    <span>Hire</span>
+                </TabsTrigger>
             </TabsList>
             <TabsContent value="matching" className="flex-grow">
                  <div className="relative w-full h-[600px] flex items-center justify-center mt-4">
