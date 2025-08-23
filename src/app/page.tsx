@@ -98,11 +98,6 @@ export default function Home() {
     // For "like", a comment is required. This would be handled in the MatchCard component
     // which would call this function with the comment. For now, we'll simulate.
     if (action === 'like') {
-        toast({
-            title: "Comment to Like!",
-            description: `To connect with ${swipedProfile.name}, you must comment on their profile.`,
-            variant: "default",
-        });
         // In a real implementation, we wouldn't swipe yet.
         // We'd show a comment modal. For now, we'll just swipe.
     }
