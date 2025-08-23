@@ -19,11 +19,12 @@ interface MatchCardProps {
     profile: Profile;
     onSwipe: (action: 'like' | 'dislike') => void;
     className?: string;
+    style?: React.CSSProperties;
 }
 
-export function MatchCard({ profile, onSwipe, className }: MatchCardProps) {
+export function MatchCard({ profile, onSwipe, className, style }: MatchCardProps) {
   return (
-    <div className={`absolute w-full h-full max-w-xs flex items-center justify-center ${className}`}>
+    <div className={`absolute w-full h-full max-w-xs flex items-center justify-center ${className}`} style={style}>
         <Card className="w-full h-full overflow-hidden rounded-2xl shadow-2xl">
             <div className="relative h-full w-full">
             <Image

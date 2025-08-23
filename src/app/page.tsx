@@ -69,18 +69,23 @@ export default function Home() {
        <main className="flex-1 flex flex-col items-center justify-center pt-4">
          <div className="relative w-full h-full max-w-xs flex items-center justify-center">
             {profiles.length > 0 ? (
-                profiles.map((profile) => (
+                profiles.map((profile, i) => (
                     <MatchCard
                         key={profile.id}
                         profile={profile}
                         onSwipe={handleSwipe}
+                        style={{
+                            transform: `scale(${1 - (profiles.length - 1 - i) * 0.05}) translateY(-${(profiles.length - 1 - i) * 10}px)`,
+                            opacity: 1 - (profiles.length - 1 - i) * 0.1,
+                            zIndex: 10 - i,
+                        }}
                         className={
                             swipedProfileId === profile.id
                             ? swipeAction === 'like' ? 'animate-swipe-right' : 'animate-swipe-left'
                             : ''
                         }
                     />
-                )).slice(0,1)
+                )).reverse().slice(0, 2)
             ) : (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                     <p className="text-2xl font-bold">That's everyone!</p>
