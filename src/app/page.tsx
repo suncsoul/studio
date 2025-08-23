@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from "@/components/header";
@@ -40,6 +41,26 @@ const matchesData = [
   { id: "user8", name: "Liam", age: 30, location: "Sydney, Australia", imageUrl: "https://placehold.co/400x600/4CAF50/FAFAFA.png", mbti: "INFP", loveLanguage: "Words of Affirmation", humorStyle: "Quirky", isVerified: true, bio: "Dreamer, surfer, and storyteller. I'm more at home in the ocean than on land. Let's watch the sunrise at Bondi Beach, have a deep conversation about the universe, and maybe write a song about it.", selectedAvatar: { type: 'slow_burner', emoji: '🕯️', title: 'The Slow Burner', description: 'Prefers gradual connections' } },
   { id: "user9", name: "Mei", age: 25, location: "Shanghai, China", imageUrl: "https://placehold.co/400x600/E91E63/FAFAFA.png", mbti: "INTJ", loveLanguage: "Physical Touch", humorStyle: "Intellectual", isVerified: false, bio: "A strategist in the world of finance and in life. I appreciate efficiency, intelligence, and a well-executed plan. Let's discuss futurism over xiaolongbao or explore the contemporary art scene in M50.", selectedAvatar: { type: 'conversationalist', emoji: '💭', title: 'Deep Conversationalist', description: 'Philosophical chats' } },
   { id: "user10", name: "Javier", age: 32, location: "Mexico City, Mexico", imageUrl: "https://placehold.co/400x600/3F51B5/FAFAFA.png", mbti: "ESFJ", loveLanguage: "Gifts", humorStyle: "Charismatic", isVerified: true, bio: "My heart beats to the rhythm of mariachi music and the vibrant colors of Frida Kahlo's art. I'm a fantastic host who loves to share the rich culture and cuisine of my city. Let me show you the real CDMX.", selectedAvatar: { type: 'flirty_teaser', emoji: '😏', title: 'Flirty Teaser', description: 'Playful banter' } },
+  { id: 'user11', name: 'Nora', age: 29, location: 'Dublin, Ireland', imageUrl: 'https://placehold.co/400x600/D2B48C/3A3B3C.png', mbti: 'INFP', loveLanguage: 'Quality Time', humorStyle: 'Self-deprecating', isVerified: true, bio: 'Librarian with a love for rainy days, trad music sessions in cozy pubs, and hiking the Wicklow Mountains. My ideal date is getting lost in a new city or an old book.', selectedAvatar: { type: 'slow_burner', emoji: '🕯️', title: 'The Slow Burner', description: 'Prefers gradual connections' } },
+  { id: 'user12', name: 'Kenji', age: 34, location: 'Tokyo, Japan', imageUrl: 'https://placehold.co/400x600/222222/E0E0E0.png', mbti: 'ISTJ', loveLanguage: 'Acts of Service', humorStyle: 'Deadpan', isVerified: true, bio: 'Software architect by day, photographer by night. I find beauty in clean code and minimalist design. Let\'s explore the quiet corners of Tokyo, far from the tourist crowds.', selectedAvatar: { type: 'conversationalist', emoji: '💭', title: 'Deep Conversationalist', description: 'Philosophical chats' } },
+  { id: 'user13', name: 'Fatima', age: 27, location: 'Marrakech, Morocco', imageUrl: 'https://placehold.co/400x600/C06C84/FFFFFF.png', mbti: 'ENFJ', loveLanguage: 'Words of Affirmation', humorStyle: 'Warm', isVerified: true, bio: 'Textile designer inspired by the vibrant colors of the souk. I can spend hours haggling for spices or watching the sunset over the Atlas Mountains. Let\'s share mint tea and stories.', selectedAvatar: { type: 'romantic', emoji: '🌹', title: 'The Romantic', description: 'Seeks long-term love' } },
+  { id: 'user14', name: 'David', age: 30, location: 'Toronto, Canada', imageUrl: 'https://placehold.co/400x600/6C5B7B/FFFFFF.png', mbti: 'ENTJ', loveLanguage: 'Quality Time', humorStyle: 'Witty', isVerified: false, bio: 'Startup founder with a passion for disruptive tech and a good debate. I de-stress by playing hockey and trying new IPAs. Looking for a partner who challenges me and makes me laugh.', selectedAvatar: { type: 'guru', emoji: '🧠', title: 'The Guru', description: 'Advice-seeker' } },
+  { id: 'user15', name: 'Isabella', age: 26, location: 'Rio de Janeiro, Brazil', imageUrl: 'https://placehold.co/400x600/F8B195/3A3B3C.png', mbti: 'ESFP', loveLanguage: 'Physical Touch', humorStyle: 'Flirty', isVerified: true, bio: 'Samba dancer and beach lover. Life is a party, and I\'m always on the dance floor. Join me for a caipirinha on Ipanema beach or a hike up to Christ the Redeemer.', selectedAvatar: { type: 'spark_chaser', emoji: '⚡', title: 'The Spark Chaser', description: 'Wants passionate flings' } },
+  { id: 'user16', name: 'Omar', age: 35, location: 'Cairo, Egypt', imageUrl: 'https://placehold.co/400x600/F67280/FFFFFF.png', mbti: 'ISFP', loveLanguage: 'Gifts', humorStyle: 'Gentle', isVerified: false, bio: 'Archaeologist who feels more at home in the past. My dream is to uncover a hidden tomb. I can tell you stories about the pharaohs over a game of senet.', selectedAvatar: { type: 'listener', emoji: '👂', title: 'The Listener', description: 'Empathetic energy' } },
+  { id: 'user17', name: 'Hana', age: 28, location: 'Seoul, South Korea', imageUrl: 'https://placehold.co/400x600/355C7D/FFFFFF.png', mbti: 'INFJ', loveLanguage: 'Acts of Service', humorStyle: 'Cute', isVerified: true, bio: 'Webtoon artist and cafe hopper. I\'m fueled by iced Americanos and dramatic K-dramas. Let\'s find the coziest cafe in Seoul and draw each other.', selectedAvatar: { type: 'romantic', emoji: '🌹', title: 'The Romantic', description: 'Seeks long-term love' } },
+  { id: 'user18', name: 'Alex', age: 31, location: 'London, UK', imageUrl: 'https://placehold.co/400x600/99B898/3A3B3C.png', mbti: 'ESTP', loveLanguage: 'Quality Time', humorStyle: 'Banter', isVerified: true, bio: 'Fintech trader who works hard and plays harder. I know the best speakeasies in London. On weekends, I\'m either at a football match or exploring a new neighbourhood.', selectedAvatar: { type: 'flirty_teaser', emoji: '😏', title: 'Flirty Teaser', description: 'Playful banter' } },
+  { id: 'user19', name: 'Priya', age: 29, location: 'Mumbai, India', imageUrl: 'https://placehold.co/400x600/A8A0B1/3A3B3C.png', mbti: 'ENFP', loveLanguage: 'Words of Affirmation', humorStyle: 'Dramatic', isVerified: false, bio: 'Aspiring Bollywood actress with a flair for the dramatic. I love street food, monsoon rains, and dancing like nobody\'s watching. Let\'s recreate a scene from our favorite movie.', selectedAvatar: { type: 'wildcard', emoji: '🎭', title: 'The Wildcard', description: 'Unpredictable fun' } },
+  { id: 'user20', name: 'Matteo', age: 33, location: 'Rome, Italy', imageUrl: 'https://placehold.co/400x600/E84A5F/FFFFFF.png', mbti: 'ESFJ', loveLanguage: 'Gifts', humorStyle: 'Charming', isVerified: true, bio: 'Chef who believes the best conversations happen over a plate of pasta. I learned all my grandmother\'s recipes. Let me cook for you and talk about art, history, and the meaning of la dolce vita.', selectedAvatar: { type: 'romantic', emoji: '🌹', title: 'The Romantic', description: 'Seeks long-term love' } },
+  { id: 'user21', name: 'Grace', age: 25, location: 'San Francisco, USA', imageUrl: 'https://placehold.co/400x600/45B8AC/FFFFFF.png', mbti: 'INTP', loveLanguage: 'Acts of Service', humorStyle: 'Nerdy', isVerified: true, bio: 'Data scientist and rock climber. I love solving complex problems, whether on a climbing wall or in a dataset. Let\'s talk about AI ethics or go bouldering.', selectedAvatar: { type: 'conversationalist', emoji: '💭', title: 'Deep Conversationalist', description: 'Philosophical chats' } },
+  { id: 'user22', name: 'Andrei', age: 32, location: 'Moscow, Russia', imageUrl: 'https://placehold.co/400x600/3D405B/FFFFFF.png', mbti: 'INTJ', loveLanguage: 'Quality Time', humorStyle: 'Ironic', isVerified: false, bio: 'Classical musician and chess enthusiast. I appreciate the beauty of a complex symphony and a well-played game. Join me for a concert at the Tchaikovsky Conservatory.', selectedAvatar: { type: 'guru', emoji: '🧠', title: 'The Guru', description: 'Advice-seeker' } },
+  { id: 'user23', name: 'Sofia', age: 28, location: 'Buenos Aires, Argentina', imageUrl: 'https://placehold.co/400x600/F2C5B6/3A3B3C.png', mbti: 'ISFJ', loveLanguage: 'Physical Touch', humorStyle: 'Playful', isVerified: true, bio: 'Tango instructor and hopeless romantic. I believe dance is the language of the soul. Let\'s get lost in the music and the cobblestone streets of San Telmo.', selectedAvatar: { type: 'spark_chaser', emoji: '⚡', title: 'The Spark Chaser', description: 'Wants passionate flings' } },
+  { id: 'user24', name: 'Ben', age: 30, location: 'Chicago, USA', imageUrl: 'https://placehold.co/400x600/8D99AE/FFFFFF.png', mbti: 'ENTP', loveLanguage: 'Words of Affirmation', humorStyle: 'Sarcastic', isVerified: true, bio: 'Improv comedian and architecture nerd. I can tell you a joke and then explain the history of the building behind you. Let\'s catch a show at Second City or go on an architecture boat tour.', selectedAvatar: { type: 'wildcard', emoji: '🎭', title: 'The Wildcard', description: 'Unpredictable fun' } },
+  { id: 'user25', name: 'Amara', age: 27, location: 'Lagos, Nigeria', imageUrl: 'https://placehold.co/400x600/E07A5F/3D405B.png', mbti: 'ESTJ', loveLanguage: 'Acts of Service', humorStyle: 'Bold', isVerified: false, bio: 'Fashion entrepreneur with a love for Afrobeats and spicy jollof rice. My energy is infectious. Let\'s go to a gallery opening or dance the night away at the New Afrika Shrine.', selectedAvatar: { type: 'adventurer', emoji: '🗺️', title: 'Weekend Adventurer', description: 'Active & outgoing' } },
+  { id: 'user26', name: 'Lucas', age: 29, location: 'Stockholm, Sweden', imageUrl: 'https://placehold.co/400x600/BEE5BF/3A3B3C.png', mbti: 'ISTP', loveLanguage: 'Quality Time', humorStyle: 'Dry', isVerified: true, bio: 'Furniture designer and nature lover. I appreciate simplicity, functionality, and a good fika. Let\'s take a ferry to the archipelago or explore the design shops in Södermalm.', selectedAvatar: { type: 'slow_burner', emoji: '🕯️', title: 'The Slow Burner', description: 'Prefers gradual connections' } },
+  { id: 'user27', name: 'Jamila', age: 31, location: 'Cape Town, South Africa', imageUrl: 'https://placehold.co/400x600/FAD02C/3A3B3C.png', mbti: 'ENFJ', loveLanguage: 'Gifts', humorStyle: 'Warm', isVerified: true, bio: 'Marine biologist and activist. I\'m passionate about protecting our oceans. Let\'s hike Table Mountain for sunrise or go wine tasting in Stellenbosch.', selectedAvatar: { type: 'listener', emoji: '👂', title: 'The Listener', description: 'Empathetic energy' } },
+  { id: 'user28', name: 'Finn', age: 26, location: 'Reykjavik, Iceland', imageUrl: 'https://placehold.co/400x600/8FCACA/3A3B3C.png', mbti: 'INFP', loveLanguage: 'Physical Touch', humorStyle: 'Quirky', isVerified: false, bio: 'Musician inspired by sagas and folklore. My life is the soundtrack to an indie film. Let\'s chase the Northern Lights or find a hidden hot spring.', selectedAvatar: { type: 'slow_burner', emoji: '🕯️', title: 'The Slow Burner', description: 'Prefers gradual connections' } },
+  { id: 'user29', name: 'Anong', age: 30, location: 'Bangkok, Thailand', imageUrl: 'https://placehold.co/400x600/EF476F/FFFFFF.png', mbti: 'ESFP', loveLanguage: 'Words of Affirmation', humorStyle: 'Energetic', isVerified: true, bio: 'Street food blogger and Muay Thai practitioner. I know the best spots for boat noodles and mango sticky rice. I can be sweet or spicy. Let\'s explore the floating markets.', selectedAvatar: { type: 'adventurer', emoji: '🗺️', title: 'Weekend Adventurer', description: 'Active & outgoing' } },
+  { id: 'user30', name: 'Santiago', age: 34, location: 'Havana, Cuba', imageUrl: 'https://placehold.co/400x600/FFD166/3A3B3C.png', mbti: 'ESTP', loveLanguage: 'Quality Time', humorStyle: 'Charismatic', isVerified: true, bio: 'Musician and classic car restorer. My life has a rhythm and a vintage filter. Let\'s drive down the Malecón in a \'57 Chevy and dance salsa until dawn.', selectedAvatar: { type: 'flirty_teaser', emoji: '😏', title: 'Flirty Teaser', description: 'Playful banter' } },
 ];
 
 const whosDownItems = [
@@ -149,136 +170,142 @@ export default function Home() {
   return (
     <div className="flex h-screen w-full flex-col bg-muted/20">
       <Header />
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-grow">
+      <div className="flex-1 flex flex-col relative">
         <main className="flex-1 flex flex-col">
-            <TabsContent value="matches" className="flex-grow flex flex-col p-0 m-0">
-                <div className="relative flex-1 w-full">
-                {profiles.length > 0 ? (
-                    profiles.slice(0, 2).reverse().map((profile, index) => (
-                         <MatchCard
-                            key={profile.id}
-                            profile={profile}
-                            style={{ 
-                                zIndex: profiles.length - index,
-                                transform: `scale(${1 - (profiles.length - index - 1) * 0.05}) translateY(${(profiles.length - index - 1) * -10}px)`,
-                                opacity: index === profiles.length - 1 ? 1 : 0.8,
-                            }}
-                         />
-                    ))
-                ) : (
-                    <div className="flex flex-col items-center justify-center h-full text-center">
-                        <p className="text-2xl font-bold">That's everyone!</p>
-                        <p className="text-muted-foreground">You've seen all the profiles for now. Check back later!</p>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+                <TabsContent value="matches" className="flex-grow flex flex-col p-0 m-0">
+                    <div className="relative flex-1 w-full">
+                    {profiles.length > 0 ? (
+                        profiles.slice(0, 2).reverse().map((profile, index) => (
+                            <MatchCard
+                                key={profile.id}
+                                profile={profile}
+                                onSwipe={handleSwipe}
+                                style={{ 
+                                    zIndex: profiles.length - index,
+                                    transform: `scale(${1 - (profiles.length - index - 1) * 0.05}) translateY(${(profiles.length - index - 1) * -10}px)`,
+                                    opacity: index === profiles.length - 1 ? 1 : 0.8,
+                                }}
+                            />
+                        ))
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-full text-center">
+                            <p className="text-2xl font-bold">That's everyone!</p>
+                            <p className="text-muted-foreground">You've seen all the profiles for now. Check back later!</p>
+                        </div>
+                    )}
                     </div>
-                )}
-                 </div>
-            </TabsContent>
-            <TabsContent value="whos-down" className="mt-6 flex-grow">
-                <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {whosDownItems.map((item, index) => (
-                        <WhosDownCard key={index} {...item} />
-                    ))}
-                </div>
-                </div>
-            </TabsContent>
+                </TabsContent>
+                <TabsContent value="whos-down" className="mt-6 flex-grow">
+                    <div className="container mx-auto px-4">
+                    <div className="max-w-3xl mx-auto space-y-4">
+                        {whosDownItems.map((item, index) => (
+                            <WhosDownCard key={index} {...item} />
+                        ))}
+                    </div>
+                    </div>
+                </TabsContent>
 
-            <TabsContent value="hire-companion" className="mt-6">
-                <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {hireCompanions.map((item, index) => (
-                        <HireCompanionCard key={index} {...item} />
-                    ))}
-                </div>
-                </div>
-            </TabsContent>
+                <TabsContent value="hire-companion" className="mt-6">
+                    <div className="container mx-auto px-4">
+                    <div className="max-w-3xl mx-auto space-y-4">
+                        {hireCompanions.map((item, index) => (
+                            <HireCompanionCard key={index} {...item} />
+                        ))}
+                    </div>
+                    </div>
+                </TabsContent>
 
-            <TabsContent value="messages" className="mt-6">
-                <div className="container mx-auto px-4">
-                <div className="text-center py-16">
-                    <h2 className="text-2xl font-bold">Your Messages</h2>
-                    <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
-                </div>
-                </div>
-            </TabsContent>
-
-            <TabsContent value="likes" className="mt-6">
-                <div className="container mx-auto px-4">
-                {isLikesLoading ? (
-                    <div className="text-center py-16">Loading likes...</div>
-                ) : likes.length === 0 ? (
+                <TabsContent value="messages" className="mt-6">
+                    <div className="container mx-auto px-4">
                     <div className="text-center py-16">
-                    <h2 className="text-2xl font-bold">Likes You</h2>
-                    <p className="text-muted-foreground">People who have liked you will show up here.</p>
+                        <h2 className="text-2xl font-bold">Your Messages</h2>
+                        <p className="text-muted-foreground">Conversations with your connections will appear here.</p>
                     </div>
-                ) : (
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                    {likes.map((like) => (
-                        <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
-                            <CardHeader className="relative p-0">
-                            <div className="relative h-72 w-full bg-muted flex items-center justify-center">
-                                {like.selectedAvatar ? (
-                                <div className="flex flex-col items-center justify-center text-center p-4">
-                                    <span className="text-8xl">{like.selectedAvatar.emoji}</span>
-                                    <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="likes" className="mt-6">
+                    <div className="container mx-auto px-4">
+                    {isLikesLoading ? (
+                        <div className="text-center py-16">Loading likes...</div>
+                    ) : likes.length === 0 ? (
+                        <div className="text-center py-16">
+                        <h2 className="text-2xl font-bold">Likes You</h2>
+                        <p className="text-muted-foreground">People who have liked you will show up here.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                        {likes.map((like) => (
+                            <Card key={like.id} className="group w-full max-w-sm block overflow-hidden">
+                                <CardHeader className="relative p-0">
+                                <div className="relative h-72 w-full bg-muted flex items-center justify-center">
+                                    {like.selectedAvatar ? (
+                                    <div className="flex flex-col items-center justify-center text-center p-4">
+                                        <span className="text-8xl">{like.selectedAvatar.emoji}</span>
+                                        <p className="mt-2 text-lg font-bold text-foreground">{like.selectedAvatar.title}</p>
+                                    </div>
+                                    ) : (
+                                    <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
+                                        <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
+                                    </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                                 </div>
+                                </CardHeader>
+                                <CardContent className="p-4 bg-card/80 flex-grow text-center">
+                                <h3 className="font-semibold text-lg">Someone's interested!</h3>
+                                <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
+                                <Button className="mt-4 w-full">Connect Back</Button>
+                                </CardContent>
+                            </Card>
+                        ))}
+                        </div>
+                    )}
+                    </div>
+                </TabsContent>
+
+                <footer className="sticky bottom-0 w-full bg-background/80 backdrop-blur-sm border-t">
+                    <div className="container mx-auto px-4 py-2">
+                    {activeTab === 'matches' && profiles.length > 0 && (
+                        <div className="flex justify-center items-center gap-4 mb-2">
+                            <Button onClick={() => handleSwipe('dislike')} variant="outline" className="h-16 w-16 rounded-full border-4 border-destructive text-destructive hover:bg-destructive/10">
+                                <X className="h-12 w-12" />
+                            </Button>
+                            <Button onClick={() => handleSwipe('like')} variant="outline" className="h-16 w-16 rounded-full border-4 border-green-500 text-green-500 hover:bg-green-500/10">
+                                <Heart className="h-12 w-12" />
+                            </Button>
+                        </div>
+                    )}
+                    <TooltipProvider>
+                        <TabsList className="grid w-full grid-cols-6">
+                        {tabs.map((tab) => (
+                            <Tooltip key={tab.value}>
+                            <TooltipTrigger asChild>
+                                <TabsTrigger value={tab.value} asChild={!!tab.href} onClick={() => !tab.href && setActiveTab(tab.value)}>
+                                {tab.href ? (
+                                    <Link href={tab.href}>
+                                    <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
+                                    </Link>
                                 ) : (
-                                <div className="flex flex-col items-center justify-center text-center p-4 filter blur-md transition-all duration-300 group-hover:blur-sm">
-                                    <Image src={like.imageUrl} alt="Blurred profile" fill className="object-cover" />
-                                </div>
+                                    <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                            </div>
-                            </CardHeader>
-                            <CardContent className="p-4 bg-card/80 flex-grow text-center">
-                            <h3 className="font-semibold text-lg">Someone's interested!</h3>
-                            <p className="text-sm text-muted-foreground">Connect with them to reveal their profile.</p>
-                            <Button className="mt-4 w-full">Connect Back</Button>
-                            </CardContent>
-                        </Card>
-                    ))}
+                                </TabsTrigger>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>{tab.label}</p>
+                            </TooltipContent>
+                            </Tooltip>
+                        ))}
+                        </TabsList>
+                    </TooltipProvider>
                     </div>
-                )}
-                </div>
-            </TabsContent>
+                </footer>
+            </Tabs>
         </main>
-        <footer className="sticky bottom-0 w-full bg-background/80 backdrop-blur-sm border-t">
-            <div className="container mx-auto px-4 py-2">
-            {activeTab === 'matches' && profiles.length > 0 && (
-                <div className="flex justify-center items-center gap-4 mb-2">
-                    <Button onClick={() => handleSwipe('dislike')} variant="outline" className="h-16 w-16 rounded-full border-4 border-destructive text-destructive hover:bg-destructive/10">
-                        <X className="h-12 w-12" />
-                    </Button>
-                    <Button onClick={() => handleSwipe('like')} variant="outline" className="h-16 w-16 rounded-full border-4 border-green-500 text-green-500 hover:bg-green-500/10">
-                        <Heart className="h-12 w-12" />
-                    </Button>
-                </div>
-            )}
-            <TooltipProvider>
-                <TabsList className="grid w-full grid-cols-6">
-                {tabs.map((tab) => (
-                    <Tooltip key={tab.value}>
-                    <TooltipTrigger asChild>
-                        <TabsTrigger value={tab.value} asChild={!!tab.href} onClick={() => !tab.href && setActiveTab(tab.value)}>
-                        {tab.href ? (
-                            <Link href={tab.href}>
-                            <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                            </Link>
-                        ) : (
-                            <tab.icon className={`h-5 w-5 transition-colors ${tab.color}`} />
-                        )}
-                        </TabsTrigger>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>{tab.label}</p>
-                    </TooltipContent>
-                    </Tooltip>
-                ))}
-                </TabsList>
-            </TooltipProvider>
-            </div>
-        </footer>
-      </Tabs>
+      </div>
     </div>
   );
 }
+
+    
