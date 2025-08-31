@@ -1,67 +1,55 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, Mountain, Search, ShoppingCart, User } from "lucide-react"
+import { ShoppingCart, Menu } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2">
-              <Mountain className="h-6 w-6" />
-              <span className="font-bold text-lg">Vogue Vault</span>
+          <div className="flex-shrink-0">
+            <Link href="/" className="text-2xl font-bold">
+              KOKIYUM
             </Link>
-            <nav className="hidden md:flex gap-6 text-sm font-medium">
-              <Link href="#" className="hover:text-primary">New Arrivals</Link>
-              <Link href="#" className="hover:text-primary">Clothing</Link>
-              <Link href="#" className="hover:text-primary">Accessories</Link>
-              <Link href="#" className="hover:text-primary">Sale</Link>
-            </nav>
           </div>
           
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+            <Link href="#" className="hover:text-primary transition-colors">Shop</Link>
+            <Link href="#" className="hover:text-primary transition-colors">About</Link>
+            <Link href="#" className="hover:text-primary transition-colors">Contact</Link>
+          </nav>
+          
           <div className="flex items-center gap-4">
-             <div className="hidden md:flex items-center gap-4">
-                <Button variant="ghost" size="icon">
-                  <Search className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
-                </Button>
-                <Link href="/cart">
-                  <Button variant="ghost" size="icon">
-                    <ShoppingCart className="h-5 w-5" />
-                  </Button>
-                </Link>
-            </div>
-            
-            <Sheet>
-              <SheetTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                 <div className="grid gap-4 py-6">
-                    <Link href="/" className="flex items-center gap-2 mb-4">
-                        <Mountain className="h-6 w-6" />
-                        <span className="font-bold text-lg">Vogue Vault</span>
-                    </Link>
-                    <Link href="#" className="font-medium hover:text-primary">New Arrivals</Link>
-                    <Link href="#" className="font-medium hover:text-primary">Clothing</Link>
-                    <Link href="#" className="font-medium hover:text-primary">Accessories</Link>
-                    <Link href="#" className="font-medium hover:text-primary">Sale</Link>
-                    <hr className="my-4"/>
-                    <Link href="#" className="font-medium hover:text-primary">Account</Link>
-                    <Link href="/cart" className="font-medium hover:text-primary">Cart</Link>
-                 </div>
-              </SheetContent>
-            </Sheet>
+            <Link href="#" className="hidden md:flex items-center gap-1 hover:text-primary transition-colors">
+              <ShoppingCart className="h-5 w-5" />
+              <span>Cart</span>
+            </Link>
+            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Toggle menu</span>
+            </Button>
           </div>
         </div>
+        {menuOpen && (
+          <div className="md:hidden py-4">
+            <nav className="flex flex-col gap-4">
+              <Link href="/" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>Home</Link>
+              <Link href="#" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>Shop</Link>
+              <Link href="#" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>About</Link>
+              <Link href="#" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>Contact</Link>
+              <Link href="#" className="flex items-center gap-2 hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+                <ShoppingCart className="h-5 w-5" />
+                <span>Cart</span>
+              </Link>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   )

@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'] 
+});
 
 export const metadata: Metadata = {
-  title: "Vogue Vault - Your Fashion Destination",
-  description: "Shop the latest trends in clothing and accessories.",
+  title: "KOKIYUM - Trendy & Affordable Women's Fashion",
+  description: "Shop the latest trends in women's clothing and accessories.",
 };
 
 export default function RootLayout({
@@ -19,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={cn("relative h-full bg-background font-sans antialiased", inter.className)}>
+      <body className={cn("relative h-full bg-background font-sans antialiased", poppins.className)}>
         <div className="relative flex min-h-screen flex-col">
           <Header />
           <main className="flex-grow flex-1">{children}</main>
