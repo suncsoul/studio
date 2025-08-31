@@ -7,16 +7,16 @@ export default function Footer() {
   return (
     <footer className="bg-secondary text-secondary-foreground">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-8">
           <div>
-            <h3 className="font-bold text-2xl mb-2">KOKIYUM</h3>
-            <p className="text-muted-foreground text-sm max-w-md">
+            <h3 className="font-bold text-lg md:text-2xl mb-2">KOKIYUM</h3>
+            <p className="text-muted-foreground text-xs md:text-sm max-w-md">
               Discover curated collections that blend modern trends with timeless elegance. Quality fashion delivered to your door.
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
+            <h4 className="font-semibold text-base md:text-lg mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-xs md:text-sm">
               <li><Link href="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Shop All</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
@@ -24,7 +24,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-lg mb-4">Follow Us</h4>
+            <h4 className="font-semibold text-base md:text-lg mb-4">Follow Us</h4>
             <div className="flex space-x-4">
               <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 <Twitter className="h-6 w-6" />
