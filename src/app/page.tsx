@@ -65,7 +65,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-center mb-10">Shop by Category</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {categories.map((category) => (
-            <Link href={category.href} key={category.name} className="group relative h-64 rounded-lg overflow-hidden transform transition-transform hover:scale-105">
+            <Link href={category.href} key={category.name} className="group relative h-64 rounded-lg overflow-hidden transform transition-transform hover:scale-105 shadow-lg">
               <Image
                 src={category.image}
                 alt={category.name}
@@ -81,35 +81,37 @@ export default function Home() {
         </div>
       </section>
       
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-center mb-10">Featured Products</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-          {products.map((product) => (
-            <div key={product.name} className="group relative border border-border rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2">
-              <Link href={product.href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
-              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  width={400}
-                  height={400}
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  data-ai-hint={product.hint}
-                />
+      <section className="bg-muted/50 py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-10">Featured Products</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+            {products.map((product) => (
+              <div key={product.name} className="group relative border border-border rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2 bg-card">
+                <Link href={product.href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
+                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    width={400}
+                    height={400}
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    data-ai-hint={product.hint}
+                  />
+                </div>
+                <div className="p-4 text-center">
+                  <h3 className="text-lg font-semibold text-card-foreground">{product.name}</h3>
+                  <p className="text-md text-muted-foreground">{product.price}</p>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <Button variant="secondary" size="sm">Add to Cart</Button>
+                </div>
               </div>
-              <div className="p-4 text-center bg-secondary/50">
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-md text-muted-foreground">{product.price}</p>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <Button variant="secondary" size="sm">Add to Cart</Button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="bg-secondary/50 py-20">
+      <section className="bg-secondary/70 py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold">Join Our Fashion Club</h2>
           <p className="text-muted-foreground mt-2 mb-6 max-w-lg mx-auto">Get exclusive updates on the latest trends, new arrivals, and special offers delivered right to your inbox.</p>

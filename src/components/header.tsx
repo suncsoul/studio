@@ -28,14 +28,14 @@ export default function Header() {
           
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.map(link => (
-              <Link key={link.href} href={link.href} className="hover:text-primary transition-colors">
+              <Link key={link.href} href={link.href} className="text-foreground/80 hover:text-primary transition-colors">
                 {link.label}
               </Link>
             ))}
           </nav>
           
           <div className="flex items-center gap-4">
-            <Link href="#" className="hidden md:flex items-center gap-1 hover:text-primary transition-colors">
+            <Link href="#" className="hidden md:flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors">
               <ShoppingCart className="h-5 w-5" />
               <span>Cart</span>
             </Link>

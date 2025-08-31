@@ -41,7 +41,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-10 pt-8 border-t border-border/50 text-center text-sm text-muted-foreground">
+        <div className="mt-10 pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} KOKIYUM. All Rights Reserved.</p>
         </div>
       </div>
