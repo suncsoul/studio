@@ -63,19 +63,19 @@ export default function Home() {
 
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 className="text-3xl font-bold text-center mb-10">Shop by Category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {categories.map((category) => (
-            <Link href={category.href} key={category.name} className="group relative h-64 rounded-lg overflow-hidden transform transition-transform hover:scale-105 shadow-lg">
-              <Image
-                src={category.image}
-                alt={category.name}
-                fill
-                className="object-cover"
-                data-ai-hint={category.hint}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <h3 className="text-white text-2xl font-semibold p-4">{category.name}</h3>
+            <Link href={category.href} key={category.name} className="group flex flex-col items-center gap-4 text-center">
+              <div className="relative h-48 w-48 rounded-full overflow-hidden transform transition-transform hover:scale-105 shadow-lg">
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  className="object-cover"
+                  data-ai-hint={category.hint}
+                />
               </div>
+              <h3 className="text-xl font-semibold p-4">{category.name}</h3>
             </Link>
           ))}
         </div>
