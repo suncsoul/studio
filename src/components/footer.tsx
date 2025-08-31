@@ -7,8 +7,8 @@ export default function Footer() {
   return (
     <footer className="bg-secondary text-secondary-foreground">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
             <h3 className="font-bold text-2xl mb-2">KOKIYUM</h3>
             <p className="text-muted-foreground text-sm max-w-md">
               Discover curated collections that blend modern trends with timeless elegance. Quality fashion delivered to your door.
