@@ -61,12 +61,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-center mb-10">Shop by Category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <h2 className="text-3xl font-bold text-center mb-12">Shop by Category</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {categories.map((category) => (
             <Link href={category.href} key={category.name} className="group flex flex-col items-center gap-4 text-center">
-              <div className="relative h-48 w-48 rounded-full overflow-hidden transform transition-transform hover:scale-105 shadow-lg">
+              <div className="relative w-full aspect-square max-w-[180px] rounded-full overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-md hover:shadow-xl">
                 <Image
                   src={category.image}
                   alt={category.name}
@@ -75,18 +75,18 @@ export default function Home() {
                   data-ai-hint={category.hint}
                 />
               </div>
-              <h3 className="text-xl font-semibold p-4">{category.name}</h3>
+              <h3 className="text-xl font-semibold">{category.name}</h3>
             </Link>
           ))}
         </div>
       </section>
       
-      <section className="bg-muted/50 py-16">
+      <section className="bg-muted/50 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-10">Featured Products</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Featured Products</h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {products.map((product) => (
-              <div key={product.name} className="group relative border border-border rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2 bg-card">
+              <div key={product.name} className="group relative border border-border/50 rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2 bg-card">
                 <Link href={product.href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                   <Image
