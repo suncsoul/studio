@@ -63,9 +63,8 @@ export default function Home() {
           <Image
             src="https://placehold.co/1920x1080.png"
             alt="Hero background"
-            layout="fill"
-            objectFit="cover"
-            className="absolute z-0"
+            fill
+            className="absolute z-0 object-cover"
             data-ai-hint="fashion model runway"
           />
           <div className="relative z-10 bg-black bg-opacity-40 p-8 rounded-lg">
