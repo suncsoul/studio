@@ -12,35 +12,233 @@ export default function Home() {
   ];
 
   const products = [
+    // Dresses
     {
-      name: "Monochrome Urban Tee",
-      price: "₹1,299",
-      image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=400&q=80",
+      name: "Floral Maxi Dress",
+      price: "₹3,299",
+      image: "https://images.unsplash.com/photo-1594744806549-844414798e85?auto=format&fit=crop&w=400&q=80",
       href: '#',
-      hint: "woman t-shirt",
+      hint: "floral maxi dress",
     },
     {
-      name: "Classic Denim Jacket",
-      price: "₹3,499",
-      image: "https://images.unsplash.com/photo-1596755094514-73a04de895b3?auto=format&fit=crop&w=400&q=80",
-      href: '#',
-      hint: "denim jacket",
-    },
-    {
-      name: "Elegant Summer Dress",
+      name: "Satin Slip Dress",
       price: "₹2,899",
+      image: "https://images.unsplash.com/photo-1627914650529-51fc612b487c?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "satin slip dress",
+    },
+    {
+      name: "Ruffled Mini Dress",
+      price: "₹2,499",
+      image: "https://images.unsplash.com/photo-1574488334461-15fad64ab3b4?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "ruffled mini dress",
+    },
+    {
+      name: "Linen Shirt Dress",
+      price: "₹3,199",
+      image: "https://images.unsplash.com/photo-1621575884398-654a939a3f29?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "linen shirt dress",
+    },
+    {
+      name: "Knit Bodycon Dress",
+      price: "₹2,799",
+      image: "https://images.unsplash.com/photo-1614488323863-1268594241fc?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "knit bodycon dress",
+    },
+    {
+      name: "Polka Dot Midi Dress",
+      price: "₹3,099",
       image: "https://images.unsplash.com/photo-1590451999233-a36f3e786312?auto=format&fit=crop&w=400&q=80",
       href: '#',
-      hint: "woman summer dress",
+      hint: "polka dot dress",
     },
     {
-      name: "Minimalist Leather Bag",
-      price: "₹4,199",
-      image: "https://images.unsplash.com/photo-1548036328-c9fa89d1282e?auto=format&fit=crop&w=400&q=80",
+      name: "Off-Shoulder Dress",
+      price: "₹2,599",
+      image: "https://images.unsplash.com/photo-1551843194-85513233c1a8?auto=format&fit=crop&w=400&q=80",
       href: '#',
-      hint: "leather handbag",
+      hint: "woman off shoulder",
+    },
+    {
+      name: "A-Line Skater Dress",
+      price: "₹2,399",
+      image: "https://images.unsplash.com/photo-1595133283412-343513b4d241?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "skater dress",
+    },
+    {
+      name: "Bohemian Wrap Dress",
+      price: "₹3,499",
+      image: "https://images.unsplash.com/photo-1590452366881-a75678b6f3b0?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "bohemian dress",
+    },
+    {
+      name: "Classic Little Black Dress",
+      price: "₹2,999",
+      image: "https://images.unsplash.com/photo-1583117181238-b9969f9843a9?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "black dress",
+    },
+
+    // Bottoms
+    {
+      name: "High-Waisted Jeans",
+      price: "₹2,599",
+      image: "https://images.unsplash.com/photo-1604176354204-926873782855?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "high waisted jeans",
+    },
+    {
+      name: "Pleated Trousers",
+      price: "₹2,299",
+      image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "pleated trousers",
+    },
+    {
+      name: "Wide-Leg Linen Pants",
+      price: "₹2,899",
+      image: "https://images.unsplash.com/photo-1603217183024-d2c613039c94?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "linen pants",
+    },
+    {
+      name: "Denim Skirt",
+      price: "₹1,899",
+      image: "https://images.unsplash.com/photo-1584273147793-9a3e63b4f620?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "denim skirt",
+    },
+    {
+      name: "Cargo Pants",
+      price: "₹2,799",
+      image: "https://images.unsplash.com/photo-1608405051996-480da50f3c4c?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "cargo pants",
+    },
+    {
+      name: "Satin Midi Skirt",
+      price: "₹2,499",
+      image: "https://images.unsplash.com/photo-1589531737424-a212215c5831?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "satin midi skirt",
+    },
+    {
+      name: "Tailored Shorts",
+      price: "₹1,999",
+      image: "https://images.unsplash.com/photo-1591130902253-91c2c06135b5?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "tailored shorts",
+    },
+    {
+      name: "Leather Leggings",
+      price: "₹3,199",
+      image: "https://images.unsplash.com/photo-1512316041697-d3f08f840c5f?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "leather leggings",
+    },
+    {
+      name: "Jogger Sweatpants",
+      price: "₹2,199",
+      image: "https://images.unsplash.com/photo-1563241527-547565ca4086?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "jogger sweatpants",
+    },
+    {
+      name: "Plaid Mini Skirt",
+      price: "₹1,999",
+      image: "https://images.unsplash.com/photo-1580214690239-0097a5518428?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "plaid mini skirt",
+    },
+    
+    // Accessories
+    {
+      name: "Leather Tote Bag",
+      price: "₹4,599",
+      image: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "leather tote bag",
+    },
+    {
+      name: "Gold Hoop Earrings",
+      price: "₹1,299",
+      image: "https://images.unsplash.com/photo-1615951663185-3932a3c75a93?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "gold hoop earrings",
+    },
+    {
+      name: "Classic Wristwatch",
+      price: "₹5,899",
+      image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "classic wristwatch",
+    },
+    {
+      name: "Silk Scarf",
+      price: "₹1,499",
+      image: "https://images.unsplash.com/photo-1562149481-02e49c716c6d?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "silk scarf",
+    },
+    {
+      name: "Cat-Eye Sunglasses",
+      price: "₹2,199",
+      image: "https://images.unsplash.com/photo-1577803645773-f4208249dd7c?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "cat eye sunglasses",
+    },
+    {
+      name: "Layered Necklace",
+      price: "₹1,799",
+      image: "https://images.unsplash.com/photo-1611652022417-a55109d9342c?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "layered necklace",
+    },
+    {
+      name: "Leather Belt",
+      price: "₹1,599",
+      image: "https://images.unsplash.com/photo-1557252273-01c36642142a?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "leather belt",
+    },
+    {
+      name: "Straw Hat",
+      price: "₹1,899",
+      image: "https://images.unsplash.com/photo-1533282173-265141a43a0d?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "straw hat",
+    },
+    {
+      name: "Crossbody Bag",
+      price: "₹3,499",
+      image: "https://images.unsplash.com/photo-1579631621533-35f953ef2113?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "crossbody bag",
+    },
+    {
+      name: "Statement Ring Set",
+      price: "₹1,199",
+      image: "https://images.unsplash.com/photo-1603372234476-353a3a4049a4?auto=format&fit=crop&w=400&q=80",
+      href: '#',
+      hint: "statement ring set",
     },
   ];
+
+  const featuredProducts = [
+    products[0], // Floral Maxi Dress
+    products[11], // Pleated Trousers
+    products[22], // Classic Wristwatch
+    products[3], // Linen Shirt Dress
+    products[10], // High-Waisted Jeans
+    products[20], // Leather Tote Bag
+    products[6], // Off-Shoulder Dress
+    products[13], // Denim Skirt
+  ]
 
   return (
     <div className="bg-background text-foreground">
@@ -63,7 +261,7 @@ export default function Home() {
 
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <h2 className="text-3xl font-bold text-center mb-12">Shop by Category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12 md:gap-x-8">
           {categories.map((category) => (
             <Link href={category.href} key={category.name} className="group flex flex-col items-center gap-4 text-center">
               <div className="relative w-full aspect-square max-w-[180px] rounded-full overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-md hover:shadow-xl">
@@ -85,7 +283,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Products</h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-            {products.map((product) => (
+            {featuredProducts.map((product) => (
               <div key={product.name} className="group relative border border-border/50 rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2 bg-card">
                 <Link href={product.href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
