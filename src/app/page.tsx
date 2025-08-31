@@ -242,7 +242,7 @@ export default function Home() {
 
   return (
     <div className="bg-background text-foreground">
-      <section className="relative h-[70vh] min-h-[400px] bg-cover bg-center flex items-center justify-center text-center text-white">
+      <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center text-center text-white">
         <Image
           src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1350&q=80"
           alt="Hero background"
@@ -261,10 +261,10 @@ export default function Home() {
 
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <h2 className="text-3xl font-bold text-center mb-12">Shop by Category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12 md:gap-x-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-8">
           {categories.map((category) => (
             <Link href={category.href} key={category.name} className="group flex flex-col items-center gap-4 text-center">
-              <div className="relative w-full aspect-square max-w-[180px] rounded-full overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-md hover:shadow-xl">
+              <div className="relative w-full aspect-square max-w-[180px] rounded-full overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
                 <Image
                   src={category.image}
                   alt={category.name}
@@ -279,12 +279,12 @@ export default function Home() {
         </div>
       </section>
       
-      <section className="bg-muted/50 py-24">
+      <section className="bg-muted/30 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Products</h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {featuredProducts.map((product) => (
-              <div key={product.name} className="group relative border border-border/50 rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2 bg-card">
+              <div key={product.name} className="group relative border border-border/20 rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2 bg-background/50">
                 <Link href={product.href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                   <Image
@@ -309,7 +309,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-secondary/70 py-20">
+      <section className="bg-secondary/20 py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold">Join Our Fashion Club</h2>
           <p className="text-muted-foreground mt-2 mb-6 max-w-lg mx-auto">Get exclusive updates on the latest trends, new arrivals, and special offers delivered right to your inbox.</p>
