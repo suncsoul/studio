@@ -12,20 +12,24 @@ import { CartContext } from "@/context/CartContext"
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
   const { cartItems } = useContext(CartContext);
 
   const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
-    // Check login state on component mount on client side
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const admin = localStorage.getItem('isAdmin') === 'true';
     setIsLoggedIn(loggedIn);
+    setIsAdmin(admin);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isAdmin');
     setIsLoggedIn(false);
+    setIsAdmin(false);
     router.push('/');
   };
 
@@ -79,6 +83,11 @@ export default function Header() {
                 {link.label}
               </Link>
             )})}
+             {isAdmin && (
+                <Link href="/admin/dashboard" className="text-foreground/80 hover:text-primary transition-colors font-semibold text-primary">
+                    Admin
+                </Link>
+            )}
           </nav>
           
           <div className="flex items-center gap-4">
@@ -125,6 +134,11 @@ export default function Header() {
                   KOKIYUM
                 </Link>
                   <nav className="flex flex-col gap-6">
+                    {isAdmin && (
+                        <Link href="/admin/dashboard" className="text-lg hover:text-primary transition-colors font-semibold text-primary" onClick={() => setMenuOpen(false)}>
+                            Admin Dashboard
+                        </Link>
+                    )}
                     {navLinks.filter(l => l.label !== 'Contact').map(link => (
                        <Link 
                         key={link.label} 

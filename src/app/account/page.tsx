@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart, Edit2, Camera, Trash2 } from 'lucide-react';
+import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart, Edit2, Camera, Trash2, LayoutDashboard } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,7 @@ const AccountPage = () => {
     const [isClient, setIsClient] = useState(false);
     const [activeTab, setActiveTab] = useState('Profile');
     const [isEditingProfile, setIsEditingProfile] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [user, setUser] = useState({
         name: 'Eleanor Vance',
         bio: 'Fashion explorer with a passion for sustainable streetwear',
@@ -26,6 +27,9 @@ const AccountPage = () => {
     useEffect(() => {
         setIsClient(true);
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const isAdminUser = localStorage.getItem('isAdmin') === 'true';
+        setIsAdmin(isAdminUser);
+
         if (!isLoggedIn) {
             router.push('/login');
         } else {
@@ -45,15 +49,16 @@ const AccountPage = () => {
     const dnaVisualizationRef = useRef(null);
 
     useEffect(() => {
-        if (!user.name) return;
+        if (!user.name || user.userId) return; // Only generate if name is present and ID is not
         const nameParts = user.name.split(' ');
         const initials = nameParts.length > 1 
             ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase()
-            : nameParts[0].substring(0, 2).toUpperCase();
+            : user.name.substring(0, 2).toUpperCase();
             
         const randomDigits = Math.floor(100000 + Math.random() * 900000).toString();
         setUser(prevUser => ({ ...prevUser, userId: `${initials}-${randomDigits}` }));
-    }, [user.name]);
+    }, [user.name, user.userId]);
+
 
     const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -157,7 +162,7 @@ const AccountPage = () => {
         return unique;
     }, [] as { name: string; category: string; image: string; hint: string, price: string }[]);
 
-    const navItems = [
+    let navItems = [
         { name: 'Profile', icon: User },
         { name: 'Style DNA', icon: Dna },
         { name: 'Orders', icon: ShoppingBag },
@@ -165,6 +170,19 @@ const AccountPage = () => {
         { name: 'Addresses', icon: MapPin },
         { name: 'Settings', icon: Settings },
     ];
+
+    if (isAdmin) {
+        navItems.unshift({ name: 'Dashboard', icon: LayoutDashboard });
+    }
+
+    const handleNavClick = (tabName: string) => {
+        if (tabName === 'Dashboard') {
+            router.push('/admin/dashboard');
+        } else {
+            setActiveTab(tabName);
+        }
+    }
+
 
     useEffect(() => {
         if (activeTab !== 'Style DNA') return;
@@ -814,7 +832,7 @@ const AccountPage = () => {
                                     <div 
                                         key={item.name} 
                                         className={`nav-item ${activeTab === item.name ? 'active' : ''}`}
-                                        onClick={() => setActiveTab(item.name)}
+                                        onClick={() => handleNavClick(item.name)}
                                     >
                                         <div className="nav-icon"><Icon size={20} /></div>
                                         <div>{item.name}</div>

@@ -19,10 +19,19 @@ const LoginPage = () => {
             setError('Please enter both email and password.');
             return;
         }
-        // In a real app, you'd call an API here.
-        // For this prototype, we'll simulate a successful login.
+        
+        // Admin user check
+        if (email === 'admin@kokiyum.in' && password === 'admin') {
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('isAdmin', 'true');
+            router.push('/admin/dashboard');
+            return;
+        }
+
+        // Regular user login
         console.log('Logging in with:', { email, password });
         localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('isAdmin', 'false'); // Ensure admin flag is not set for regular users
         router.push('/account');
     };
 
