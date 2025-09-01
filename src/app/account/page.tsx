@@ -1,28 +1,25 @@
+
 "use client";
 
 import { useState } from 'react';
 import { User, ShoppingBag, MapPin, Settings, ChevronRight, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 
 type NavItem = 'Profile' | 'Order History' | 'My Addresses' | 'Settings';
 
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState<NavItem>('Profile');
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
 
-  const navItems: { name: NavItem; icon: React.ElementType }[] = [
-    { name: 'Profile', icon: User },
-    { name: 'Order History', icon: ShoppingBag },
-    { name: 'My Addresses', icon: MapPin },
-    { name: 'Settings', icon: Settings },
-  ];
-
-  const user = {
+  const [user, setUser] = useState({
     name: 'Eleanor Vance',
     email: 'eleanor@example.com',
+    mobile: '9876543210',
     joined: 'March 15, 2023',
     profilePicture: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80'
-  };
+  });
 
   const orders = [
     {
@@ -48,6 +45,11 @@ const AccountPage = () => {
     },
   ];
 
+  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUser(prevUser => ({ ...prevUser, [name]: value }));
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'Profile':
@@ -68,20 +70,51 @@ const AccountPage = () => {
                   <Camera className="h-4 w-4" />
                 </Button>
               </div>
-              <div className="space-y-4 flex-1 text-center sm:text-left">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Full Name</label>
-                  <p className="text-lg">{user.name}</p>
+              <div className="space-y-4 flex-1 text-center sm:text-left w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                    {isEditingProfile ? (
+                      <Input name="name" value={user.name} onChange={handleProfileChange} />
+                    ) : (
+                      <p className="text-lg">{user.name}</p>
+                    )}
+                  </div>
+                   <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    {isEditingProfile ? (
+                      <Input name="email" type="email" value={user.email} onChange={handleProfileChange} />
+                    ) : (
+                      <p className="text-lg">{user.email}</p>
+                    )}
+                  </div>
+                   <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                        Mobile Number <span className="text-red-500">*</span>
+                    </label>
+                     {isEditingProfile ? (
+                      <Input name="mobile" type="tel" value={user.mobile} onChange={handleProfileChange} />
+                    ) : (
+                      <p className="text-lg">{user.mobile}</p>
+                    )}
+                  </div>
+                   <div>
+                    <label className="text-sm font-medium text-muted-foreground">Member Since</label>
+                    <p className="text-lg">{user.joined}</p>
+                  </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Email Address</label>
-                  <p className="text-lg">{user.email}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Member Since</label>
-                  <p className="text-lg">{user.joined}</p>
-                </div>
-                <Button className="mt-4">Edit Profile</Button>
+
+                {isEditingProfile ? (
+                  <div className="flex gap-2 mt-4">
+                     <Button onClick={() => setIsEditingProfile(false)}>Save Changes</Button>
+                     <Button variant="outline" onClick={() => setIsEditingProfile(false)}>Cancel</Button>
+                  </div>
+                ) : (
+                  <Button className="mt-4" onClick={() => setIsEditingProfile(true)}>Edit Profile</Button>
+                )}
+
               </div>
             </div>
           </div>
@@ -189,3 +222,5 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
+
+    
