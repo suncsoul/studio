@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from 'react';
-import { User, ShoppingBag, MapPin, Settings, ChevronRight } from 'lucide-react';
+import { User, ShoppingBag, MapPin, Settings, ChevronRight, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 type NavItem = 'Profile' | 'Order History' | 'My Addresses' | 'Settings';
 
@@ -20,6 +21,7 @@ const AccountPage = () => {
     name: 'Eleanor Vance',
     email: 'eleanor@example.com',
     joined: 'March 15, 2023',
+    profilePicture: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80'
   };
 
   const orders = [
@@ -52,20 +54,35 @@ const AccountPage = () => {
         return (
           <div>
             <h2 className="text-2xl font-bold mb-6">My Profile</h2>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Full Name</label>
-                <p className="text-lg">{user.name}</p>
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+              <div className="relative group">
+                <Image
+                  src={user.profilePicture}
+                  alt="Profile picture"
+                  width={128}
+                  height={128}
+                  className="rounded-full object-cover"
+                  data-ai-hint="woman professional portrait"
+                />
+                <Button variant="ghost" size="icon" className="absolute bottom-0 right-0 rounded-full h-8 w-8 bg-background/50 group-hover:bg-background/80">
+                  <Camera className="h-4 w-4" />
+                </Button>
               </div>
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Email Address</label>
-                <p className="text-lg">{user.email}</p>
+              <div className="space-y-4 flex-1 text-center sm:text-left">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                  <p className="text-lg">{user.name}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Email Address</label>
+                  <p className="text-lg">{user.email}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Member Since</label>
+                  <p className="text-lg">{user.joined}</p>
+                </div>
+                <Button className="mt-4">Edit Profile</Button>
               </div>
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Member Since</label>
-                <p className="text-lg">{user.joined}</p>
-              </div>
-              <Button className="mt-4">Edit Profile</Button>
             </div>
           </div>
         );
