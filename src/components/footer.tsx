@@ -8,11 +8,15 @@ export default function Footer() {
     <footer className="bg-secondary text-secondary-foreground">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-1">
+          <div className="md:col-span-2">
             <h3 className="font-bold text-lg md:text-2xl mb-2">KOKIYUM</h3>
             <p className="text-muted-foreground text-xs md:text-sm max-w-md">
               Discover curated collections that blend modern trends with timeless elegance. Quality fashion delivered to your door.
             </p>
+            <h4 className="font-semibold text-base md:text-lg mt-6 mb-2">Address</h4>
+            <address className="text-muted-foreground text-xs md:text-sm not-italic">
+              Near TVS Showroom, Rajgarh Naka, Jhabua, Madhya Pradesh 457661
+            </address>
           </div>
           <div>
             <h4 className="font-semibold text-base md:text-lg mb-4">Quick Links</h4>
@@ -22,14 +26,6 @@ export default function Footer() {
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link></li>
             </ul>
-          </div>
-           <div>
-            <h4 className="font-semibold text-base md:text-lg mb-4">Address</h4>
-            <address className="text-muted-foreground text-xs md:text-sm not-italic">
-              KOKIYUM, Near TVS Showroom,<br />
-              Rajgarh Naka, Ramakrishna Nagar,<br />
-              Jhabua, Madhya Pradesh 457661
-            </address>
           </div>
           <div>
             <h4 className="font-semibold text-base md:text-lg mb-4">Follow Us</h4>
