@@ -376,12 +376,12 @@ export default function Home() {
                   />
                 </div>
                 <div className="p-4 text-center flex-grow flex flex-col justify-between">
-                  <div className="opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                  <div>
                     <h3 className="text-lg font-semibold text-card-foreground truncate">{product.name}</h3>
                     <p className="text-md text-muted-foreground">{product.price}</p>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button variant="secondary" size="sm">Add to Cart</Button>
+                  <div className="mt-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button variant="secondary" size="sm" className="relative z-20">Add to Cart</Button>
                   </div>
                 </div>
               </div>
