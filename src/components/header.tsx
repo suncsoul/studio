@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -7,12 +6,16 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ShoppingCart, Menu, User, Mail, Phone } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { CartContext } from "@/context/CartContext"
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const { cartItems } = useContext(CartContext);
+
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
     // Check login state on component mount on client side
@@ -29,7 +32,7 @@ export default function Header() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "#", label: "Shop" },
+    { href: "/#products", label: "Shop" },
     { href: "#", label: "About" },
     { href: "#", label: "Contact" },
   ];
@@ -98,9 +101,14 @@ export default function Header() {
                         </Button>
                     </>
                 )}
-                 <Link href="#" className="flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors">
+                 <Link href="/cart" className="relative flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors">
                     <ShoppingCart className="h-5 w-5" />
                     <span>Cart</span>
+                    {cartItemCount > 0 && (
+                      <span className="absolute -top-2 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                        {cartItemCount}
+                      </span>
+                    )}
                 </Link>
             </div>
 
@@ -159,9 +167,14 @@ export default function Header() {
                                 </Link>
                             </>
                         )}
-                      <Link href="#" className="flex items-center gap-2 text-lg hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+                      <Link href="/cart" className="relative flex items-center gap-2 text-lg hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
                         <ShoppingCart className="h-5 w-5" />
                         <span>Cart</span>
+                        {cartItemCount > 0 && (
+                          <span className="absolute top-0 left-5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                            {cartItemCount}
+                          </span>
+                        )}
                       </Link>
                     </div>
                   </nav>
