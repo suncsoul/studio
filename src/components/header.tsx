@@ -3,7 +3,8 @@
 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ShoppingCart, Menu, User } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { ShoppingCart, Menu, User, Mail, Phone } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react"
@@ -30,7 +31,7 @@ export default function Header() {
     { href: "/", label: "Home" },
     { href: "#", label: "Shop" },
     { href: "#", label: "About" },
-    { href: "mailto:info@kokiyum.in", label: "Contact" },
+    { href: "#", label: "Contact" },
   ];
 
   return (
@@ -44,11 +45,37 @@ export default function Header() {
           </div>
           
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-            {navLinks.map(link => (
+            {navLinks.map(link => {
+              if (link.label === 'Contact') {
+                return (
+                  <DropdownMenu key={link.label}>
+                    <DropdownMenuTrigger asChild>
+                      <button className="flex items-center text-foreground/80 hover:text-primary transition-colors outline-none">
+                        {link.label}
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem asChild>
+                        <a href="mailto:info@kokiyum.in" className="flex items-center gap-2 cursor-pointer">
+                          <Mail className="h-4 w-4" />
+                          <span>info@kokiyum.in</span>
+                        </a>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <a href="tel:+918085049788" className="flex items-center gap-2 cursor-pointer">
+                          <Phone className="h-4 w-4" />
+                          <span>+91 8085049788</span>
+                        </a>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )
+              }
+              return (
               <Link key={link.label} href={link.href} className="text-foreground/80 hover:text-primary transition-colors">
                 {link.label}
               </Link>
-            ))}
+            )})}
           </nav>
           
           <div className="flex items-center gap-4">
@@ -90,7 +117,7 @@ export default function Header() {
                   KOKIYUM
                 </Link>
                   <nav className="flex flex-col gap-6">
-                    {navLinks.map(link => (
+                    {navLinks.filter(l => l.label !== 'Contact').map(link => (
                        <Link 
                         key={link.label} 
                         href={link.href} 
@@ -100,6 +127,17 @@ export default function Header() {
                         {link.label}
                       </Link>
                     ))}
+                    <div className="pt-4 border-t border-border">
+                      <h3 className="text-lg font-medium mb-4">Contact Us</h3>
+                       <a href="mailto:info@kokiyum.in" className="flex items-center gap-2 text-lg hover:text-primary transition-colors mb-4" onClick={() => setMenuOpen(false)}>
+                          <Mail className="h-5 w-5" />
+                          <span>info@kokiyum.in</span>
+                        </a>
+                        <a href="tel:+918085049788" className="flex items-center gap-2 text-lg hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+                          <Phone className="h-5 w-5" />
+                          <span>+91 8085049788</span>
+                        </a>
+                    </div>
                     <div className="flex flex-col gap-6 pt-4 border-t border-border">
                         {isLoggedIn ? (
                             <>
@@ -136,3 +174,5 @@ export default function Header() {
     </header>
   )
 }
+
+    
