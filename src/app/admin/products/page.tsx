@@ -18,7 +18,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 
-// This component was missing from the previous implementation
 const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(({ className, ...props }, ref) => {
   return (
     <textarea
@@ -151,11 +150,11 @@ export default function ProductsPage() {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="image" className="text-right">Image URL</Label>
-              <Input id="image" name="image" value={currentProduct?.image || ''} onChange={handleInputChange} className="col-span-3" />
+              <Input id="image" name="image" value={currentProduct?.image || ''} onChange={handleInputChange} className="col-span-3" placeholder="https://images.unsplash.com/..." />
             </div>
              <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="hint" className="text-right">Image Hint</Label>
-              <Input id="hint" name="hint" value={currentProduct?.hint || ''} onChange={handleInputChange} className="col-span-3" />
+              <Input id="hint" name="hint" value={currentProduct?.hint || ''} onChange={handleInputChange} className="col-span-3" placeholder="e.g. 'floral dress'" />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="featured" className="text-right">Featured</Label>
