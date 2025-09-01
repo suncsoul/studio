@@ -9,6 +9,14 @@ import Image from 'next/image';
 
 type NavItem = 'Profile' | 'Order History' | 'My Addresses' | 'Settings';
 
+const navItems = [
+  { name: 'Profile' as NavItem, icon: User },
+  { name: 'Order History' as NavItem, icon: ShoppingBag },
+  { name: 'My Addresses' as NavItem, icon: MapPin },
+  { name: 'Settings' as NavItem, icon: Settings },
+];
+
+
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState<NavItem>('Profile');
   const [isEditingProfile, setIsEditingProfile] = useState(false);
