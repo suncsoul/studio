@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart } from 'lucide-react';
 import Image from 'next/image';
 
@@ -65,47 +65,41 @@ const AccountPage = () => {
     }, [] as { name: string; category: string; image: string; hint: string }[]);
 
 
-    useEffect(() => {
+    React.useEffect(() => {
         const dnaVisualization = document.querySelector('.dna-visualization');
         if (!dnaVisualization) return;
-
-        // Clear previous elements
-        while (dnaVisualization.firstChild) {
-            dnaVisualization.removeChild(dnaVisualization.firstChild);
-        }
-
-        function createDNA() {
-            if (!dnaVisualization) return;
-            // Clear previous elements on resize
+    
+        const createDNA = () => {
+            // Clear previous elements
             while (dnaVisualization.firstChild) {
                 dnaVisualization.removeChild(dnaVisualization.firstChild);
             }
-
+    
             const nodes = 12;
-            const centerX = dnaVisualization.offsetWidth / 2;
-            const spacing = dnaVisualization.offsetHeight / (nodes - 1);
-
+            const centerX = (dnaVisualization as HTMLElement).offsetWidth / 2;
+            const spacing = (dnaVisualization as HTMLElement).offsetHeight / (nodes - 1);
+    
             const dnaStrand = document.createElement('div');
             dnaStrand.className = 'dna-strand';
             dnaVisualization.appendChild(dnaStrand);
-
+    
             for (let i = 0; i < nodes; i++) {
                 const yPos = i * spacing;
-
+    
                 const leftNode = document.createElement('div');
                 leftNode.className = 'dna-node';
                 leftNode.style.left = `${centerX - 40}px`;
                 leftNode.style.top = `${yPos}px`;
                 leftNode.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M12 22V9"/><path d="m3.5 8.5 17 0"/></svg>`;
                 dnaVisualization.appendChild(leftNode);
-
+    
                 const rightNode = document.createElement('div');
                 rightNode.className = 'dna-node';
                 rightNode.style.left = `${centerX + 40}px`;
                 rightNode.style.top = `${yPos}px`;
                 rightNode.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`;
                 dnaVisualization.appendChild(rightNode);
-
+    
                 if (i < nodes - 1) {
                     const connection = document.createElement('div');
                     connection.className = 'dna-connection';
@@ -119,16 +113,16 @@ const AccountPage = () => {
                     dnaVisualization.appendChild(connection);
                 }
             }
+            
+            const dnaNodes = document.querySelectorAll('.dna-node');
+            dnaNodes.forEach((node, index) => {
+                const el = node as HTMLElement;
+                el.style.animation = `pulse 2s ${index * 0.2}s infinite alternate`;
+            });
         }
         
         createDNA();
         window.addEventListener('resize', createDNA);
-        
-        const nodes = document.querySelectorAll('.dna-node');
-        nodes.forEach((node, index) => {
-            const el = node as HTMLElement;
-            el.style.animation = `pulse 2s ${index * 0.2}s infinite alternate`;
-        });
         
         return () => window.removeEventListener('resize', createDNA);
 
@@ -590,5 +584,6 @@ const AccountPage = () => {
         </div>
         </>
     );
+};
 
-    
+export default AccountPage;
