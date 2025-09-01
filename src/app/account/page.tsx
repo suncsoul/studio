@@ -2,12 +2,15 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart, Edit2, Camera, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 const AccountPage = () => {
+    const router = useRouter();
+    const [isClient, setIsClient] = useState(false);
     const [activeTab, setActiveTab] = useState('Profile');
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [user, setUser] = useState({
@@ -19,6 +22,25 @@ const AccountPage = () => {
         avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80',
         userId: ''
     });
+
+    useEffect(() => {
+        setIsClient(true);
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        if (!isLoggedIn) {
+            router.push('/login');
+        } else {
+            // Fetch user data from localStorage if available from signup
+            const storedName = localStorage.getItem('userName');
+            const storedEmail = localStorage.getItem('userEmail');
+            if(storedName) {
+                setUser(prevUser => ({ ...prevUser, name: storedName }));
+            }
+            if(storedEmail) {
+                setUser(prevUser => ({ ...prevUser, email: storedEmail }));
+            }
+        }
+    }, [router]);
+
 
     const dnaVisualizationRef = useRef(null);
 
@@ -153,8 +175,8 @@ const AccountPage = () => {
         let animationFrameId: number;
 
         const createDNA = () => {
-             while (dnaVisualization.firstChild) {
-                dnaVisualization.removeChild(dnaVisualization.firstChild);
+             while ((dnaVisualization as HTMLElement).firstChild) {
+                (dnaVisualization as HTMLElement).removeChild((dnaVisualization as HTMLElement).firstChild as Node);
             }
 
             const nodes = 12;
@@ -198,7 +220,7 @@ const AccountPage = () => {
         
         return () => {
             if (dnaVisualization) {
-                resizeObserver.unobserve(dnaVisualization);
+                resizeObserver.unobserve(dnaVisualization as Element);
             }
             cancelAnimationFrame(animationFrameId);
         }
@@ -444,6 +466,10 @@ const AccountPage = () => {
                 return null;
         }
     };
+
+    if (!isClient) {
+        return null; // Render nothing on the server
+    }
 
 
     return (
@@ -791,5 +817,3 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
-
-    
