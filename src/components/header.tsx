@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ShoppingCart, Menu } from "lucide-react"
+import { ShoppingCart, Menu, User } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -17,7 +17,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex-shrink-0">
@@ -35,6 +35,10 @@ export default function Header() {
           </nav>
           
           <div className="flex items-center gap-4">
+            <Link href="#" className="hidden md:flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors">
+              <User className="h-5 w-5" />
+              <span>Account</span>
+            </Link>
             <Link href="#" className="hidden md:flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors">
               <ShoppingCart className="h-5 w-5" />
               <span>Cart</span>
@@ -63,10 +67,16 @@ export default function Header() {
                         {link.label}
                       </Link>
                     ))}
-                    <Link href="#" className="flex items-center gap-2 text-lg hover:text-primary transition-colors pt-4 border-t border-border" onClick={() => setMenuOpen(false)}>
-                      <ShoppingCart className="h-5 w-5" />
-                      <span>Cart</span>
-                    </Link>
+                    <div className="flex flex-col gap-6 pt-4 border-t border-border">
+                      <Link href="#" className="flex items-center gap-2 text-lg hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+                        <User className="h-5 w-5" />
+                        <span>Account</span>
+                      </Link>
+                      <Link href="#" className="flex items-center gap-2 text-lg hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+                        <ShoppingCart className="h-5 w-5" />
+                        <span>Cart</span>
+                      </Link>
+                    </div>
                   </nav>
                 </div>
               </SheetContent>
