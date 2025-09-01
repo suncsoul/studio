@@ -30,7 +30,7 @@ export default function Header() {
     { href: "/", label: "Home" },
     { href: "#", label: "Shop" },
     { href: "#", label: "About" },
-    { href: "#", label: "Contact" },
+    { href: "mailto:info@kokiyum.in", label: "Contact" },
   ];
 
   return (
