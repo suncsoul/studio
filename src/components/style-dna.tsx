@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import { Tshirt, Footprints, ChevronRight } from 'lucide-react';
+import { Tshirt, Footprints, ChevronRight, User } from 'lucide-react';
 import Image from 'next/image';
 
 const StyleDnaProfile = () => {
