@@ -363,21 +363,23 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {displayedProducts.map((product) => (
-              <div key={product.name} className="group relative border border-border/20 rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card">
+              <div key={product.name} className="group relative border border-border/20 rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
                 <Link href={product.href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
-                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+                <div className="aspect-square w-full overflow-hidden">
                   <Image
                     src={product.image}
                     alt={product.name}
                     width={400}
                     height={400}
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
                     data-ai-hint={product.hint}
                   />
                 </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-lg font-semibold text-card-foreground">{product.name}</h3>
-                  <p className="text-md text-muted-foreground">{product.price}</p>
+                <div className="p-4 text-center flex-grow flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-card-foreground truncate">{product.name}</h3>
+                    <p className="text-md text-muted-foreground">{product.price}</p>
+                  </div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Button variant="secondary" size="sm">Add to Cart</Button>
