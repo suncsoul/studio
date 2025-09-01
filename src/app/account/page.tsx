@@ -2,11 +2,68 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { User, Dna, ShoppingBag, Heart, MapPin, Settings, ChevronRight, Camera, BarChart, Gem } from 'lucide-react';
+import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart } from 'lucide-react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 
 const AccountPage = () => {
+
+    const orderHistory = [
+        {
+            date: "January 2023",
+            summary: "Joined KOKIYUM and started exploring minimalist fashion.",
+            items: [
+                {
+                    name: "Organic Cotton Tee",
+                    category: "Top",
+                    image: "https://images.unsplash.com/photo-1582142306909-195724d3a58c?auto=format&fit=crop&w=300&q=80",
+                    hint: "organic t-shirt",
+                },
+            ]
+        },
+        {
+            date: "March 2023",
+            summary: "Started experimenting with sustainable brands. Your eco-score increased by 32%.",
+            items: [
+                {
+                    name: "Urban Sneakers",
+                    category: "Shoes",
+                    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=300&q=80",
+                    hint: "sneakers shoes",
+                },
+            ]
+        },
+        {
+            date: "June 2023",
+            summary: "Developed an interest in vintage streetwear. Created 3 new style combinations.",
+            items: [
+                {
+                    name: "Vintage Denim",
+                    category: "Jacket",
+                    image: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=300&q=80",
+                    hint: "denim jacket",
+                },
+                {
+                    name: "Cargo Pants",
+                    category: "Bottoms",
+                    image: "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?auto=format&fit=crop&w=300&q=80",
+                    hint: "cargo pants",
+                },
+            ]
+        },
+        {
+            date: "Present",
+            summary: "Your current style is a unique blend of sustainable streetwear with vintage elements.",
+            items: []
+        },
+    ];
+
+    const virtualClosetItems = orderHistory.flatMap(order => order.items).reduce((unique, item) => {
+        if (!unique.some(i => i.name === item.name)) {
+            unique.push(item);
+        }
+        return unique;
+    }, [] as { name: string; category: string; image: string; hint: string }[]);
+
 
     useEffect(() => {
         const dnaVisualization = document.querySelector('.dna-visualization');
@@ -19,6 +76,11 @@ const AccountPage = () => {
 
         function createDNA() {
             if (!dnaVisualization) return;
+            // Clear previous elements on resize
+            while (dnaVisualization.firstChild) {
+                dnaVisualization.removeChild(dnaVisualization.firstChild);
+            }
+
             const nodes = 12;
             const centerX = dnaVisualization.offsetWidth / 2;
             const spacing = dnaVisualization.offsetHeight / (nodes - 1);
@@ -493,22 +555,15 @@ const AccountPage = () => {
                             <h2 className="section-title"><BarChart size={24}/> Your Style Evolution</h2>
                             <p className='text-muted-foreground'>How your fashion preferences have changed since you joined us</p>
                             <div className="timeline">
-                                <div className="timeline-item">
-                                    <div className="timeline-content"><div className="timeline-date">January 2023</div><p>Joined KOKIYUM and started exploring minimalist fashion.</p></div>
-                                    <div className="timeline-dot"></div>
-                                </div>
-                                <div className="timeline-item">
-                                    <div className="timeline-content"><div className="timeline-date">March 2023</div><p>Started experimenting with sustainable brands. Your eco-score increased by 32%.</p></div>
-                                    <div className="timeline-dot"></div>
-                                </div>
-                                <div className="timeline-item">
-                                    <div className="timeline-content"><div className="timeline-date">June 2023</div><p>Developed an interest in vintage streetwear. Created 3 new style combinations.</p></div>
-                                    <div className="timeline-dot"></div>
-                                </div>
-                                <div className="timeline-item">
-                                    <div className="timeline-content"><div className="timeline-date">Present</div><p>Your current style is a unique blend of sustainable streetwear with vintage elements.</p></div>
-                                    <div className="timeline-dot"></div>
-                                </div>
+                                {orderHistory.map((event, index) => (
+                                    <div key={index} className="timeline-item">
+                                        <div className="timeline-content">
+                                            <div className="timeline-date">{event.date}</div>
+                                            <p>{event.summary}</p>
+                                        </div>
+                                        <div className="timeline-dot"></div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         
@@ -516,30 +571,17 @@ const AccountPage = () => {
                             <h2 className="section-title"><ShoppingBag size={24}/> Your Virtual Closet</h2>
                             <p className='text-muted-foreground'>Items you've loved and added to your collection since January 2023</p>
                             <div className="closet-grid">
-                                <div className="closet-item">
+                                {virtualClosetItems.map((item, index) => (
+                                <div key={index} className="closet-item">
                                     <div className="closet-img-container">
-                                        <Image src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=300&q=80" alt="Denim Jacket" layout="fill" objectFit="cover" data-ai-hint="denim jacket" />
+                                        <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
                                     </div>
-                                    <div className="closet-info"><div className="closet-category">Jacket</div><div className="closet-name">Vintage Denim</div></div>
-                                </div>
-                                <div className="closet-item">
-                                    <div className="closet-img-container">
-                                        <Image src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=300&q=80" alt="Sneakers" layout="fill" objectFit="cover" data-ai-hint="sneakers shoes" />
+                                    <div className="closet-info">
+                                        <div className="closet-category">{item.category}</div>
+                                        <div className="closet-name">{item.name}</div>
                                     </div>
-                                    <div className="closet-info"><div className="closet-category">Shoes</div><div className="closet-name">Urban Sneakers</div></div>
                                 </div>
-                                <div className="closet-item">
-                                    <div className="closet-img-container">
-                                        <Image src="https://images.unsplash.com/photo-1582142306909-195724d3a58c?auto=format&fit=crop&w=300&q=80" alt="T-shirt" layout="fill" objectFit="cover" data-ai-hint="organic t-shirt" />
-                                    </div>
-                                    <div className="closet-info"><div className="closet-category">Top</div><div className="closet-name">Organic Cotton Tee</div></div>
-                                </div>
-                                <div className="closet-item">
-                                     <div className="closet-img-container">
-                                        <Image src="https://images.unsplash.com/photo-1582418702059-97ebafb35d09?auto=format&fit=crop&w=300&q=80" alt="Pants" layout="fill" objectFit="cover" data-ai-hint="cargo pants" />
-                                    </div>
-                                    <div className="closet-info"><div className="closet-category">Bottoms</div><div className="closet-name">Cargo Pants</div></div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -548,8 +590,5 @@ const AccountPage = () => {
         </div>
         </>
     );
-};
-
-export default AccountPage;
 
     
