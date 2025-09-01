@@ -1,13 +1,15 @@
 "use client"
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import type { Product } from '@/lib/products';
+import React, { createContext, useState, useEffect, ReactNode, Dispatch, SetStateAction } from 'react';
+import { products as initialProducts, Product } from '@/lib/products';
 
 export interface CartItem extends Product {
     quantity: number;
 }
 
 interface CartContextType {
+    products: Product[];
+    setProducts: Dispatch<SetStateAction<Product[]>>;
     cartItems: CartItem[];
     addToCart: (product: Product, quantity: number) => void;
     removeFromCart: (productId: string) => void;
@@ -17,6 +19,8 @@ interface CartContextType {
 }
 
 export const CartContext = createContext<CartContextType>({
+    products: [],
+    setProducts: () => {},
     cartItems: [],
     addToCart: () => {},
     removeFromCart: () => {},
@@ -26,17 +30,32 @@ export const CartContext = createContext<CartContextType>({
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isClient, setIsClient] = useState(false);
-
+    const [products, setProducts] = useState<Product[]>(initialProducts);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    
     useEffect(() => {
         setIsClient(true);
+
+        const storedProducts = localStorage.getItem('products');
+        if (storedProducts) {
+            setProducts(JSON.parse(storedProducts));
+        } else {
+             localStorage.setItem('products', JSON.stringify(initialProducts));
+        }
+
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {
             setCartItems(JSON.parse(storedCart));
         }
     }, []);
     
+    useEffect(() => {
+        if (isClient) {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+    }, [products, isClient]);
+
     useEffect(() => {
         if (isClient) {
             localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -83,6 +102,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return (
         <CartContext.Provider
             value={{
+                products,
+                setProducts,
                 cartItems,
                 addToCart,
                 removeFromCart,

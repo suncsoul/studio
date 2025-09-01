@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Image from 'next/image';
-import { products as initialProducts, Product } from '@/lib/products';
+import { Product } from '@/lib/products';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -17,6 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { CartContext } from '@/context/CartContext';
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(({ className, ...props }, ref) => {
   return (
@@ -31,19 +32,19 @@ Textarea.displayName = "Textarea"
 
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const { products, setProducts } = useContext(CartContext);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Partial<Product> | null>(null);
 
   const handleSaveProduct = () => {
-    // In a real app, this would be an API call.
-    // Here we'll just update the local state.
-    if (currentProduct?.slug) { // Editing existing product
+    if (!currentProduct || !currentProduct.name) return;
+
+    if (currentProduct.slug) { // Editing existing product
       setProducts(products.map(p => p.slug === currentProduct.slug ? currentProduct as Product : p));
     } else { // Adding new product
       const newProduct = {
         ...currentProduct,
-        slug: currentProduct?.name?.toLowerCase().replace(/\s+/g, '-') || `new-product-${Date.now()}`,
+        slug: currentProduct.name.toLowerCase().replace(/\s+/g, '-') || `new-product-${Date.now()}`,
       } as Product;
       setProducts([...products, newProduct]);
     }
@@ -70,15 +71,24 @@ export default function ProductsPage() {
   };
 
   const handleDelete = (slug: string) => {
-    // In a real app, this would be an API call.
     if(window.confirm("Are you sure you want to delete this product?")) {
       setProducts(products.filter(p => p.slug !== slug));
     }
   };
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setCurrentProduct(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    
+    let parsedValue: string | number | boolean = value;
+
+    if (type === 'number') {
+      parsedValue = value === '' ? '' : parseFloat(value);
+      if (isNaN(parsedValue as number)) {
+        parsedValue = '';
+      }
+    }
+
+    setCurrentProduct(prev => ({ ...prev, [name]: parsedValue }));
   };
 
   const handleCheckboxChange = (checked: boolean | 'indeterminate') => {
@@ -108,7 +118,7 @@ export default function ProductsPage() {
             {products.map((product) => (
               <TableRow key={product.slug}>
                 <TableCell>
-                  <Image src={product.image} alt={product.name} width={40} height={40} className="rounded-md object-cover"/>
+                  <Image src={product.image || 'https://placehold.co/40x40'} alt={product.name} width={40} height={40} className="rounded-md object-cover"/>
                 </TableCell>
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>{product.category}</TableCell>

@@ -3,7 +3,7 @@
 import { useContext, useState } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { products, Product } from '@/lib/products';
+import { Product } from '@/lib/products';
 import { Button } from '@/components/ui/button';
 import { Minus, Plus } from 'lucide-react';
 import { CartContext } from '@/context/CartContext';
@@ -12,14 +12,17 @@ import Link from 'next/link';
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
+  const { products, addToCart } = useContext(CartContext);
   const product = products.find((p) => p.slug === slug);
   
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useContext(CartContext);
   const { toast } = useToast()
 
   if (!product) {
-    notFound();
+    // We can't use notFound() directly in client components in the app router
+    // in the same way as pages router. A common pattern is to conditionaly render
+    // a not-found component or redirect. For now, we will just show a simple message.
+     return <div>Product not found</div>;
   }
 
   const relatedProducts = products.filter(p => p.category === product.category && p.slug !== product.slug).slice(0, 4);

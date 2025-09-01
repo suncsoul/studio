@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useContext } from "react"
-import { products, Product } from "@/lib/products";
+import { Product } from "@/lib/products";
 import { CartContext } from "@/context/CartContext"
 import { useToast } from "@/components/ui/use-toast"
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('Featured');
-  const { addToCart } = useContext(CartContext);
+  const { products, addToCart } = useContext(CartContext);
   const { toast } = useToast();
 
   const handleAddToCart = (product: Product) => {
@@ -95,7 +95,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {displayedProducts.map((product) => (
-              <div key={product.name} className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
+              <div key={product.slug} className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
                 <Link href={`/products/${product.slug}`} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                   <Image
