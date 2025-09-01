@@ -2,15 +2,17 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { User, ShoppingBag, MapPin, Settings, ChevronRight, Camera } from 'lucide-react';
+import { User, ShoppingBag, MapPin, Settings, ChevronRight, Camera, Dna } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
+import StyleDnaProfile from '@/components/style-dna';
 
-type NavItem = 'Profile' | 'Order History' | 'My Addresses' | 'Settings';
+type NavItem = 'Profile' | 'Order History' | 'My Addresses' | 'Settings' | 'Style DNA';
 
 const navItems = [
   { name: 'Profile' as NavItem, icon: User },
+  { name: 'Style DNA' as NavItem, icon: Dna },
   { name: 'Order History' as NavItem, icon: ShoppingBag },
   { name: 'My Addresses' as NavItem, icon: MapPin },
   { name: 'Settings' as NavItem, icon: Settings },
@@ -138,6 +140,8 @@ const AccountPage = () => {
             </div>
           </div>
         );
+      case 'Style DNA':
+        return <StyleDnaProfile />;
       case 'Order History':
         return (
           <div>
@@ -213,12 +217,12 @@ const AccountPage = () => {
       <div className="flex flex-col md:flex-row md:space-x-12">
         <aside className="md:w-1/4 mb-8 md:mb-0">
           <h1 className="text-3xl font-extrabold mb-6 hidden md:block">My Account</h1>
-          <nav className="flex flex-row md:flex-col border-b md:border-b-0 md:border-r border-border/70 pb-4 md:pb-0 md:pr-4">
+          <nav className="flex flex-row md:flex-col border-b md:border-b-0 md:border-r border-border/70 pb-4 md:pb-0 md:pr-4 overflow-x-auto md:overflow-x-visible">
             {navItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => setActiveTab(item.name)}
-                className={`flex items-center text-left w-full p-3 rounded-lg transition-colors text-sm sm:text-base ${
+                className={`flex items-center text-left w-full p-3 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap ${
                   activeTab === item.name
                     ? 'bg-primary/10 text-primary font-semibold'
                     : 'text-foreground/80 hover:bg-muted/50'
@@ -241,5 +245,6 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
+    
 
     
