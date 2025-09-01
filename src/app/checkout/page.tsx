@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CartContext } from '@/context/CartContext';
@@ -17,6 +17,13 @@ export default function CheckoutPage() {
   const shippingCost = 50;
   const finalTotal = total + shippingCost;
   
+  useEffect(() => {
+    // If the cart is empty, redirect to the home page.
+    if (cartItems.length === 0) {
+      router.push('/');
+    }
+  }, [cartItems, router]);
+
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real app, you would process payment here
@@ -31,12 +38,9 @@ export default function CheckoutPage() {
     router.push('/');
   }
 
+  // Render nothing or a loading spinner while redirecting if cart is empty
   if (cartItems.length === 0) {
-    // Redirect to home if cart is empty, maybe after a small delay or on component mount
-    if (typeof window !== 'undefined') {
-        router.push('/');
-    }
-    return null; // Render nothing while redirecting
+    return null;
   }
 
   return (
@@ -110,7 +114,7 @@ export default function CheckoutPage() {
                 Place Order
             </Button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
