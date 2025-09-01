@@ -23,9 +23,15 @@ const AccountPage = () => {
     const dnaVisualizationRef = useRef(null);
 
     useEffect(() => {
-        const generatedId = Math.floor(1000000 + Math.random() * 9000000).toString();
-        setUser(prevUser => ({ ...prevUser, userId: `KOKI-${generatedId.slice(0, 4)}-${generatedId.slice(4)}` }));
-    }, []);
+        if (!user.name) return;
+        const nameParts = user.name.split(' ');
+        const initials = nameParts.length > 1 
+            ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase()
+            : nameParts[0].substring(0, 2).toUpperCase();
+            
+        const randomDigits = Math.floor(100000 + Math.random() * 900000).toString();
+        setUser(prevUser => ({ ...prevUser, userId: `${initials}-${randomDigits}` }));
+    }, [user.name]);
 
     const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -153,6 +159,7 @@ const AccountPage = () => {
 
             const nodes = 12;
             const centerX = (dnaVisualization as HTMLElement).offsetWidth / 2;
+            const centerY = (dnaVisualization as HTMLElement).offsetHeight / 2;
             const radiusX = (dnaVisualization as HTMLElement).offsetWidth / 2 - 30;
             const radiusY = (dnaVisualization as HTMLElement).offsetHeight / 2 - 30;
 
