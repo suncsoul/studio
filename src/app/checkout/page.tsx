@@ -18,7 +18,7 @@ export default function CheckoutPage() {
   const finalTotal = total + shippingCost;
   
   useEffect(() => {
-    // If the cart is empty, redirect to the home page.
+    // If the cart is empty on the client side, redirect to the home page.
     if (cartItems.length === 0) {
       router.push('/');
     }
