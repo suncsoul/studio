@@ -107,6 +107,10 @@ export default function Home() {
       hint: "black dress",
       category: 'Dresses'
     },
+    { name: 'Sequin Party Dress', price: '₹4,999', image: 'https://images.unsplash.com/photo-1574556163315-7a6372c36a32?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'sequin party dress', category: 'Dresses'},
+    { name: 'Velvet Evening Gown', price: '₹5,499', image: 'https://images.unsplash.com/photo-1599818858882-72166a0d241d?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'velvet evening gown', category: 'Dresses'},
+    { name: 'Puff Sleeve Dress', price: '₹3,399', image: 'https://images.unsplash.com/photo-1609382354932-510c49b6b757?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'puff sleeve dress', category: 'Dresses'},
+
 
     // Bottoms
     {
@@ -189,6 +193,8 @@ export default function Home() {
       hint: "plaid mini skirt",
       category: 'Bottoms'
     },
+    { name: 'Corduroy Pants', price: '₹2,699', image: 'https://images.unsplash.com/photo-1611808682855-081b37380996?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'corduroy pants', category: 'Bottoms'},
+    { name: 'Bike Shorts', price: '₹1,599', image: 'https://images.unsplash.com/photo-1591904128994-6f3938488a7b?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'bike shorts', category: 'Bottoms'},
     
     // Accessories
     {
@@ -271,6 +277,9 @@ export default function Home() {
       hint: "statement ring set",
       category: 'Accessories'
     },
+    { name: 'Beanie Hat', price: '₹1,299', image: 'https://images.unsplash.com/photo-1575428652377-a3d80e281475?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'beanie hat', category: 'Accessories'},
+    { name: 'Canvas Backpack', price: '₹3,899', image: 'https://images.unsplash.com/photo-1553062407-98eeb6e0e5c8?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'canvas backpack', category: 'Accessories'},
+
      // Tops
     { name: 'Classic White Tee', price: '₹1,299', image: 'https://images.unsplash.com/photo-1581655353422-34693a595a6a?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'white t-shirt', category: 'Tops' },
     { name: 'Silk Cami Top', price: '₹1,899', image: 'https://images.unsplash.com/photo-1542295393-16a1c185121c?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'silk cami top', category: 'Tops' },
@@ -282,17 +291,21 @@ export default function Home() {
     { name: 'Denim Jacket', price: '₹3,599', image: 'https://images.unsplash.com/photo-1543087902-386568695020?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'denim jacket', category: 'Tops' },
     { name: 'Button-Down Shirt', price: '₹2,299', image: 'https://images.unsplash.com/photo-1589938833917-7429135071d3?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'button-down shirt', category: 'Tops' },
     { name: 'Turtleneck Top', price: '₹1,799', image: 'https://images.unsplash.com/photo-1581044777550-4cfa6ce998c3?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'turtleneck top', category: 'Tops' },
+    { name: 'Ribbed Tank Top', price: '₹999', image: 'https://images.unsplash.com/photo-1530286623682-9435a3962d3a?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'ribbed tank top', category: 'Tops'},
+    { name: 'Peplum Blouse', price: '₹2,399', image: 'https://images.unsplash.com/photo-1594938294985-a7455a0697a2?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'peplum blouse', category: 'Tops'},
+    { name: 'Flannel Shirt', price: '₹2,899', image: 'https://images.unsplash.com/photo-1509402361652-afd137976b71?auto=format&fit=crop&w=400&q=80', href: '#', hint: 'flannel shirt', category: 'Tops'},
+
   ];
 
   const featuredProducts = [
     products[0], // Floral Maxi Dress
-    products[11], // Pleated Trousers
-    products[22], // Classic Wristwatch
+    products[13], // High-Waisted Jeans
+    products[26], // Classic Wristwatch
     products[3], // Linen Shirt Dress
-    products[10], // High-Waisted Jeans
-    products[20], // Leather Tote Bag
+    products[49], // Flannel Shirt
+    products[25], // Leather Tote Bag
     products[6], // Off-Shoulder Dress
-    products[13], // Denim Skirt
+    products[16], // Denim Skirt
   ]
 
   const displayedProducts = selectedCategory === 'Featured'
