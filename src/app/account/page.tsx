@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User, ShoppingBag, MapPin, Settings, ChevronRight, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,12 +22,19 @@ const AccountPage = () => {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
 
   const [user, setUser] = useState({
+    userId: '',
     name: 'Eleanor Vance',
     email: 'eleanor@example.com',
     mobile: '9876543210',
     joined: 'March 15, 2023',
     profilePicture: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80'
   });
+
+  useEffect(() => {
+    // Generate a random 7-digit user ID on client mount to avoid hydration errors
+    const newUserId = Math.floor(1000000 + Math.random() * 9000000).toString();
+    setUser(prevUser => ({ ...prevUser, userId: newUserId }));
+  }, []);
 
   const orders = [
     {
@@ -80,6 +87,10 @@ const AccountPage = () => {
               </div>
               <div className="space-y-4 flex-1 text-center sm:text-left w-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">User ID</label>
+                    <p className="text-lg">{user.userId}</p>
+                  </div>
                   <div>
                     <label className="text-sm font-medium text-muted-foreground">Full Name</label>
                     {isEditingProfile ? (
