@@ -1,15 +1,60 @@
 
 "use client";
 
-import React from 'react';
-import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart, Edit2, Camera, Trash2 } from 'lucide-react';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const AccountPage = () => {
+    const [activeTab, setActiveTab] = useState('Profile');
+    const [isEditingProfile, setIsEditingProfile] = useState(false);
+    const [user, setUser] = useState({
+        name: 'Eleanor Vance',
+        bio: 'Fashion explorer with a passion for sustainable streetwear',
+        email: 'eleanor.vance@example.com',
+        phone: '+1 (555) 123-4567',
+        memberSince: 'January 15, 2023',
+        avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80',
+        userId: ''
+    });
+
+    const dnaVisualizationRef = useRef(null);
+
+    useEffect(() => {
+        const generatedId = Math.floor(1000000 + Math.random() * 9000000).toString();
+        setUser(prevUser => ({ ...prevUser, userId: `KOKI-${generatedId.slice(0, 4)}-${generatedId.slice(4)}` }));
+    }, []);
+
+    const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setUser({ ...user, [e.target.name]: e.target.value });
+    };
+
+    const handleProfileSave = () => {
+        setIsEditingProfile(false);
+        // Here you would typically send the updated user data to a server
+        console.log('Profile saved:', user);
+    };
+
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if(event.target?.result) {
+                    setUser({ ...user, avatar: event.target.result as string });
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    };
+
 
     const orderHistory = [
         {
+            id: 'ORD-2023-001',
             date: "January 2023",
+            status: 'Delivered',
             summary: "Joined KOKIYUM and started exploring minimalist fashion.",
             items: [
                 {
@@ -17,11 +62,14 @@ const AccountPage = () => {
                     category: "Top",
                     image: "https://images.unsplash.com/photo-1582142306909-195724d3a58c?auto=format&fit=crop&w=300&q=80",
                     hint: "organic t-shirt",
+                    price: "₹1,299",
                 },
             ]
         },
         {
+            id: 'ORD-2023-002',
             date: "March 2023",
+            status: 'Delivered',
             summary: "Started experimenting with sustainable brands. Your eco-score increased by 32%.",
             items: [
                 {
@@ -29,11 +77,14 @@ const AccountPage = () => {
                     category: "Shoes",
                     image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=300&q=80",
                     hint: "sneakers shoes",
+                    price: "₹3,499",
                 },
             ]
         },
         {
+            id: 'ORD-2023-003',
             date: "June 2023",
+            status: 'Processing',
             summary: "Developed an interest in vintage streetwear. Created 3 new style combinations.",
             items: [
                 {
@@ -41,77 +92,85 @@ const AccountPage = () => {
                     category: "Jacket",
                     image: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=300&q=80",
                     hint: "denim jacket",
+                    price: "₹3,599",
                 },
                 {
                     name: "Cargo Pants",
                     category: "Bottoms",
                     image: "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?auto=format&fit=crop&w=300&q=80",
                     hint: "cargo pants",
+                    price: "₹2,799",
                 },
             ]
         },
         {
+            id: 'ORD-2023-004',
             date: "Present",
+            status: 'Pending',
             summary: "Your current style is a unique blend of sustainable streetwear with vintage elements.",
             items: []
         },
     ];
+    
+    const [wishlistItems, setWishlistItems] = useState([
+        { name: 'Satin Slip Dress', category: 'Dresses', image: 'https://images.unsplash.com/photo-1627914650529-51fc612b487c?auto=format&fit=crop&w=300&q=80', hint: 'satin slip dress', price: '₹2,899' },
+        { name: 'Leather Tote Bag', category: 'Accessories', image: 'https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=300&q=80', hint: 'leather tote bag', price: '₹4,599' },
+        { name: 'Cropped Sweater', category: 'Tops', image: 'https://images.unsplash.com/photo-1588143216885-3162a03525e9?auto=format&fit=crop&w=300&q=80', hint: 'cropped sweater', price: '₹2,499' },
+    ]);
+
+    const removeFromWishlist = (itemName: string) => {
+        setWishlistItems(wishlistItems.filter(item => item.name !== itemName));
+    };
 
     const virtualClosetItems = orderHistory.flatMap(order => order.items).reduce((unique, item) => {
         if (!unique.some(i => i.name === item.name)) {
             unique.push(item);
         }
         return unique;
-    }, [] as { name: string; category: string; image: string; hint: string }[]);
+    }, [] as { name: string; category: string; image: string; hint: string, price: string }[]);
 
+    const navItems = [
+        { name: 'Profile', icon: User },
+        { name: 'Style DNA', icon: Dna },
+        { name: 'Orders', icon: ShoppingBag },
+        { name: 'Wishlist', icon: Heart },
+        { name: 'Addresses', icon: MapPin },
+        { name: 'Settings', icon: Settings },
+    ];
 
-    React.useEffect(() => {
-        const dnaVisualization = document.querySelector('.dna-visualization');
+    useEffect(() => {
+        if (activeTab !== 'Style DNA') return;
+
+        const dnaVisualization = dnaVisualizationRef.current;
         if (!dnaVisualization) return;
-    
+
+        let animationFrameId: number;
+
         const createDNA = () => {
-            // Clear previous elements
-            while (dnaVisualization.firstChild) {
+             while (dnaVisualization.firstChild) {
                 dnaVisualization.removeChild(dnaVisualization.firstChild);
             }
-    
+
             const nodes = 12;
             const centerX = (dnaVisualization as HTMLElement).offsetWidth / 2;
-            const spacing = (dnaVisualization as HTMLElement).offsetHeight / (nodes - 1);
-    
+            const radiusX = (dnaVisualization as HTMLElement).offsetWidth / 2 - 30;
+            const radiusY = (dnaVisualization as HTMLElement).offsetHeight / 2 - 30;
+
             const dnaStrand = document.createElement('div');
             dnaStrand.className = 'dna-strand';
             dnaVisualization.appendChild(dnaStrand);
-    
+
             for (let i = 0; i < nodes; i++) {
-                const yPos = i * spacing;
-    
-                const leftNode = document.createElement('div');
-                leftNode.className = 'dna-node';
-                leftNode.style.left = `${centerX - 40}px`;
-                leftNode.style.top = `${yPos}px`;
-                leftNode.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M12 22V9"/><path d="m3.5 8.5 17 0"/></svg>`;
-                dnaVisualization.appendChild(leftNode);
-    
-                const rightNode = document.createElement('div');
-                rightNode.className = 'dna-node';
-                rightNode.style.left = `${centerX + 40}px`;
-                rightNode.style.top = `${yPos}px`;
-                rightNode.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`;
-                dnaVisualization.appendChild(rightNode);
-    
-                if (i < nodes - 1) {
-                    const connection = document.createElement('div');
-                    connection.className = 'dna-connection';
-                    const deltaX = 80;
-                    const deltaY = spacing;
-                    const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-                    connection.style.width = `${length}px`;
-                    connection.style.left = `${centerX - 40}px`;
-                    connection.style.top = `${yPos}px`;
-                    connection.style.transform = `rotate(${Math.atan2(deltaY, deltaX) * 180 / Math.PI}deg)`;
-                    dnaVisualization.appendChild(connection);
-                }
+                const angle = (i / (nodes -1)) * Math.PI * 2;
+                const xPos = centerX + Math.cos(angle) * radiusX;
+                const yPos = centerY + Math.sin(angle * 2) * radiusY;
+
+                const node = document.createElement('div');
+                node.className = 'dna-node';
+                node.style.left = `${xPos}px`;
+                node.style.top = `${yPos}px`;
+                node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M12 22V9"/><path d="m3.5 8.5 17 0"/></svg>`;
+                dnaVisualization.appendChild(node);
             }
             
             const dnaNodes = document.querySelectorAll('.dna-node');
@@ -121,12 +180,264 @@ const AccountPage = () => {
             });
         }
         
-        createDNA();
-        window.addEventListener('resize', createDNA);
-        
-        return () => window.removeEventListener('resize', createDNA);
+        const resizeObserver = new ResizeObserver(() => {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(createDNA);
+        });
 
-    }, []);
+        if (dnaVisualization) {
+            resizeObserver.observe(dnaVisualization);
+        }
+        
+        return () => {
+            if (dnaVisualization) {
+                resizeObserver.unobserve(dnaVisualization);
+            }
+            cancelAnimationFrame(animationFrameId);
+        }
+
+    }, [activeTab]);
+
+
+    const renderContent = () => {
+        switch (activeTab) {
+            case 'Profile':
+                return (
+                    <div className="profile-card">
+                        <div className="profile-card-header items-center justify-center flex flex-col">
+                             <div className="relative group">
+                                <div className="profile-avatar">
+                                     <Image src={user.avatar} alt="User Avatar" layout="fill" objectFit="cover" data-ai-hint="woman professional portrait" />
+                                </div>
+                                <label htmlFor="avatar-upload" className="absolute inset-0 bg-black/50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full">
+                                    <Camera size={32} />
+                                    <input id="avatar-upload" type="file" className="hidden" accept="image/*" onChange={handleAvatarChange} />
+                                </label>
+                            </div>
+                            {isEditingProfile ? (
+                                <Input name="name" value={user.name} onChange={handleProfileChange} className="text-2xl font-bold bg-transparent border-b-2 border-white/50 text-center w-auto mt-4" />
+                            ) : (
+                                <h2 className="profile-name">{user.name}</h2>
+                            )}
+                             {isEditingProfile ? (
+                                <textarea name="bio" value={user.bio} onChange={handleProfileChange} className="profile-bio bg-transparent border-b-2 border-white/50 text-center w-full mt-2" />
+                            ) : (
+                                <p className="profile-bio">{user.bio}</p>
+                            )}
+                        </div>
+                        
+                        <div className="profile-info">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="text-xl font-semibold">Personal Information</h3>
+                                {isEditingProfile ? (
+                                    <Button onClick={handleProfileSave}>Save Changes</Button>
+                                ) : (
+                                    <Button variant="outline" onClick={() => setIsEditingProfile(true)}><Edit2 size={16} className="mr-2"/>Edit Profile</Button>
+                                )}
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="info-group">
+                                    <div className="info-label">UNIQUE ID</div>
+                                    <div className="info-value">{user.userId}</div>
+                                </div>
+                                <div className="info-group">
+                                    <div className="info-label">EMAIL ADDRESS <span className="text-red-500">*</span></div>
+                                     {isEditingProfile ? (
+                                        <Input name="email" type="email" value={user.email} onChange={handleProfileChange} />
+                                    ) : (
+                                        <div className="info-value">{user.email}</div>
+                                    )}
+                                </div>
+                                <div className="info-group">
+                                    <div className="info-label">PHONE NUMBER <span className="text-red-500">*</span></div>
+                                     {isEditingProfile ? (
+                                        <Input name="phone" type="tel" value={user.phone} onChange={handleProfileChange} />
+                                    ) : (
+                                        <div className="info-value">{user.phone}</div>
+                                    )}
+                                </div>
+                                <div className="info-group">
+                                    <div className="info-label">MEMBER SINCE</div>
+                                    <div className="info-value member-since">{user.memberSince}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 'Style DNA':
+                return (
+                     <>
+                        <div className="styledna-section">
+                            <h2 className="section-title"><Dna size={24}/> Your Style DNA</h2>
+                            <p className='text-muted-foreground'>Your unique fashion identity visualized through your preferences and purchases</p>
+                            <div className="dna-visualization" ref={dnaVisualizationRef}></div>
+                            <div className="style-traits">
+                                <div className="trait"><span className="trait-icon">👟</span><span>Streetwear</span></div>
+                                <div className="trait"><span className="trait-icon">🌿</span><span>Sustainable</span></div>
+                                <div className="trait"><span className="trait-icon">🎨</span><span>Colorful</span></div>
+                                <div className="trait"><span className="trait-icon">👖</span><span>Denim Lover</span></div>
+                                <div className="trait"><span className="trait-icon">🔄</span><span>Vintage Mix</span></div>
+                            </div>
+                        </div>
+                        
+                        <div className="evolution-section">
+                            <h2 className="section-title"><BarChart size={24}/> Your Style Evolution</h2>
+                            <p className='text-muted-foreground'>How your fashion preferences have changed since you joined us</p>
+                            <div className="timeline">
+                                {orderHistory.map((event, index) => (
+                                    <div key={index} className="timeline-item">
+                                        <div className="timeline-content">
+                                            <div className="timeline-date">{event.date}</div>
+                                            <p>{event.summary}</p>
+                                        </div>
+                                        <div className="timeline-dot"></div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        
+                        <div className="closet-section">
+                            <h2 className="section-title"><ShoppingBag size={24}/> Your Virtual Closet</h2>
+                            <p className='text-muted-foreground'>Items you've loved and added to your collection</p>
+                            <div className="closet-grid">
+                                {virtualClosetItems.map((item, index) => (
+                                <div key={index} className="closet-item">
+                                    <div className="closet-img-container">
+                                        <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
+                                    </div>
+                                    <div className="closet-info">
+                                        <div className="closet-category">{item.category}</div>
+                                        <div className="closet-name">{item.name}</div>
+                                    </div>
+                                </div>
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                );
+             case 'Orders':
+                return (
+                    <div className="profile-card">
+                         <div className="p-6">
+                            <h2 className="section-title"><ShoppingBag size={24}/> Order History</h2>
+                             <p className='text-muted-foreground mb-6'>Track your past and current orders.</p>
+                             <div className="space-y-4">
+                                {orderHistory.filter(o => o.items.length > 0).map(order => (
+                                    <div key={order.id} className="border rounded-lg p-4">
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h3 className="font-semibold">{order.id}</h3>
+                                                <p className="text-sm text-muted-foreground">Date: {order.date}</p>
+                                            </div>
+                                            <div className={`text-sm font-medium px-2 py-1 rounded-full ${order.status === 'Delivered' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{order.status}</div>
+                                        </div>
+                                        <div className="mt-4">
+                                            {order.items.map(item => (
+                                                <div key={item.name} className="flex items-center gap-4 mt-2">
+                                                    <Image src={item.image} alt={item.name} width={60} height={60} className="rounded-md" data-ai-hint={item.hint}/>
+                                                    <div>
+                                                        <p className="font-medium">{item.name}</p>
+                                                        <p className="text-sm text-muted-foreground">{item.price}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                             </div>
+                         </div>
+                    </div>
+                );
+            case 'Wishlist':
+                return (
+                    <div className="profile-card">
+                        <div className="p-6">
+                           <h2 className="section-title"><Heart size={24}/> Your Wishlist</h2>
+                           <p className='text-muted-foreground mb-6'>Items you're dreaming of.</p>
+                            <div className="closet-grid">
+                                {wishlistItems.map((item, index) => (
+                                <div key={index} className="closet-item group">
+                                    <div className="closet-img-container">
+                                        <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
+                                         <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Button size="icon" variant="destructive" onClick={() => removeFromWishlist(item.name)}>
+                                                <Trash2 size={16} />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className="closet-info">
+                                        <div className="closet-category">{item.category}</div>
+                                        <div className="closet-name">{item.name}</div>
+                                        <div className="font-semibold mt-1">{item.price}</div>
+                                    </div>
+                                     <div className="absolute bottom-0 left-0 right-0 p-4 z-20 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <Button variant="secondary" size="sm">Add to Cart</Button>
+                                    </div>
+                                </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 'Addresses':
+                 return (
+                    <div className="profile-card">
+                         <div className="p-6">
+                            <h2 className="section-title"><MapPin size={24}/> Manage Addresses</h2>
+                            <p className='text-muted-foreground mb-6'>Update your shipping and billing addresses.</p>
+                             <div className="space-y-4">
+                                <div className="border rounded-lg p-4 flex justify-between items-start">
+                                    <div>
+                                        <p className="font-semibold">Primary Shipping Address</p>
+                                        <p>123 Fashion Ave, Apt 4B</p>
+                                        <p>New York, NY 10001</p>
+                                        <p>United States</p>
+                                    </div>
+                                    <Button variant="outline" size="sm"><Edit2 size={14} className="mr-2"/>Edit</Button>
+                                </div>
+                             </div>
+                             <Button className="mt-6">Add New Address</Button>
+                         </div>
+                    </div>
+                );
+            case 'Settings':
+                return (
+                     <div className="profile-card">
+                         <div className="p-6">
+                            <h2 className="section-title"><Settings size={24}/> Account Settings</h2>
+                            <p className='text-muted-foreground mb-6'>Manage your account preferences.</p>
+                             <div className="space-y-6">
+                                <div>
+                                    <h3 className="font-semibold mb-2">Change Password</h3>
+                                    <div className="space-y-2 max-w-sm">
+                                        <Input type="password" placeholder="Current Password" />
+                                        <Input type="password" placeholder="New Password" />
+                                        <Input type="password" placeholder="Confirm New Password" />
+                                        <Button>Update Password</Button>
+                                    </div>
+                                </div>
+                                <div className="border-t pt-6">
+                                     <h3 className="font-semibold mb-2">Notification Preferences</h3>
+                                     <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <label htmlFor="promo-emails">Promotional Emails</label>
+                                            <Input type="checkbox" id="promo-emails" className="w-4 h-4" defaultChecked/>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <label htmlFor="order-updates">Order Updates</label>
+                                            <Input type="checkbox" id="order-updates" className="w-4 h-4" defaultChecked/>
+                                        </div>
+                                     </div>
+                                </div>
+                             </div>
+                         </div>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
 
     return (
         <>
@@ -144,17 +455,15 @@ const AccountPage = () => {
                 --acc-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             }
             .dark {
-                :root {
-                    --acc-primary: #ffffff;
-                    --acc-secondary: #1a202c;
-                    --acc-accent: #3b82f6;
-                    --acc-accent-light: #60a5fa;
-                    --acc-gray: #2d3748;
-                    --acc-gray-dark: #4a5568;
-                    --acc-text: #f7fafc;
-                    --acc-text-light: #a0aec0;
-                    --acc-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-                }
+                --acc-primary: #ffffff;
+                --acc-secondary: #1a202c;
+                --acc-accent: #3b82f6;
+                --acc-accent-light: #60a5fa;
+                --acc-gray: #2d3748;
+                --acc-gray-dark: #4a5568;
+                --acc-text: #f7fafc;
+                --acc-text-light: #a0aec0;
+                --acc-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             }
             .account-page-body {
                 font-family: 'Poppins', sans-serif;
@@ -185,15 +494,18 @@ const AccountPage = () => {
             .account-layout {
                 display: flex;
                 gap: 30px;
+                align-items: flex-start;
                 flex-wrap: wrap;
             }
             .sidebar {
                 flex: 1;
                 min-width: 280px;
                 height: fit-content;
+                position: sticky;
+                top: 80px;
             }
             .main-content {
-                flex: 2;
+                flex: 2.5;
                 min-width: 300px;
             }
             .profile-card {
@@ -201,13 +513,11 @@ const AccountPage = () => {
                 border-radius: 15px;
                 box-shadow: var(--acc-shadow);
                 overflow: hidden;
-                margin-bottom: 30px;
             }
             .profile-card-header {
                 background: linear-gradient(120deg, var(--acc-primary) 0%, #2c3e50 100%);
                 color: var(--acc-secondary);
                 padding: 30px;
-                text-align: center;
                 position: relative;
             }
             .dark .profile-card-header {
@@ -231,6 +541,7 @@ const AccountPage = () => {
                 opacity: 0.9;
                 max-width: 500px;
                 margin: 0 auto;
+                min-height: 40px;
             }
             .profile-info { padding: 25px; }
             .info-group {
@@ -238,7 +549,7 @@ const AccountPage = () => {
                 padding-bottom: 20px;
                 border-bottom: 1px solid var(--acc-gray-dark);
             }
-            .info-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+             .info-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
             .info-label {
                 font-size: 14px;
                 color: var(--acc-text-light);
@@ -264,11 +575,11 @@ const AccountPage = () => {
                 color: var(--acc-text);
             }
             .nav-item.active {
-                background: var(--acc-accent);
-                color: var(--acc-secondary);
+                background: hsl(var(--primary));
+                color: hsl(var(--primary-foreground));
             }
             .nav-item.active svg {
-                 color: var(--acc-secondary);
+                 color: hsl(var(--primary-foreground));
             }
             .nav-item:hover:not(.active) { background: var(--acc-gray); }
             .nav-icon {
@@ -276,7 +587,7 @@ const AccountPage = () => {
                 font-size: 18px;
                 color: var(--acc-text-light);
             }
-            .styledna-section {
+            .styledna-section, .evolution-section, .closet-section {
                 background: var(--acc-secondary);
                 border-radius: 15px;
                 box-shadow: var(--acc-shadow);
@@ -299,16 +610,6 @@ const AccountPage = () => {
                 position: relative;
                 margin: 40px 0;
             }
-            .dna-strand {
-                position: absolute;
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 5px;
-                height: 100%;
-                background: var(--acc-accent);
-                opacity: 0.3;
-            }
             .dna-node {
                 position: absolute;
                 width: 24px;
@@ -329,13 +630,6 @@ const AccountPage = () => {
             .dna-node:hover {
                 transform: translate(-50%, -50%) scale(1.2);
                 z-index: 10;
-            }
-            .dna-connection {
-                position: absolute;
-                height: 2px;
-                background: var(--acc-accent);
-                transform-origin: 0 0;
-                opacity: 0.5;
             }
             .style-traits {
                 display: flex;
@@ -360,13 +654,6 @@ const AccountPage = () => {
                 transform: translateY(-3px);
             }
             .trait-icon { font-size: 18px; }
-            .evolution-section {
-                background: var(--acc-secondary);
-                border-radius: 15px;
-                box-shadow: var(--acc-shadow);
-                padding: 30px;
-                margin-bottom: 30px;
-            }
             .timeline {
                 position: relative;
                 max-width: 800px;
@@ -414,12 +701,6 @@ const AccountPage = () => {
             }
             .timeline-item:nth-child(odd) .timeline-dot { right: -12px; }
             .timeline-item:nth-child(even) .timeline-dot { left: -12px; }
-            .closet-section {
-                background: var(--acc-secondary);
-                border-radius: 15px;
-                box-shadow: var(--acc-shadow);
-                padding: 30px;
-            }
             .closet-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -453,7 +734,7 @@ const AccountPage = () => {
             }
             @media (max-width: 960px) {
                 .account-layout { flex-direction: column; }
-                .sidebar { width: 100%; }
+                .sidebar { width: 100%; position: static; }
             }
             @media (max-width: 768px) {
                 .timeline::after { left: 31px; }
@@ -475,109 +756,25 @@ const AccountPage = () => {
                 
                 <div className="account-layout">
                     <div className="sidebar">
-                        <div className="profile-card">
-                            <div className="profile-card-header">
-                                <div className="profile-avatar">
-                                    <Image src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80" alt="User Avatar" layout="fill" objectFit="cover" data-ai-hint="woman professional portrait" />
-                                </div>
-                                <h2 className="profile-name">Eleanor Vance</h2>
-                                <p className="profile-bio">Fashion explorer with a passion for sustainable streetwear</p>
-                            </div>
-                            
-                            <div className="profile-info">
-                                <div className="info-group">
-                                    <div className="info-label">UNIQUE ID</div>
-                                    <div className="info-value">KOKI-7382-4916</div>
-                                </div>
-                                
-                                <div className="info-group">
-                                    <div className="info-label">EMAIL ADDRESS</div>
-                                    <div className="info-value">eleanor.vance@example.com</div>
-                                </div>
-                                
-                                <div className="info-group">
-                                    <div className="info-label">PHONE NUMBER</div>
-                                    <div className="info-value">+1 (555) 123-4567</div>
-                                </div>
-                                
-                                <div className="info-group">
-                                    <div className="info-label">MEMBER SINCE</div>
-                                    <div className="info-value member-since">January 15, 2023</div>
-                                </div>
-                            </div>
-                        </div>
-                        
                         <div className="navigation-card">
-                            <div className="nav-item active">
-                                <div className="nav-icon"><Dna size={18} /></div>
-                                <div>Style DNA</div>
-                            </div>
-                            <div className="nav-item">
-                                <div className="nav-icon"><ShoppingBag size={18} /></div>
-                                <div>Orders</div>
-                            </div>
-                            <div className="nav-item">
-                                <div className="nav-icon"><Heart size={18} /></div>
-                                <div>Wishlist</div>
-                            </div>
-                            <div className="nav-item">
-                                <div className="nav-icon"><MapPin size={18} /></div>
-                                <div>Addresses</div>
-                            </div>
-                            <div className="nav-item">
-                                <div className="nav-icon"><Settings size={18} /></div>
-                                <div>Settings</div>
-                            </div>
+                             {navItems.map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                    <div 
+                                        key={item.name} 
+                                        className={`nav-item ${activeTab === item.name ? 'active' : ''}`}
+                                        onClick={() => setActiveTab(item.name)}
+                                    >
+                                        <div className="nav-icon"><Icon size={18} /></div>
+                                        <div>{item.name}</div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                     
                     <div className="main-content">
-                        <div className="styledna-section">
-                            <h2 className="section-title"><Dna size={24}/> Your Style DNA</h2>
-                            <p className='text-muted-foreground'>Your unique fashion identity visualized through your preferences and purchases</p>
-                            <div className="dna-visualization"></div>
-                            <div className="style-traits">
-                                <div className="trait"><span className="trait-icon">👟</span><span>Streetwear</span></div>
-                                <div className="trait"><span className="trait-icon">🌿</span><span>Sustainable</span></div>
-                                <div className="trait"><span className="trait-icon">🎨</span><span>Colorful</span></div>
-                                <div className="trait"><span className="trait-icon">👖</span><span>Denim Lover</span></div>
-                                <div className="trait"><span className="trait-icon">🔄</span><span>Vintage Mix</span></div>
-                            </div>
-                        </div>
-                        
-                        <div className="evolution-section">
-                            <h2 className="section-title"><BarChart size={24}/> Your Style Evolution</h2>
-                            <p className='text-muted-foreground'>How your fashion preferences have changed since you joined us</p>
-                            <div className="timeline">
-                                {orderHistory.map((event, index) => (
-                                    <div key={index} className="timeline-item">
-                                        <div className="timeline-content">
-                                            <div className="timeline-date">{event.date}</div>
-                                            <p>{event.summary}</p>
-                                        </div>
-                                        <div className="timeline-dot"></div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        
-                        <div className="closet-section">
-                            <h2 className="section-title"><ShoppingBag size={24}/> Your Virtual Closet</h2>
-                            <p className='text-muted-foreground'>Items you've loved and added to your collection since January 2023</p>
-                            <div className="closet-grid">
-                                {virtualClosetItems.map((item, index) => (
-                                <div key={index} className="closet-item">
-                                    <div className="closet-img-container">
-                                        <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
-                                    </div>
-                                    <div className="closet-info">
-                                        <div className="closet-category">{item.category}</div>
-                                        <div className="closet-name">{item.name}</div>
-                                    </div>
-                                </div>
-                                ))}
-                            </div>
-                        </div>
+                       {renderContent()}
                     </div>
                 </div>
             </div>
@@ -587,3 +784,5 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
+
+    
