@@ -488,47 +488,47 @@ const AccountPage = () => {
                 --acc-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             }
             .dark {
-                --acc-primary: #ffffff;
-                --acc-secondary: #1a202c;
+                --acc-primary: hsl(var(--primary-foreground));
+                --acc-secondary: hsl(var(--secondary));
                 --acc-accent: #3b82f6;
                 --acc-accent-light: #60a5fa;
-                --acc-gray: #2d3748;
-                --acc-gray-dark: #4a5568;
-                --acc-text: #f7fafc;
-                --acc-text-light: #a0aec0;
+                --acc-gray: hsl(var(--muted));
+                --acc-gray-dark: hsl(var(--border));
+                --acc-text: hsl(var(--foreground));
+                --acc-text-light: hsl(var(--muted-foreground));
                 --acc-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             }
             .account-page-body {
                 font-family: 'Poppins', sans-serif;
                 color: var(--acc-text);
-                background: linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--background)) 100%);
+                background: var(--acc-gray);
                 line-height: 1.6;
                 min-height: 100vh;
-                padding: 20px;
+                padding: 2rem;
             }
             .account-container {
-                max-width: 1200px;
+                max-width: 1400px;
                 margin: 0 auto;
             }
             .account-header {
                 text-align: center;
-                margin-bottom: 30px;
+                margin-bottom: 2.5rem;
             }
             .account-title {
-                font-size: 32px;
+                font-size: 2.5rem;
                 font-family: 'Montserrat', sans-serif;
                 color: var(--acc-primary);
-                margin-bottom: 10px;
+                margin-bottom: 0.5rem;
+                font-weight: 700;
             }
             .account-subtitle {
                 color: var(--acc-text-light);
-                font-size: 18px;
+                font-size: 1.125rem;
             }
             .account-layout {
                 display: flex;
-                gap: 30px;
+                gap: 2rem;
                 align-items: flex-start;
-                flex-wrap: wrap;
             }
             .sidebar {
                 flex: 1;
@@ -538,70 +538,77 @@ const AccountPage = () => {
                 top: 80px;
             }
             .main-content {
-                flex: 2.5;
+                flex: 3;
                 min-width: 300px;
             }
             .profile-card {
                 background: var(--acc-secondary);
-                border-radius: 15px;
+                border-radius: var(--radius);
                 box-shadow: var(--acc-shadow);
                 overflow: hidden;
+                border: 1px solid var(--acc-gray-dark);
             }
             .profile-card-header {
-                background: linear-gradient(120deg, var(--acc-primary) 0%, #2c3e50 100%);
-                color: var(--acc-secondary);
-                padding: 30px;
+                background: linear-gradient(120deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+                color: hsl(var(--primary-foreground));
+                padding: 2rem;
                 position: relative;
             }
             .dark .profile-card-header {
-                 background: linear-gradient(120deg, #1a202c 0%, #2d3748 100%);
+                 background: linear-gradient(120deg, hsl(var(--secondary)) 0%, hsl(var(--secondary) / 0.8) 100%);
             }
             .profile-avatar {
                 width: 120px;
                 height: 120px;
                 border-radius: 50%;
-                border: 5px solid var(--acc-secondary);
-                margin: 0 auto 15px;
+                border: 4px solid var(--acc-secondary);
+                margin: 0 auto 1rem;
                 overflow: hidden;
                 position: relative;
             }
             .profile-name {
-                font-size: 28px;
-                margin-bottom: 5px;
+                font-size: 1.75rem;
+                margin-bottom: 0.25rem;
                 font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
             }
             .profile-bio {
                 opacity: 0.9;
                 max-width: 500px;
                 margin: 0 auto;
                 min-height: 40px;
+                font-size: 0.9rem;
             }
-            .profile-info { padding: 25px; }
+            .profile-info { padding: 1.5rem; }
             .info-group {
-                margin-bottom: 20px;
-                padding-bottom: 20px;
+                margin-bottom: 1.5rem;
+                padding-bottom: 1.5rem;
                 border-bottom: 1px solid var(--acc-gray-dark);
             }
              .info-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
             .info-label {
-                font-size: 14px;
+                font-size: 0.75rem;
                 color: var(--acc-text-light);
-                margin-bottom: 5px;
+                margin-bottom: 0.25rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
             }
-            .info-value { font-size: 16px; font-weight: 500; }
-            .info-value.member-since { color: var(--acc-accent); }
+            .info-value { font-size: 1rem; font-weight: 500; }
+            .info-value.member-since { color: hsl(var(--primary)); }
+            .dark .info-value.member-since { color: hsl(var(--primary-foreground)); }
             .navigation-card {
                  background: var(--acc-secondary);
-                 border-radius: 15px;
+                 border-radius: var(--radius);
                  box-shadow: var(--acc-shadow);
-                 padding: 15px;
+                 padding: 1rem;
+                 border: 1px solid var(--acc-gray-dark);
             }
             .nav-item {
                 display: flex;
                 align-items: center;
-                padding: 15px;
-                border-radius: 10px;
-                margin-bottom: 5px;
+                padding: 0.875rem 1rem;
+                border-radius: calc(var(--radius) - 4px);
+                margin-bottom: 0.25rem;
                 cursor: pointer;
                 transition: var(--acc-transition);
                 font-weight: 500;
@@ -616,27 +623,29 @@ const AccountPage = () => {
             }
             .nav-item:hover:not(.active) { background: var(--acc-gray); }
             .nav-icon {
-                width: 35px;
-                font-size: 18px;
+                margin-right: 1rem;
                 color: var(--acc-text-light);
             }
-            .styledna-section, .evolution-section, .closet-section {
+            .styledna-section, .evolution-section, .closet-section, .orders-section, .wishlist-section, .addresses-section, .settings-section {
                 background: var(--acc-secondary);
-                border-radius: 15px;
+                border-radius: var(--radius);
                 box-shadow: var(--acc-shadow);
-                padding: 30px;
-                margin-bottom: 30px;
+                padding: 2rem;
+                margin-bottom: 2rem;
+                 border: 1px solid var(--acc-gray-dark);
             }
             .section-title {
-                font-size: 24px;
-                margin-bottom: 20px;
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
                 color: var(--acc-primary);
                 font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 0.75rem;
             }
-            .section-title .lucide { color: var(--acc-accent); }
+            .section-title .lucide { color: hsl(var(--primary)); }
+            .dark .section-title .lucide { color: hsl(var(--primary-foreground)); }
             .dna-visualization {
                 width: 100%;
                 height: 200px;
@@ -649,14 +658,14 @@ const AccountPage = () => {
                 height: 24px;
                 border-radius: 50%;
                 background: var(--acc-secondary);
-                border: 3px solid var(--acc-accent);
+                border: 3px solid hsl(var(--primary));
                 transform: translate(-50%, -50%);
-                box-shadow: 0 0 15px rgba(0, 123, 255, 0.3);
+                box-shadow: 0 0 15px hsl(var(--primary) / 0.3);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-size: 12px;
-                color: var(--acc-accent);
+                color: hsl(var(--primary));
                 transition: var(--acc-transition);
                 cursor: pointer;
             }
@@ -668,25 +677,25 @@ const AccountPage = () => {
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 15px;
-                margin-top: 40px;
+                gap: 1rem;
+                margin-top: 2.5rem;
             }
             .trait {
                 background: var(--acc-gray);
-                padding: 10px 20px;
+                padding: 0.75rem 1.25rem;
                 border-radius: 50px;
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                gap: 0.5rem;
                 transition: var(--acc-transition);
                 cursor: pointer;
             }
             .trait:hover {
-                background: var(--acc-accent);
-                color: var(--acc-secondary);
+                background: hsl(var(--primary));
+                color: hsl(var(--primary-foreground));
                 transform: translateY(-3px);
             }
-            .trait-icon { font-size: 18px; }
+            .trait-icon { font-size: 1.125rem; }
             .timeline {
                 position: relative;
                 max-width: 800px;
@@ -695,39 +704,47 @@ const AccountPage = () => {
             .timeline::after {
                 content: '';
                 position: absolute;
-                width: 6px;
+                width: 4px;
                 background-color: var(--acc-gray-dark);
                 top: 0;
                 bottom: 0;
                 left: 50%;
-                margin-left: -3px;
+                margin-left: -2px;
                 border-radius: 10px;
             }
             .timeline-item {
                 position: relative;
                 width: 50%;
-                margin-bottom: 50px;
+                padding: 0 2.5rem;
+                margin-bottom: 3rem;
             }
-            .timeline-item:nth-child(even) { left: 50%; padding-left: 40px; }
-            .timeline-item:nth-child(odd) { left: 0; padding-right: 40px; text-align: right; }
+            .timeline-item:nth-child(even) { left: 50%; }
+            .timeline-item:nth-child(odd) { text-align: right; }
+             .timeline-item:nth-child(odd)::after {
+                right: -12px;
+            }
+             .timeline-item:nth-child(even)::after {
+                left: -12px;
+            }
             .timeline-content {
-                padding: 20px;
+                padding: 1.5rem;
                 background-color: var(--acc-gray);
-                border-radius: 15px;
+                border-radius: var(--radius);
                 box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
                 position: relative;
             }
             .timeline-date {
                 font-weight: 700;
-                color: var(--acc-accent);
-                margin-bottom: 10px;
+                color: hsl(var(--primary));
+                margin-bottom: 0.5rem;
             }
+            .dark .timeline-date { color: hsl(var(--primary-foreground)); }
             .timeline-dot {
                 position: absolute;
                 width: 24px;
                 height: 24px;
                 background-color: var(--acc-secondary);
-                border: 4px solid var(--acc-accent);
+                border: 4px solid hsl(var(--primary));
                 border-radius: 50%;
                 z-index: 1;
                 top: 20px;
@@ -736,13 +753,13 @@ const AccountPage = () => {
             .timeline-item:nth-child(even) .timeline-dot { left: -12px; }
             .closet-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                gap: 20px;
-                margin-top: 30px;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1.5rem;
+                margin-top: 1.5rem;
             }
             .closet-item {
                 background: var(--acc-gray);
-                border-radius: 15px;
+                border-radius: var(--radius);
                 overflow: hidden;
                 box-shadow: var(--acc-shadow);
                 transition: var(--acc-transition);
@@ -757,26 +774,27 @@ const AccountPage = () => {
                 width: 100%;
                 aspect-ratio: 1/1;
                 position: relative;
+                background: white;
             }
-            .closet-info { padding: 10px; text-align: center; }
-            .closet-category { font-size: 12px; color: var(--acc-text-light); }
+            .closet-info { padding: 0.75rem; text-align: center; }
+            .closet-category { font-size: 0.75rem; color: var(--acc-text-light); }
             .closet-name {
-                font-size: 14px;
+                font-size: 0.9rem;
                 font-weight: 500;
-                margin-top: 5px;
+                margin-top: 0.25rem;
             }
             @media (max-width: 960px) {
                 .account-layout { flex-direction: column; }
                 .sidebar { width: 100%; position: static; }
             }
             @media (max-width: 768px) {
-                .timeline::after { left: 31px; }
-                .timeline-item { width: 100%; padding-left: 70px; padding-right: 0; left: 0 !important; text-align: left !important; }
-                .timeline-dot { left: 19px; right: auto; }
+                .timeline::after { left: 1.5rem; }
+                .timeline-item { width: 100%; padding-left: 4rem; padding-right: 0; left: 0 !important; text-align: left !important; }
+                .timeline-dot { left: calc(1.5rem - 10px); right: auto; }
             }
             @keyframes pulse {
-                0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 15px rgba(0, 123, 255, 0.3); }
-                100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 25px rgba(0, 123, 255, 0.6); }
+                0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 15px hsl(var(--primary) / 0.3); }
+                100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 25px hsl(var(--primary) / 0.6); }
             }
         `}</style>
 
@@ -798,7 +816,7 @@ const AccountPage = () => {
                                         className={`nav-item ${activeTab === item.name ? 'active' : ''}`}
                                         onClick={() => setActiveTab(item.name)}
                                     >
-                                        <div className="nav-icon"><Icon size={18} /></div>
+                                        <div className="nav-icon"><Icon size={20} /></div>
                                         <div>{item.name}</div>
                                     </div>
                                 );
@@ -814,6 +832,6 @@ const AccountPage = () => {
         </div>
         </>
     );
-};
+}
 
 export default AccountPage;

@@ -35,16 +35,16 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold tracking-tight">
+            <Link href="/" className="text-3xl font-bold tracking-tight">
               KOKIYUM
             </Link>
           </div>
           
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <nav className="hidden md:flex items-center gap-8 text-base font-medium">
             {navLinks.map(link => {
               if (link.label === 'Contact') {
                 return (
@@ -111,9 +111,9 @@ export default function Header() {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-full max-w-xs bg-background">
+              <SheetContent side="left" className="w-full max-w-sm bg-background">
                 <div className="p-4">
-                <Link href="/" className="text-2xl font-bold tracking-tight mb-8 block" onClick={() => setMenuOpen(false)}>
+                <Link href="/" className="text-3xl font-bold tracking-tight mb-8 block" onClick={() => setMenuOpen(false)}>
                   KOKIYUM
                 </Link>
                   <nav className="flex flex-col gap-6">
@@ -174,5 +174,3 @@ export default function Header() {
     </header>
   )
 }
-
-    

@@ -301,9 +301,9 @@ export default function Home() {
 
   return (
     <div className="bg-background text-foreground">
-      <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center text-center text-white">
+      <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white">
         <Image
-          src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1350&q=80"
+          src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1920&q=80"
           alt="Hero background"
           fill
           className="absolute z-0 object-cover"
@@ -319,11 +319,11 @@ export default function Home() {
       </section>
 
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <h2 className="text-3xl font-bold text-center mb-12">Shop by Category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-8">
+        <h2 className="text-4xl font-bold text-center mb-16">Shop by Category</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12 md:gap-x-10">
           {categories.map((category) => (
             <button key={category.name} onClick={() => setSelectedCategory(category.name)} className="group flex flex-col items-center gap-4 text-center">
-              <div className="relative w-full aspect-square max-w-[180px] rounded-full overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+              <div className="relative w-full aspect-square max-w-[200px] rounded-full overflow-hidden transform transition-transform duration-300 hover:scale-105 shadow-lg hover:shadow-2xl">
                 <Image
                   src={category.image}
                   alt={category.name}
@@ -332,25 +332,25 @@ export default function Home() {
                   data-ai-hint={category.hint}
                 />
               </div>
-              <h3 className="text-xl font-semibold">{category.name}</h3>
+              <h3 className="text-2xl font-semibold">{category.name}</h3>
             </button>
           ))}
         </div>
       </section>
       
-      <section className="bg-muted/30 py-24">
+      <section className="bg-muted/50 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
-            <h2 className="text-3xl font-bold text-center w-full">{selectedCategory} Products</h2>
+            <h2 className="text-4xl font-bold text-center w-full">{selectedCategory} Products</h2>
             {selectedCategory !== 'Featured' && (
               <Button variant="outline" onClick={() => setSelectedCategory('Featured')}>
                 Show Featured
               </Button>
             )}
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {displayedProducts.map((product) => (
-              <div key={product.name} className="group relative border border-border/20 rounded-lg overflow-hidden transform transition-transform hover:shadow-2xl hover:-translate-y-2 bg-background/50">
+              <div key={product.name} className="group relative border border-border/20 rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card">
                 <Link href={product.href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                   <Image
@@ -375,10 +375,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-secondary/20 py-20">
+      <section className="bg-secondary/30 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold">Join Our Fashion Club</h2>
-          <p className="text-muted-foreground mt-2 mb-6 max-w-lg mx-auto">Get exclusive updates on the latest trends, new arrivals, and special offers delivered right to your inbox.</p>
+          <h2 className="text-4xl font-bold">Join Our Fashion Club</h2>
+          <p className="text-muted-foreground mt-4 mb-8 max-w-xl mx-auto text-lg">Get exclusive updates on the latest trends, new arrivals, and special offers delivered right to your inbox.</p>
           <form className="flex justify-center max-w-md mx-auto">
             <Input type="email" placeholder="Enter your email address" className="max-w-sm rounded-r-none border-r-0" />
             <Button type="submit" className="rounded-l-none">Subscribe</Button>

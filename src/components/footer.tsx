@@ -5,22 +5,22 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-secondary-foreground">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-secondary text-secondary-foreground border-t">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
-            <h3 className="font-bold text-lg md:text-2xl mb-2">KOKIYUM</h3>
-            <p className="text-muted-foreground text-xs md:text-sm max-w-md">
+            <h3 className="font-bold text-2xl md:text-3xl mb-4">KOKIYUM</h3>
+            <p className="text-muted-foreground text-sm md:text-base max-w-md mb-6">
               Discover curated collections that blend modern trends with timeless elegance. Quality fashion delivered to your door.
             </p>
-            <h4 className="font-semibold text-base md:text-lg mt-6 mb-2">Address</h4>
-            <address className="text-muted-foreground text-xs md:text-sm not-italic">
+             <h4 className="font-semibold text-lg md:text-xl mt-6 mb-2">Address</h4>
+            <address className="text-muted-foreground text-sm md:text-base not-italic">
               Near TVS Showroom, Rajgarh Naka, Jhabua, Madhya Pradesh 457661
             </address>
           </div>
           <div>
-            <h4 className="font-semibold text-base md:text-lg mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-xs md:text-sm">
+            <h4 className="font-semibold text-lg md:text-xl mb-4">Quick Links</h4>
+            <ul className="space-y-3 text-sm md:text-base">
               <li><Link href="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Shop All</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link></li>
@@ -28,7 +28,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-base md:text-lg mb-4">Follow Us</h4>
+            <h4 className="font-semibold text-lg md:text-xl mb-4">Follow Us</h4>
             <div className="flex space-x-4">
               <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 <Twitter className="h-6 w-6" />
@@ -45,7 +45,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-10 pt-8 border-t border-border text-center text-sm text-muted-foreground">
+        <div className="mt-16 pt-8 border-t border-border/50 text-center text-base text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} KOKIYUM. All Rights Reserved.</p>
         </div>
       </div>
