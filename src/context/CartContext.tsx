@@ -36,14 +36,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     
     useEffect(() => {
         setIsClient(true);
-
-        const storedProducts = localStorage.getItem('products');
-        if (storedProducts) {
-            setProducts(JSON.parse(storedProducts));
-        } else {
-             localStorage.setItem('products', JSON.stringify(initialProducts));
-        }
-
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {
             setCartItems(JSON.parse(storedCart));

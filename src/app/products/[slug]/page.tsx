@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useState } from 'react';
-import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Product } from '@/lib/products';
 import { Button } from '@/components/ui/button';
@@ -19,9 +18,6 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const { toast } = useToast()
 
   if (!product) {
-    // We can't use notFound() directly in client components in the app router
-    // in the same way as pages router. A common pattern is to conditionaly render
-    // a not-found component or redirect. For now, we will just show a simple message.
      return <div>Product not found</div>;
   }
 
