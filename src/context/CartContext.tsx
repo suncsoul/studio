@@ -1,7 +1,8 @@
 "use client"
 
 import React, { createContext, useState, useEffect, ReactNode, Dispatch, SetStateAction } from 'react';
-import { products as initialProducts, Product } from '@/lib/products';
+import { Product } from '@/lib/products';
+import { getProducts } from '@/lib/data';
 
 export interface CartItem extends Product {
     quantity: number;
@@ -30,40 +31,34 @@ export const CartContext = createContext<CartContextType>({
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isClient, setIsClient] = useState(false);
-    
-    const [products, setProducts] = useState<Product[]>(() => {
-        if (typeof window !== 'undefined') {
-            const storedProducts = localStorage.getItem('products');
-            return storedProducts ? JSON.parse(storedProducts) : initialProducts;
-        }
-        return initialProducts;
-    });
 
-    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-        if (typeof window !== 'undefined') {
-            const storedCart = localStorage.getItem('cart');
-            return storedCart ? JSON.parse(storedCart) : [];
-        }
-        return [];
-    });
-    
     useEffect(() => {
         setIsClient(true);
-    }, []);
-    
-    useEffect(() => {
-        if (isClient) {
-            localStorage.setItem('products', JSON.stringify(products));
+        
+        async function loadProducts() {
+            try {
+                const fetchedProducts = await getProducts();
+                setProducts(fetchedProducts);
+            } catch (error) {
+                console.error("Failed to fetch products:", error);
+            }
         }
-    }, [products, isClient]);
+        loadProducts();
+
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+            setCartItems(JSON.parse(storedCart));
+        }
+    }, []);
 
     useEffect(() => {
         if (isClient) {
             localStorage.setItem('cart', JSON.stringify(cartItems));
         }
     }, [cartItems, isClient]);
-
 
     const addToCart = (product: Product, quantity: number) => {
         setCartItems(prevItems => {

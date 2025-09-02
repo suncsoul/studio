@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import Link from "next/link"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { Product } from "@/lib/products";
 import { CartContext } from "@/context/CartContext"
 import { useToast } from "@/components/ui/use-toast"
@@ -13,6 +13,14 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('Featured');
   const { products, addToCart } = useContext(CartContext);
   const { toast } = useToast();
+  
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      setLoading(false);
+    }
+  }, [products]);
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
@@ -93,36 +101,40 @@ export default function Home() {
               </Button>
             )}
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {displayedProducts.map((product) => (
-              <div key={product.slug} className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
-                <Link href={`/products/${product.slug}`} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
-                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={400}
-                    height={400}
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                    data-ai-hint={product.hint}
-                  />
+          {loading ? (
+             <div className="text-center">Loading products...</div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+              {displayedProducts.map((product) => (
+                <div key={product.slug} className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
+                  <Link href={`/products/${product.slug}`} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
+                  <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+                    <Image
+                      src={product.image || 'https://placehold.co/400x400'}
+                      alt={product.name}
+                      width={400}
+                      height={400}
+                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                      data-ai-hint={product.hint}
+                    />
+                  </div>
+                  <div className="p-4 text-center flex-grow flex flex-col justify-between">
+                     <div className="flex-grow flex flex-col justify-center h-20">
+                         <h3 className="text-lg font-semibold text-card-foreground truncate">{product.name}</h3>
+                         <p className="text-md text-muted-foreground">₹{product.price.toFixed(2)}</p>
+                     </div>
+                     <div className="mt-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                         <Button variant="secondary" size="sm" className="relative z-20" onClick={(e) => {
+                           e.stopPropagation();
+                           e.preventDefault();
+                           handleAddToCart(product);
+                         }}>Add to Cart</Button>
+                     </div>
+                  </div>
                 </div>
-                <div className="p-4 text-center flex-grow flex flex-col justify-between">
-                   <div className="flex-grow flex flex-col justify-center h-20">
-                       <h3 className="text-lg font-semibold text-card-foreground truncate">{product.name}</h3>
-                       <p className="text-md text-muted-foreground">₹{product.price.toFixed(2)}</p>
-                   </div>
-                   <div className="mt-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                       <Button variant="secondary" size="sm" className="relative z-20" onClick={(e) => {
-                         e.stopPropagation();
-                         e.preventDefault();
-                         handleAddToCart(product);
-                       }}>Add to Cart</Button>
-                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

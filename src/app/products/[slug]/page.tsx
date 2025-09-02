@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Product } from '@/lib/products';
 import { Button } from '@/components/ui/button';
@@ -8,14 +8,30 @@ import { Minus, Plus } from 'lucide-react';
 import { CartContext } from '@/context/CartContext';
 import { useToast } from "@/components/ui/use-toast"
 import Link from 'next/link';
+import { getProductBySlug } from '@/lib/data';
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const { products, addToCart } = useContext(CartContext);
-  const product = products.find((p) => p.slug === slug);
-  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const [quantity, setQuantity] = useState(1);
   const { toast } = useToast()
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      const fetchedProduct = await getProductBySlug(slug);
+      setProduct(fetchedProduct);
+      setLoading(false);
+    };
+    fetchProduct();
+  }, [slug]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!product) {
      return <div>Product not found</div>;
@@ -24,6 +40,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const relatedProducts = products.filter(p => p.category === product.category && p.slug !== product.slug).slice(0, 4);
 
   const handleAddToCart = () => {
+    if (!product) return;
     addToCart(product, quantity);
     toast({
       title: "Added to cart",
@@ -39,7 +56,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div className="flex justify-center items-start">
             <div className="w-full aspect-w-1 aspect-h-1 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src={product.image}
+                src={product.image || 'https://placehold.co/800x800'}
                 alt={product.name}
                 width={800}
                 height={800}
@@ -53,7 +70,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div>
             <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
             <p className="text-3xl text-primary mb-6">₹{product.price.toFixed(2)}</p>
-            <p className="text-muted-foreground mb-8 text-lg">{product.description}</p>
+            <div className="prose dark:prose-invert text-muted-foreground mb-8 text-lg" dangerouslySetInnerHTML={{ __html: product.description }} />
             
             <div className="flex items-center gap-6 mb-8">
               <div className="flex items-center gap-2 border rounded-md p-2">
@@ -87,7 +104,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                 <Link href={`/products/${relatedProduct.slug}`} className="absolute inset-0 z-10" aria-label={`View ${relatedProduct.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                   <Image
-                    src={relatedProduct.image}
+                    src={relatedProduct.image || 'https://placehold.co/400x400'}
                     alt={relatedProduct.name}
                     width={400}
                     height={400}
