@@ -31,15 +31,25 @@ export const CartContext = createContext<CartContextType>({
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [isClient, setIsClient] = useState(false);
-    const [products, setProducts] = useState<Product[]>(initialProducts);
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    
+    const [products, setProducts] = useState<Product[]>(() => {
+        if (typeof window !== 'undefined') {
+            const storedProducts = localStorage.getItem('products');
+            return storedProducts ? JSON.parse(storedProducts) : initialProducts;
+        }
+        return initialProducts;
+    });
+
+    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+        if (typeof window !== 'undefined') {
+            const storedCart = localStorage.getItem('cart');
+            return storedCart ? JSON.parse(storedCart) : [];
+        }
+        return [];
+    });
     
     useEffect(() => {
         setIsClient(true);
-        const storedCart = localStorage.getItem('cart');
-        if (storedCart) {
-            setCartItems(JSON.parse(storedCart));
-        }
     }, []);
     
     useEffect(() => {
