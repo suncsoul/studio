@@ -1,3 +1,4 @@
+
 import { Product } from '@/lib/products';
 
 async function fetchAPI(query: string, { variables }: { variables?: Record<string, any> } = {}) {
@@ -14,7 +15,6 @@ async function fetchAPI(query: string, { variables }: { variables?: Record<strin
       query,
       variables,
     }),
-    // Use Next.js caching features
     next: { revalidate: 10 },
   });
 
@@ -26,15 +26,25 @@ async function fetchAPI(query: string, { variables }: { variables?: Record<strin
   return json.data;
 }
 
-// Helper function to transform GraphQL product data into our Product type
+function getPriceFromMetaData(metaData: { key: string; value: string }[]): number {
+    const priceEntry = metaData.find(meta => meta.key === '_price' || meta.key === 'price');
+    return priceEntry ? parseFloat(priceEntry.value) : 0;
+}
+
+
 function transformProduct(productNode: any): Product {
     const image = productNode.image?.sourceUrl || 'https://placehold.co/400x400';
+    
+    // Attempt to get price from metaData first, as it's more reliable with custom fields.
+    // The metaData is often where WooCommerce stores the price internally (as '_price').
+    const price = getPriceFromMetaData(productNode.metaData?.nodes || []);
+
     return {
         name: productNode.name,
         slug: productNode.slug,
-        price: parseFloat(productNode.price?.replace(/[^0-9.-]+/g,"")) || 0,
+        price: price,
         image: image,
-        hint: productNode.name.toLowerCase(), // Generate a hint from the name
+        hint: productNode.name.toLowerCase(),
         category: productNode.productCategories?.nodes[0]?.name || 'Uncategorized',
         description: productNode.description || 'No description available.',
         featured: productNode.featured || false,
@@ -54,12 +64,15 @@ export async function getProducts(): Promise<Product[]> {
           image {
             sourceUrl
           }
-          ... on SimpleProduct {
-            price(format: RAW)
-          }
           productCategories {
             nodes {
               name
+            }
+          }
+          metaData {
+            nodes {
+              key
+              value
             }
           }
         }
@@ -87,12 +100,15 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
           image {
             sourceUrl
           }
-          ... on SimpleProduct {
-            price(format: RAW)
-          }
           productCategories {
             nodes {
               name
+            }
+          }
+          metaData {
+            nodes {
+              key
+              value
             }
           }
         }
