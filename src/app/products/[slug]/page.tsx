@@ -1,16 +1,16 @@
-
 import { products } from '@/lib/products';
 import ProductClientPage from './ProductClientPage';
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-// This is now a Server Component
-export default function ProductPage({ params }: ProductPageProps) {
-  const { slug } = params;
+// Add 'async' and await the params
+export default async function ProductPage({ params }: ProductPageProps) {
+  // Await the params promise
+  const { slug } = await params;
   const product = products.find(p => p.slug === slug);
   const relatedProducts = products.filter(p => p.category === product?.category && p.slug !== product?.slug).slice(0, 4);
 
