@@ -1,8 +1,7 @@
 "use client"
 
 import React, { createContext, useState, useEffect, ReactNode, Dispatch, SetStateAction } from 'react';
-import { Product } from '@/lib/products';
-import { getProducts } from '@/lib/data';
+import { Product, products as initialProducts } from '@/lib/products';
 
 export interface CartItem extends Product {
     quantity: number;
@@ -31,26 +30,22 @@ export const CartContext = createContext<CartContextType>({
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Product[]>(initialProducts);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
-        
-        async function loadProducts() {
-            try {
-                const fetchedProducts = await getProducts();
-                setProducts(fetchedProducts);
-            } catch (error) {
-                console.error("Failed to fetch products:", error);
-            }
-        }
-        loadProducts();
-
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {
             setCartItems(JSON.parse(storedCart));
+        }
+
+        const storedProducts = localStorage.getItem('products');
+        if (storedProducts) {
+          setProducts(JSON.parse(storedProducts));
+        } else {
+          setProducts(initialProducts);
         }
     }, []);
 
@@ -59,6 +54,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('cart', JSON.stringify(cartItems));
         }
     }, [cartItems, isClient]);
+
+     useEffect(() => {
+        if (isClient) {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+    }, [products, isClient]);
 
     const addToCart = (product: Product, quantity: number) => {
         setCartItems(prevItems => {

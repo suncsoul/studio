@@ -8,7 +8,6 @@ import { Minus, Plus } from 'lucide-react';
 import { CartContext } from '@/context/CartContext';
 import { useToast } from "@/components/ui/use-toast"
 import Link from 'next/link';
-import { getProductBySlug } from '@/lib/data';
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -20,21 +19,19 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const { toast } = useToast()
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      const fetchedProduct = await getProductBySlug(slug);
-      setProduct(fetchedProduct);
+    if (products.length > 0) {
+      const fetchedProduct = products.find(p => p.slug === slug);
+      setProduct(fetchedProduct || null);
       setLoading(false);
-    };
-    fetchProduct();
-  }, [slug]);
+    }
+  }, [slug, products]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="container mx-auto text-center py-24">Loading...</div>;
   }
 
   if (!product) {
-     return <div>Product not found</div>;
+     return <div className="container mx-auto text-center py-24">Product not found</div>;
   }
 
   const relatedProducts = products.filter(p => p.category === product.category && p.slug !== product.slug).slice(0, 4);
