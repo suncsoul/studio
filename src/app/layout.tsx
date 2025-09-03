@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
@@ -33,7 +34,7 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className={cn("relative h-full bg-background font-sans antialiased", poppins.className, montserrat.variable)}>
         <CartProvider>
-          <div className="relative flex min-h-screen flex-col">
+          <div className="relative flex min-h-screen flex-col overflow-x-hidden">
             <Header />
             <main className="flex-grow flex-1">{children}</main>
             <Footer />
