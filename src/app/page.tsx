@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -120,7 +121,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="p-4 text-center flex-grow flex flex-col justify-between">
-                     <div className="flex-grow flex flex-col justify-center h-20">
+                     <div className="flex-grow flex flex-col justify-center py-4">
                          <h3 className="text-lg font-semibold font-poppins text-card-foreground truncate">{product.name}</h3>
                          <p className="text-md text-muted-foreground font-semibold font-poppins">₹{product.price.toFixed(2)}</p>
                      </div>

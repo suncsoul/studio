@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useContext, useState, useEffect } from 'react';
@@ -92,12 +93,12 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       </div>
 
        {/* Related Products */}
-       <div className="bg-background py-24">
+       <div className="bg-muted py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center mb-12">Related Products</h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {relatedProducts.map((relatedProduct) => (
-              <div key={relatedProduct.slug} className="group relative border border-border/20 rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
+              <div key={relatedProduct.slug} className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
                 <Link href={`/products/${relatedProduct.slug}`} className="absolute inset-0 z-10" aria-label={`View ${relatedProduct.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                   <Image
@@ -110,7 +111,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                   />
                 </div>
                 <div className="p-4 text-center flex-grow flex flex-col justify-between">
-                  <div className='h-20 flex flex-col justify-center'>
+                  <div className='py-4 flex flex-col justify-center flex-grow'>
                     <h3 className="text-lg font-semibold text-card-foreground truncate">{relatedProduct.name}</h3>
                     <p className="text-md text-muted-foreground">₹{relatedProduct.price.toFixed(2)}</p>
                   </div>
