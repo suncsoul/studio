@@ -89,7 +89,7 @@ export default function Header() {
                 {isLoggedIn ? (
                     <>
                         <Link href="/account" className="flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors">
-                          <User className="h-5 w-5" />
+                          <User className="h-5 w-5 text-secondary" />
                           <span>Account</span>
                         </Link>
                         <Button variant="ghost" size="sm" onClick={handleLogout}>Log Out</Button>
@@ -105,7 +105,7 @@ export default function Header() {
                     </>
                 )}
                  <Link href="/cart" className="relative flex items-center gap-1 text-foreground/80 hover:text-primary transition-colors">
-                    <ShoppingCart className="h-5 w-5" />
+                    <ShoppingCart className="h-5 w-5 text-secondary" />
                     <span>Cart</span>
                     {cartItemCount > 0 && (
                       <span className="absolute -top-2 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">

@@ -91,7 +91,7 @@ export default function Home() {
         </div>
       </section>
       
-      <section id="products" className="bg-muted/50 py-24">
+      <section id="products" className="bg-muted/30 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold">{selectedCategory} Products</h2>
@@ -138,7 +138,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-secondary/30 py-24">
+      <section className="bg-accent/30 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold">Join Our Fashion Club</h2>
           <p className="text-muted-foreground mt-4 mb-8 max-w-xl mx-auto text-lg">Get exclusive updates on the latest trends, new arrivals, and special offers delivered right to your inbox.</p>
