@@ -14,7 +14,7 @@
     --primary-foreground: 0 0% 100%;
     --secondary: 167 100% 50%; /* #00FFC3 Neon Teal */
     --secondary-foreground: 0 0% 16.5%;
-    --muted: 33 100% 83.1%; /* #FFD8A9 Peach Glow */
+    --muted: 0 0% 100%; /* #FFFFFF Soft Ivory */
     --muted-foreground: 0 0% 40%;
     --accent: 351 100% 71.2%; /* #FF6B81 Coral Pink (replaces #C49DF6) */
     --accent-foreground: 0 0% 16.5%;
@@ -37,7 +37,7 @@
     --primary-foreground: 0 0% 16.5%;
     --secondary: 167 100% 50%;
     --secondary-foreground: 0 0% 16.5%;
-    --muted: 33 100% 83.1%;
+    --muted: 0 0% 16.5%; /* Deep Charcoal */
     --muted-foreground: 0 0% 60%;
     --accent: 351 100% 71.2%;
     --accent-foreground: 0 0% 16.5%;

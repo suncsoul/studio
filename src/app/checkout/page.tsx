@@ -44,7 +44,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="bg-muted/50">
+    <div className="bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h1 className="text-4xl font-bold text-center mb-12">Checkout</h1>
         <form onSubmit={handlePlaceOrder} className="grid lg:grid-cols-3 gap-12">
