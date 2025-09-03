@@ -43,8 +43,6 @@ const AccountPage = () => {
     }, [router]);
 
 
-    const dnaVisualizationRef = useRef(null);
-
     useEffect(() => {
         if (!user.name || user.userId) return; // Only generate if name is present and ID is not
         const nameParts = user.name.split(' ');
@@ -169,68 +167,6 @@ const AccountPage = () => {
     ];
 
 
-    useEffect(() => {
-        if (activeTab !== 'Style DNA') return;
-
-        const dnaVisualization = dnaVisualizationRef.current;
-        if (!dnaVisualization) return;
-
-        let animationFrameId: number;
-
-        const createDNA = () => {
-             while ((dnaVisualization as HTMLElement).firstChild) {
-                (dnaVisualization as HTMLElement).removeChild((dnaVisualization as HTMLElement).firstChild as Node);
-            }
-
-            const nodes = 12;
-            const centerX = (dnaVisualization as HTMLElement).offsetWidth / 2;
-            const centerY = (dnaVisualization as HTMLElement).offsetHeight / 2;
-            const radiusX = (dnaVisualization as HTMLElement).offsetWidth / 2 - 30;
-            const radiusY = (dnaVisualization as HTMLElement).offsetHeight / 2 - 30;
-
-            const dnaStrand = document.createElement('div');
-            dnaStrand.className = 'dna-strand';
-            dnaVisualization.appendChild(dnaStrand);
-
-            for (let i = 0; i < nodes; i++) {
-                const angle = (i / (nodes -1)) * Math.PI * 2;
-                const xPos = centerX + Math.cos(angle) * radiusX;
-                const yPos = centerY + Math.sin(angle * 2) * radiusY;
-
-                const node = document.createElement('div');
-                node.className = 'dna-node';
-                node.style.left = `${xPos}px`;
-                node.style.top = `${yPos}px`;
-                node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M12 22V9"/><path d="m3.5 8.5 17 0"/></svg>`;
-                dnaVisualization.appendChild(node);
-            }
-            
-            const dnaNodes = document.querySelectorAll('.dna-node');
-            dnaNodes.forEach((node, index) => {
-                const el = node as HTMLElement;
-                el.style.animation = `pulse 2s ${index * 0.2}s infinite alternate`;
-            });
-        }
-        
-        const resizeObserver = new ResizeObserver(() => {
-            cancelAnimationFrame(animationFrameId);
-            animationFrameId = requestAnimationFrame(createDNA);
-        });
-
-        if (dnaVisualization) {
-            resizeObserver.observe(dnaVisualization);
-        }
-        
-        return () => {
-            if (dnaVisualization) {
-                resizeObserver.unobserve(dnaVisualization as Element);
-            }
-            cancelAnimationFrame(animationFrameId);
-        }
-
-    }, [activeTab]);
-
-
     const renderContent = () => {
         switch (activeTab) {
             case 'Profile':
@@ -302,7 +238,6 @@ const AccountPage = () => {
                         <div className="styledna-section">
                             <h2 className="section-title"><Dna size={24}/> Your Style DNA</h2>
                             <p className='text-muted-foreground'>Your unique fashion identity visualized through your preferences and purchases</p>
-                            <div className="dna-visualization" ref={dnaVisualizationRef}></div>
                             <div className="style-traits">
                                 <div className="trait"><span className="trait-icon">👟</span><span>Streetwear</span></div>
                                 <div className="trait"><span className="trait-icon">🌿</span><span>Sustainable</span></div>
@@ -642,33 +577,6 @@ const AccountPage = () => {
                 gap: 0.75rem;
             }
             .section-title .lucide { color: hsl(var(--primary)); }
-            .dna-visualization {
-                width: 100%;
-                height: 200px;
-                position: relative;
-                margin: 40px 0;
-            }
-            .dna-node {
-                position: absolute;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                background: var(--background);
-                border: 3px solid hsl(var(--primary));
-                transform: translate(-50%, -50%);
-                box-shadow: 0 0 15px hsl(var(--primary) / 0.3);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-                color: hsl(var(--primary));
-                transition: var(--acc-transition);
-                cursor: pointer;
-            }
-            .dna-node:hover {
-                transform: translate(-50%, -50%) scale(1.2);
-                z-index: 10;
-            }
             .style-traits {
                 display: flex;
                 flex-wrap: wrap;
@@ -786,10 +694,6 @@ const AccountPage = () => {
                 .timeline::after { left: 1.5rem; }
                 .timeline-item { width: 100%; padding-left: 4rem; padding-right: 0; left: 0 !important; text-align: left !important; }
                 .timeline-dot { left: calc(1.5rem - 10px); right: auto; }
-            }
-            @keyframes pulse {
-                0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 15px hsl(var(--primary) / 0.3); }
-                100% { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 25px hsl(var(--primary) / 0.6); }
             }
         `}</style>
 
