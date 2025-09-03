@@ -10,7 +10,13 @@ import { CartContext } from '@/context/CartContext';
 import { useToast } from "@/components/ui/use-toast"
 import Link from 'next/link';
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
+interface ProductPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function ProductPage({ params }: ProductPageProps) {
   const { slug } = params;
   const { products, addToCart } = useContext(CartContext);
   const [product, setProduct] = useState<Product | null>(null);
@@ -98,7 +104,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <h2 className="text-4xl font-bold text-center mb-12">Related Products</h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {relatedProducts.map((relatedProduct) => (
-              <div key={relatedProduct.slug} className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card flex flex-col">
+              <div key={relatedProduct.slug} className="group relative border rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-card flex flex-col">
                 <Link href={`/products/${relatedProduct.slug}`} className="absolute inset-0 z-10" aria-label={`View ${relatedProduct.name}`}></Link>
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
                   <Image
@@ -106,7 +112,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                     alt={relatedProduct.name}
                     width={400}
                     height={400}
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                     data-ai-hint={relatedProduct.hint}
                   />
                 </div>
