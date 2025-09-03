@@ -435,9 +435,8 @@ const AccountPage = () => {
                 --acc-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             }
             .account-page-body {
-                font-family: 'Poppins', sans-serif;
                 color: var(--acc-text);
-                background: var(--acc-gray);
+                background: var(--muted);
                 line-height: 1.6;
                 min-height: 100vh;
                 padding: 2rem;
@@ -452,7 +451,7 @@ const AccountPage = () => {
             }
             .account-title {
                 font-size: 2.5rem;
-                font-family: 'Montserrat', sans-serif;
+                font-family: var(--font-poppins);
                 color: var(--acc-text);
                 margin-bottom: 0.5rem;
                 font-weight: 700;
@@ -502,7 +501,7 @@ const AccountPage = () => {
             .profile-name {
                 font-size: 1.75rem;
                 margin-bottom: 0.25rem;
-                font-family: 'Montserrat', sans-serif;
+                font-family: var(--font-poppins);
                 font-weight: 600;
             }
             .profile-bio {
@@ -547,13 +546,13 @@ const AccountPage = () => {
                 color: var(--acc-text);
             }
             .nav-item.active {
-                background: hsl(var(--primary));
-                color: hsl(var(--primary-foreground));
+                background: hsl(var(--secondary));
+                color: hsl(var(--secondary-foreground));
             }
             .nav-item.active svg {
-                 color: hsl(var(--primary-foreground));
+                 color: hsl(var(--secondary-foreground));
             }
-            .nav-item:hover:not(.active) { background: var(--acc-gray); }
+            .nav-item:hover:not(.active) { background: hsl(var(--muted)); }
             .nav-icon {
                 margin-right: 1rem;
                 color: var(--acc-text-light);
@@ -570,13 +569,13 @@ const AccountPage = () => {
                 font-size: 1.5rem;
                 margin-bottom: 1.5rem;
                 color: var(--acc-text);
-                font-family: 'Montserrat', sans-serif;
+                font-family: var(--font-poppins);
                 font-weight: 600;
                 display: flex;
                 align-items: center;
                 gap: 0.75rem;
             }
-            .section-title .lucide { color: hsl(var(--primary)); }
+            .section-title .lucide { color: hsl(var(--secondary)); }
             .style-traits {
                 display: flex;
                 flex-wrap: wrap;
@@ -585,7 +584,7 @@ const AccountPage = () => {
                 margin-top: 2.5rem;
             }
             .trait {
-                background: var(--acc-gray);
+                background: hsl(var(--muted));
                 padding: 0.75rem 1.25rem;
                 border-radius: 50px;
                 display: flex;
@@ -593,11 +592,13 @@ const AccountPage = () => {
                 gap: 0.5rem;
                 transition: var(--acc-transition);
                 cursor: pointer;
+                border: 1px solid hsl(var(--border));
             }
             .trait:hover {
-                background: hsl(var(--primary));
-                color: hsl(var(--primary-foreground));
+                background: hsl(var(--secondary));
+                color: hsl(var(--secondary-foreground));
                 transform: translateY(-3px);
+                border-color: hsl(var(--secondary));
             }
             .trait-icon { font-size: 1.125rem; }
             .timeline {
@@ -632,10 +633,11 @@ const AccountPage = () => {
             }
             .timeline-content {
                 padding: 1.5rem;
-                background-color: var(--acc-gray);
+                background-color: hsl(var(--muted));
                 border-radius: var(--radius);
                 box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
                 position: relative;
+                border: 1px solid hsl(var(--border));
             }
             .timeline-date {
                 font-weight: 700;
@@ -647,7 +649,7 @@ const AccountPage = () => {
                 width: 24px;
                 height: 24px;
                 background-color: var(--background);
-                border: 4px solid hsl(var(--primary));
+                border: 4px solid hsl(var(--secondary));
                 border-radius: 50%;
                 z-index: 1;
                 top: 20px;
@@ -661,13 +663,14 @@ const AccountPage = () => {
                 margin-top: 1.5rem;
             }
             .closet-item {
-                background: var(--acc-gray);
+                background: var(--background);
                 border-radius: var(--radius);
                 overflow: hidden;
                 box-shadow: var(--acc-shadow);
                 transition: var(--acc-transition);
                 cursor: pointer;
                 position: relative;
+                 border: 1px solid hsl(var(--border));
             }
             .closet-item:hover {
                 transform: translateY(-5px);
@@ -689,6 +692,7 @@ const AccountPage = () => {
             @media (max-width: 960px) {
                 .account-layout { flex-direction: column; }
                 .sidebar { width: 100%; position: static; }
+                 .account-page-body { padding: 1rem;}
             }
             @media (max-width: 768px) {
                 .timeline::after { left: 1.5rem; }

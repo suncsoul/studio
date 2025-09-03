@@ -8,6 +8,7 @@ import { useState, useContext, useEffect } from "react"
 import { Product } from "@/lib/products";
 import { CartContext } from "@/context/CartContext"
 import { useToast } from "@/components/ui/use-toast"
+import { ShoppingCart } from "lucide-react"
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('Featured');
@@ -57,14 +58,14 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/20 z-10"/>
         <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-xl text-left">
-                <h1 className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight !leading-[1.1]">
-                    Your Style. Your Story.
+                <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight !leading-[1.1]">
+                    Find Your Joy. Express Your YUM.
                 </h1>
                 <p className="text-lg md:text-xl mb-8 max-w-lg text-white/90">
                     From everyday essentials to statement pieces, discover fashion that tells your story. Unbox the new you.
                 </p>
                 <Button size="lg" asChild className="text-lg">
-                    <Link href="#products">Shop New Arrivals</Link>
+                    <Link href="#products">Shop The Collection</Link>
                 </Button>
             </div>
         </div>
@@ -79,19 +80,19 @@ export default function Home() {
                 src={category.image}
                 alt={category.name}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                className="object-cover transition-transform duration-500 group-hover:scale-110 group-hover:saturate-50"
                 data-ai-hint={category.hint}
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <h3 className="text-2xl font-bold text-white tracking-wider">{category.name}</h3>
+                <h3 className="text-2xl font-bold text-white tracking-wider relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-secondary after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:transition-all after:duration-300 group-hover:after:w-full">{category.name}</h3>
               </div>
             </button>
           ))}
         </div>
       </section>
       
-      <section id="products" className="bg-background py-24">
+      <section id="products" className="bg-muted py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold">{selectedCategory} Products</h2>
@@ -120,15 +121,18 @@ export default function Home() {
                   </div>
                   <div className="p-4 text-center flex-grow flex flex-col justify-between">
                      <div className="flex-grow flex flex-col justify-center h-20">
-                         <h3 className="text-lg font-semibold text-card-foreground truncate">{product.name}</h3>
-                         <p className="text-md text-muted-foreground">₹{product.price.toFixed(2)}</p>
+                         <h3 className="text-lg font-semibold font-poppins text-card-foreground truncate">{product.name}</h3>
+                         <p className="text-md text-muted-foreground font-semibold font-poppins">₹{product.price.toFixed(2)}</p>
                      </div>
                      <div className="mt-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                          <Button variant="secondary" size="sm" className="relative z-20" onClick={(e) => {
                            e.stopPropagation();
                            e.preventDefault();
                            handleAddToCart(product);
-                         }}>Add to Cart</Button>
+                         }}>
+                           <ShoppingCart className="w-4 h-4 mr-2" />
+                           Quick Add
+                          </Button>
                      </div>
                   </div>
                 </div>
@@ -138,14 +142,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-accent/30 py-24">
+      <section className="bg-accent/10 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold">Join Our Fashion Club</h2>
-          <p className="text-muted-foreground mt-4 mb-8 max-w-xl mx-auto text-lg">Get exclusive updates on the latest trends, new arrivals, and special offers delivered right to your inbox.</p>
-          <form className="flex justify-center max-w-md mx-auto">
-            <Input type="email" placeholder="Enter your email address" className="max-w-sm rounded-r-none border-r-0 focus:ring-primary/50" />
-            <Button type="submit" className="rounded-l-none">Subscribe</Button>
-          </form>
+          <h2 className="text-4xl font-bold">20% OFF YOUR FIRST ORDER!</h2>
+          <p className="text-muted-foreground mt-4 mb-8 max-w-xl mx-auto text-lg">Use Code: <span className="font-bold text-accent-foreground">HEYKOKI</span></p>
+          <Button asChild size="lg">
+            <Link href="#products">Shop Now</Link>
+          </Button>
         </div>
       </section>
     </div>

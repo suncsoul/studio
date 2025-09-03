@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* Soft Ivory */
-    --foreground: 0 0% 16.5%; /* Deep Charcoal */
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 16.5%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 16.5%;
-    --primary: 351 100% 71.2%; /* #FF6B81 Coral Pink */
+    --background: 300 14% 97%; /* #F8F9FA Soft Ivory */
+    --foreground: 227 18% 21%; /* #2B2D42 Deep Charcoal */
+    --card: 300 14% 97%;
+    --card-foreground: 227 18% 21%;
+    --popover: 300 14% 97%;
+    --popover-foreground: 227 18% 21%;
+    --primary: 0 100% 71%; /* #FF6B6B Coral */
     --primary-foreground: 0 0% 100%;
-    --secondary: 167 100% 50%; /* #00FFC3 Neon Teal */
-    --secondary-foreground: 0 0% 16.5%;
-    --muted: 0 0% 100%; /* #FFFFFF Soft Ivory */
-    --muted-foreground: 0 0% 40%;
-    --accent: 351 100% 71.2%; /* #FF6B81 Coral Pink (replaces #C49DF6) */
-    --accent-foreground: 0 0% 16.5%;
+    --secondary: 177 58% 55%; /* #4ECDC4 Teal */
+    --secondary-foreground: 227 18% 21%;
+    --muted: 300 14% 97%;
+    --muted-foreground: 227 18% 40%;
+    --accent: 42 100% 70%; /* #FFD166 Golden Sunset */
+    --accent-foreground: 227 18% 21%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 85.1%;
-    --input: 0 0% 85.1%;
-    --ring: 351 100% 71.2%;
+    --border: 227 18% 85%;
+    --input: 227 18% 85%;
+    --ring: 0 100% 71%;
     --radius: 0.75rem;
   }
  
   .dark {
-    --background: 0 0% 16.5%; /* Deep Charcoal */
-    --foreground: 0 0% 98%;
-    --card: 0 0% 16.5%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 16.5%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 351 100% 71.2%;
-    --primary-foreground: 0 0% 16.5%;
-    --secondary: 167 100% 50%;
-    --secondary-foreground: 0 0% 16.5%;
-    --muted: 0 0% 16.5%; /* Deep Charcoal */
-    --muted-foreground: 0 0% 60%;
-    --accent: 351 100% 71.2%;
-    --accent-foreground: 0 0% 16.5%;
+    --background: 227 18% 21%; /* Deep Charcoal */
+    --foreground: 300 14% 97%; /* Soft Ivory */
+    --card: 227 18% 21%;
+    --card-foreground: 300 14% 97%;
+    --popover: 227 18% 21%;
+    --popover-foreground: 300 14% 97%;
+    --primary: 0 100% 71%; /* Coral */
+    --primary-foreground: 227 18% 21%;
+    --secondary: 177 58% 55%; /* Teal */
+    --secondary-foreground: 227 18% 21%;
+    --muted: 227 18% 21%;
+    --muted-foreground: 300 14% 70%;
+    --accent: 42 100% 70%; /* Golden Sunset */
+    --accent-foreground: 227 18% 21%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 30%;
-    --input: 0 0% 30%;
-    --ring: 351 100% 71.2%;
+    --destructive-foreground: 300 14% 97%;
+    --border: 227 18% 30%;
+    --input: 227 18% 30%;
+    --ring: 0 100% 71%;
   }
 }
 
@@ -58,7 +58,10 @@
     @apply bg-background text-foreground;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-poppins);
+  }
+  body {
+     font-family: var(--font-inter);
   }
 }
 

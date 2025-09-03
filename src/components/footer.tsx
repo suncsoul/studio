@@ -2,25 +2,27 @@
 
 import { Facebook, Instagram, Twitter } from "lucide-react"
 import Link from "next/link"
+import { Button } from "./ui/button"
+import { Input } from "./ui/input"
 
 export default function Footer() {
   return (
     <footer className="bg-background text-foreground border-t">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="md:col-span-1">
-            <h3 className="font-bold text-2xl md:text-3xl mb-4">KOKIYUM</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-4">
+            <h3 className="font-bold text-2xl md:text-3xl mb-4 font-poppins">KOKIYUM</h3>
             <p className="text-muted-foreground text-sm md:text-base max-w-md mb-6">
               Discover curated collections that blend modern trends with timeless elegance. Quality fashion delivered to your door.
             </p>
-             <h4 className="font-semibold text-lg md:text-xl mt-6 mb-2">Address</h4>
+             <h4 className="font-semibold text-lg md:text-xl mt-6 mb-2 font-poppins">Address</h4>
             <address className="text-muted-foreground text-sm md:text-base not-italic">
               Near TVS Showroom, Rajgarh Naka, Jhabua, Madhya Pradesh 457661
             </address>
           </div>
-          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
             <div>
-              <h4 className="font-semibold text-lg md:text-xl mb-4">Quick Links</h4>
+              <h4 className="font-semibold text-lg md:text-xl mb-4 font-poppins">Quick Links</h4>
               <ul className="space-y-3 text-sm md:text-base">
                 <li><Link href="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link></li>
                 <li><Link href="/#products" className="text-muted-foreground hover:text-primary transition-colors">Shop All</Link></li>
@@ -29,7 +31,7 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-lg md:text-xl mb-4">Follow Us</h4>
+              <h4 className="font-semibold text-lg md:text-xl mb-4 font-poppins">Follow Us</h4>
               <div className="flex space-x-4">
                 <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                   <Twitter className="h-6 w-6" />
@@ -44,6 +46,13 @@ export default function Footer() {
                   <span className="sr-only">Facebook</span>
                 </Link>
               </div>
+            </div>
+             <div className="md:col-span-1 col-span-2">
+              <h4 className="font-semibold text-lg md:text-xl mb-4 font-poppins">Get the Scoop!</h4>
+                <form className="flex w-full max-w-sm">
+                    <Input type="email" placeholder="Enter your email" className="rounded-r-none border-secondary focus:ring-secondary" />
+                    <Button type="submit" variant="secondary" className="rounded-l-none">Subscribe</Button>
+                </form>
             </div>
           </div>
         </div>
