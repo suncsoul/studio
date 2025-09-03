@@ -479,23 +479,21 @@ const AccountPage = () => {
         <>
         <style jsx global>{`
             :root {
-                --acc-primary: #000000;
-                --acc-secondary: #ffffff;
-                --acc-accent: #007bff;
-                --acc-accent-light: #4da6ff;
-                --acc-gray: #f8f9fa;
-                --acc-gray-dark: #e9ecef;
-                --acc-text: #212529;
-                --acc-text-light: #6c757d;
+                --acc-primary: hsl(var(--primary));
+                --acc-secondary: hsl(var(--secondary));
+                --acc-accent: hsl(var(--accent));
+                --acc-gray: hsl(var(--muted) / 0.5);
+                --acc-gray-dark: hsl(var(--border));
+                --acc-text: hsl(var(--foreground));
+                --acc-text-light: hsl(var(--muted-foreground));
                 --acc-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
                 --acc-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             }
             .dark {
-                --acc-primary: hsl(var(--primary-foreground));
+                 --acc-primary: hsl(var(--primary));
                 --acc-secondary: hsl(var(--secondary));
-                --acc-accent: #3b82f6;
-                --acc-accent-light: #60a5fa;
-                --acc-gray: hsl(var(--muted));
+                --acc-accent: hsl(var(--accent));
+                --acc-gray: hsl(var(--muted) / 0.5);
                 --acc-gray-dark: hsl(var(--border));
                 --acc-text: hsl(var(--foreground));
                 --acc-text-light: hsl(var(--muted-foreground));
@@ -520,7 +518,7 @@ const AccountPage = () => {
             .account-title {
                 font-size: 2.5rem;
                 font-family: 'Montserrat', sans-serif;
-                color: var(--acc-primary);
+                color: var(--acc-text);
                 margin-bottom: 0.5rem;
                 font-weight: 700;
             }
@@ -545,7 +543,7 @@ const AccountPage = () => {
                 min-width: 300px;
             }
             .profile-card {
-                background: var(--acc-secondary);
+                background: var(--background);
                 border-radius: var(--radius);
                 box-shadow: var(--acc-shadow);
                 overflow: hidden;
@@ -557,14 +555,11 @@ const AccountPage = () => {
                 padding: 2rem;
                 position: relative;
             }
-            .dark .profile-card-header {
-                 background: linear-gradient(120deg, hsl(var(--secondary)) 0%, hsl(var(--secondary) / 0.8) 100%);
-            }
             .profile-avatar {
                 width: 120px;
                 height: 120px;
                 border-radius: 50%;
-                border: 4px solid var(--acc-secondary);
+                border: 4px solid var(--background);
                 margin: 0 auto 1rem;
                 overflow: hidden;
                 position: relative;
@@ -598,9 +593,8 @@ const AccountPage = () => {
             }
             .info-value { font-size: 1rem; font-weight: 500; }
             .info-value.member-since { color: hsl(var(--primary)); }
-            .dark .info-value.member-since { color: hsl(var(--primary-foreground)); }
             .navigation-card {
-                 background: var(--acc-secondary);
+                 background: var(--background);
                  border-radius: var(--radius);
                  box-shadow: var(--acc-shadow);
                  padding: 1rem;
@@ -630,7 +624,7 @@ const AccountPage = () => {
                 color: var(--acc-text-light);
             }
             .styledna-section, .evolution-section, .closet-section, .orders-section, .wishlist-section, .addresses-section, .settings-section {
-                background: var(--acc-secondary);
+                background: var(--background);
                 border-radius: var(--radius);
                 box-shadow: var(--acc-shadow);
                 padding: 2rem;
@@ -640,7 +634,7 @@ const AccountPage = () => {
             .section-title {
                 font-size: 1.5rem;
                 margin-bottom: 1.5rem;
-                color: var(--acc-primary);
+                color: var(--acc-text);
                 font-family: 'Montserrat', sans-serif;
                 font-weight: 600;
                 display: flex;
@@ -648,7 +642,6 @@ const AccountPage = () => {
                 gap: 0.75rem;
             }
             .section-title .lucide { color: hsl(var(--primary)); }
-            .dark .section-title .lucide { color: hsl(var(--primary-foreground)); }
             .dna-visualization {
                 width: 100%;
                 height: 200px;
@@ -660,7 +653,7 @@ const AccountPage = () => {
                 width: 24px;
                 height: 24px;
                 border-radius: 50%;
-                background: var(--acc-secondary);
+                background: var(--background);
                 border: 3px solid hsl(var(--primary));
                 transform: translate(-50%, -50%);
                 box-shadow: 0 0 15px hsl(var(--primary) / 0.3);
@@ -741,12 +734,11 @@ const AccountPage = () => {
                 color: hsl(var(--primary));
                 margin-bottom: 0.5rem;
             }
-            .dark .timeline-date { color: hsl(var(--primary-foreground)); }
             .timeline-dot {
                 position: absolute;
                 width: 24px;
                 height: 24px;
-                background-color: var(--acc-secondary);
+                background-color: var(--background);
                 border: 4px solid hsl(var(--primary));
                 border-radius: 50%;
                 z-index: 1;

@@ -5,7 +5,7 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-secondary-foreground border-t">
+    <footer className="bg-muted text-foreground border-t">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="md:col-span-1">
@@ -18,7 +18,7 @@ export default function Footer() {
               Near TVS Showroom, Rajgarh Naka, Jhabua, Madhya Pradesh 457661
             </address>
           </div>
-          <div className="md:col-span-2 grid grid-cols-2 gap-8">
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div>
               <h4 className="font-semibold text-lg md:text-xl mb-4">Quick Links</h4>
               <ul className="space-y-3 text-sm md:text-base">

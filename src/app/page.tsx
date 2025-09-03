@@ -63,7 +63,7 @@ export default function Home() {
                 <p className="text-lg md:text-xl mb-8 max-w-lg text-white/90">
                     From everyday essentials to statement pieces, discover fashion that tells your story. Unbox the new you.
                 </p>
-                <Button size="lg" asChild className="bg-primary hover:bg-primary/80 text-primary-foreground">
+                <Button size="lg" asChild className="text-lg">
                     <Link href="#products">Shop New Arrivals</Link>
                 </Button>
             </div>

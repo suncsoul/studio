@@ -19,13 +19,15 @@ export default function Header() {
   const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
+    // This check ensures localStorage is accessed only on the client side.
+    if (typeof window !== 'undefined') {
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      setIsLoggedIn(loggedIn);
+    }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('isAdmin');
     setIsLoggedIn(false);
     router.push('/');
   };
