@@ -4,19 +4,19 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 16.5%;
+    --background: 0 0% 100%; /* Soft Ivory */
+    --foreground: 0 0% 16.5%; /* Deep Charcoal */
     --card: 0 0% 100%;
     --card-foreground: 0 0% 16.5%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 16.5%;
-    --primary: 351 100% 71.2%;
+    --primary: 351 100% 71.2%; /* #FF6B81 Coral Pink */
     --primary-foreground: 0 0% 100%;
-    --secondary: 167 100% 50%;
+    --secondary: 167 100% 50%; /* #00FFC3 Neon Teal */
     --secondary-foreground: 0 0% 16.5%;
-    --muted: 27 100% 83.1%;
+    --muted: 33 100% 83.1%; /* #FFD8A9 Peach Glow */
     --muted-foreground: 0 0% 40%;
-    --accent: 269 84% 79%;
+    --accent: 351 100% 71.2%; /* #FF6B81 Coral Pink (replaces #C49DF6) */
     --accent-foreground: 0 0% 16.5%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
@@ -27,7 +27,7 @@
   }
  
   .dark {
-    --background: 0 0% 16.5%;
+    --background: 0 0% 16.5%; /* Deep Charcoal */
     --foreground: 0 0% 98%;
     --card: 0 0% 16.5%;
     --card-foreground: 0 0% 98%;
@@ -37,9 +37,9 @@
     --primary-foreground: 0 0% 16.5%;
     --secondary: 167 100% 50%;
     --secondary-foreground: 0 0% 16.5%;
-    --muted: 27 100% 83.1%;
+    --muted: 33 100% 83.1%;
     --muted-foreground: 0 0% 60%;
-    --accent: 269 84% 79%;
+    --accent: 351 100% 71.2%;
     --accent-foreground: 0 0% 16.5%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -53,6 +53,7 @@
   * {
     @apply border-border;
   }
+  html,
   body {
     @apply bg-background text-foreground;
   }
