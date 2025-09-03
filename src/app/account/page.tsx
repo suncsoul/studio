@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart, Edit2, Camera, Trash2, LayoutDashboard } from 'lucide-react';
+import { User, Dna, ShoppingBag, Heart, MapPin, Settings, BarChart, Edit2, Camera, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,6 @@ const AccountPage = () => {
     const [isClient, setIsClient] = useState(false);
     const [activeTab, setActiveTab] = useState('Profile');
     const [isEditingProfile, setIsEditingProfile] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
     const [user, setUser] = useState({
         name: 'Eleanor Vance',
         bio: 'Fashion explorer with a passion for sustainable streetwear',
@@ -27,8 +26,6 @@ const AccountPage = () => {
     useEffect(() => {
         setIsClient(true);
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        const isAdminUser = localStorage.getItem('isAdmin') === 'true';
-        setIsAdmin(isAdminUser);
 
         if (!isLoggedIn) {
             router.push('/login');
@@ -162,7 +159,7 @@ const AccountPage = () => {
         return unique;
     }, [] as { name: string; category: string; image: string; hint: string, price: string }[]);
 
-    let navItems = [
+    const navItems = [
         { name: 'Profile', icon: User },
         { name: 'Style DNA', icon: Dna },
         { name: 'Orders', icon: ShoppingBag },
@@ -170,18 +167,6 @@ const AccountPage = () => {
         { name: 'Addresses', icon: MapPin },
         { name: 'Settings', icon: Settings },
     ];
-
-    if (isAdmin) {
-        navItems.unshift({ name: 'Dashboard', icon: LayoutDashboard });
-    }
-
-    const handleNavClick = (tabName: string) => {
-        if (tabName === 'Dashboard') {
-            router.push('/admin/dashboard');
-        } else {
-            setActiveTab(tabName);
-        }
-    }
 
 
     useEffect(() => {
@@ -832,7 +817,7 @@ const AccountPage = () => {
                                     <div 
                                         key={item.name} 
                                         className={`nav-item ${activeTab === item.name ? 'active' : ''}`}
-                                        onClick={() => handleNavClick(item.name)}
+                                        onClick={() => setActiveTab(item.name)}
                                     >
                                         <div className="nav-icon"><Icon size={20} /></div>
                                         <div>{item.name}</div>

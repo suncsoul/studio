@@ -1,6 +1,7 @@
+
 "use client"
 
-import React, { createContext, useState, useEffect, ReactNode, Dispatch, SetStateAction } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { Product, products as initialProducts } from '@/lib/products';
 
 export interface CartItem extends Product {
@@ -9,7 +10,6 @@ export interface CartItem extends Product {
 
 interface CartContextType {
     products: Product[];
-    setProducts: Dispatch<SetStateAction<Product[]>>;
     cartItems: CartItem[];
     addToCart: (product: Product, quantity: number) => void;
     removeFromCart: (productId: string) => void;
@@ -20,7 +20,6 @@ interface CartContextType {
 
 export const CartContext = createContext<CartContextType>({
     products: [],
-    setProducts: () => {},
     cartItems: [],
     addToCart: () => {},
     removeFromCart: () => {},
@@ -40,13 +39,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         if (storedCart) {
             setCartItems(JSON.parse(storedCart));
         }
-
-        const storedProducts = localStorage.getItem('products');
-        if (storedProducts) {
-          setProducts(JSON.parse(storedProducts));
-        } else {
-          setProducts(initialProducts);
-        }
     }, []);
 
     useEffect(() => {
@@ -54,12 +46,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('cart', JSON.stringify(cartItems));
         }
     }, [cartItems, isClient]);
-
-     useEffect(() => {
-        if (isClient) {
-            localStorage.setItem('products', JSON.stringify(products));
-        }
-    }, [products, isClient]);
 
     const addToCart = (product: Product, quantity: number) => {
         setCartItems(prevItems => {
@@ -101,7 +87,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         <CartContext.Provider
             value={{
                 products,
-                setProducts,
                 cartItems,
                 addToCart,
                 removeFromCart,

@@ -20,14 +20,6 @@ const LoginPage = () => {
             return;
         }
         
-        // Admin user check
-        if (email === 'admin@kokiyum.in' && password === 'admin') {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('isAdmin', 'true');
-            router.push('/admin/dashboard');
-            return;
-        }
-
         // Regular user login
         console.log('Logging in with:', { email, password });
         localStorage.setItem('isLoggedIn', 'true');
